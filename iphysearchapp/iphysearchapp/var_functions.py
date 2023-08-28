@@ -1,7 +1,17 @@
-from django.shortcuts import render
+
+from iphysearchapp.var_env import *
+import mysql.connector 
 from django.db import connection
-from sistema.databases import DATABASES
-from sistema.var_env import *
+
+def conexion():
+    mydb = mysql.connector.connect(
+        host= HOSTBK,
+        user= USERBK,
+        password=PASSWORDBK,
+        database=DBBK
+        )
+    mycursor = mydb.cursor()
+    return  mycursor
 
 def esquemata():
     cursor = connection.cursor()
@@ -13,3 +23,4 @@ def esquemata():
     esquemas = [str(tupla[0]) for tupla in cursor.fetchall()]
     print (esquemas)
     return esquemas
+
