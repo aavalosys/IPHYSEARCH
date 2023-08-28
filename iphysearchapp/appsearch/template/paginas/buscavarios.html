@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block titulo %}Buscador IP{% endblock %}
+
+{% block contenido %}
+<div class="row" style="margin: 10px;"> 
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-6">
+                <form method="GET">
+                {% csrf_token %}
+                <div class="input-group mb-3" style="margin-top: 5px;">
+                    <span class="input-group-text">Ingrese la IP :</span>
+                    <input type="text"  id="idtxtip" name="ip" class="form-control"  placeholder="IP a Buscar..." required>
+                    <input type="hidden"  id="idtxtdb" name="db">
+                    <input type="hidden"  id="idtxtpiv" name="piv" value ="0">
+                    <button type="submit" class="btn btn-danger" >Buscar</button>
+                </div>
+                </form>
+            </div>
+            <script>onloadpag();</script>
+            <div class="col-md-3">
+            </div>
+        
+            <div class="col-md-3">
+            </div>
+        </div>
+        
+
+        <div class="table-responsive" style="margin-top: 20px;">
+            <table class="table table table-sm">
+                    <thead >
+                    <tr>
+                        <th scope="col">IP</th>
+                        <th scope="col">HOSTNAME</th>
+                        <th scope="col">PAIS</th>
+                        <th scope="col">MODELO</th>
+                        <th scope="col">VENDOR</th>
+                    </tr>
+                    </thead>
+                <tbody>
+                    {% for equipo in equipos %}
+                    <tr>
+                        <td>{{equipo.ip}}</td>
+                        <td>{{equipo.hostname}}</td>
+                        <td>{{equipo.modelo}}</td>
+                        <td>{{equipo.pais}}</td>
+                        <td>{{equipo.vendor}}</td>
+                        <td><a href=""  title="Editar" class="btn btn-danger"><i class="fa fa-edit"></i>Ver </a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> 
+
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>
+
+<div class="row">
+</div> 
+{%endblock%}
+

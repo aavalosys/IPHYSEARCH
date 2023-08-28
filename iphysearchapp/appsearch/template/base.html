@@ -1,0 +1,79 @@
+{% load static %}
+<script src="{% static 'js/myjs.js' %}"></script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{% block titulo %}{% endblock %}</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}"> 
+      <link rel="shortcut icon" type="image/png" href="{% static '/img/rana_icon.png' %}"/>
+  </head>
+
+<body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+          <div class="container-fluid">
+              <div class="p-3 mb-2 bg-transparent text-dark">
+                  <img src="{% static '/img/logo_claro_small.png' %}" alt="...">
+              </div>
+            <a class="navbar-brand" href = "{% url 'home'%}"><h2>BOIP PORTAL</h2></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="False" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+              <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link " href="{% url 'buscaips' %}">Busca IPs</a></li>
+                <li class="nav-item"><a class="nav-link" href="">Impacto Interface</a></li>
+                <li class="nav-item"><a class="nav-link " href="{% url 'pruebaaci' %}">PRUEBA-ACI</a></li>
+                <li class="nav-item"><a class="nav-link" href="">Monitoreo TCNs</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'pruebas' %}">Pruebas</a></li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Buscador Varios</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="">Busca macs</a>
+                    <a class="dropdown-item" href="">Busca ip-nemonicos</a>
+                    <a class="dropdown-item" href="">Busca descripciones</a>
+                    <a class="dropdown-item" href="">Busca valores ópticos</a>
+                  </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="">| Salir |</a></li>
+              </ul>  
+            </div>
+          </div>
+      </nav>
+    </header>
+
+  <main>
+    <div class="row" style="margin: 5px;">
+        <div class="col-md-5" style="margin-top: 10px;">
+        </div>
+
+        <div class="col-md-5" style="margin-top: 10px;">
+        </div>
+
+        <div class="col-md-1" style="margin-top: 10px;">
+          <select id="selectdb" name="selectdbs" data-placeholder="Choose" onchange="copiaseleccionado(); return false;" class="input-group-text" aria-label=".form-select-sm example">
+            {% for  db in dbs %}
+              <option value="{{ db }}">{{ db }}</option>
+            {% endfor %}
+          </select>
+        </div>
+    </div>
+
+    <div class="row">
+      {% block contenido %}{% endblock%}
+    </div>
+
+  </main> 
+
+    <script src="{% static 'js/myjs.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+      integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+      integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous">
+    </script>
+</body>
+</html>

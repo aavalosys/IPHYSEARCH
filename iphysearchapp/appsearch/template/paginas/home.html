@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block titulo %}INICIO{% endblock %}
+
+{% block contenido %} 
+
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+        <form action=" " method="GET">
+            {% csrf_token %}
+            <div class="input-group mb-3" style="margin-top: 5px;">
+                <span class="input-group-text">Buscar</span>
+                <input type="text"  id="idtxtip" name="strbuscado" class="form-control"  placeholder="Qué desea buscar ...." required>
+                <input type="hidden" id="idtxtdb" name="dbstr">
+                <input type="hidden" id="idtxtpiv" name="pivstr" value ="0">
+                <button type="submit" class="btn btn-danger" >Buscar</button>
+            </div>
+            </form>
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+
+<div class="row"> 
+    <div class="col-md-6">
+        <table id = "tablaresultados" class="table table table-sm">
+            <thead>
+                <tr>
+                    <th>RESULTADO</th>
+                </tr>
+            </thead>
+        <tbody>
+            {% for enstr in encontrado %}
+                <tr>
+                    <td>{{enstr.0}}</td>
+                    <td>{{enstr.1}}</td>
+                    <td href = ""></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+<div class="row">
+    <div class="col-md-12">
+    </div>
+</div> 
+ {%endblock%}
+

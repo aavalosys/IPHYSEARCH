@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block titulo %}Buscador IP{% endblock %}
+
+{% block contenido %}
+<div class="row" style="margin: 10px;"> 
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-5">
+                <form method="GET">
+                    {% csrf_token %}
+                    <div class="input-group mb-3" style="margin-top: 2 px;">
+                        <span class="input-group-text">Ingrese ID RBS:</span>
+                        <input type="text"  id="idtxtidrbs" name="idrbs" class="form-control"  placeholder="ID a Buscar..." required>
+                        <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
+                        <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
+                        <button type="submit" class="btn btn-danger" >Buscar</button>
+                    </div>
+                    </form>
+                    <table id = "tablanodos" class="table table table-sm">
+                        <thead >
+                        <tr>
+                            <th scope="col" width="40">NODO</th>
+                            <th scope="col" width="40">IP</th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                        {% for equipo in qrbss %}
+                        <tr>
+                            <td width="40" href = "" >{{equipo.0}}</td>
+                            <td width="40" href = "" >{{equipo.1}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                    <form method="GET">
+                        {% csrf_token %}
+                        <div class="input-group mb-3" style="margin-top: 5px;">
+                            <span class="input-group-text">Ingrese la IP :</span>
+                            <input type="text"  id="idtxtip" name="ip" class="form-control"  placeholder="IP a Buscar..." required>
+                            <input type="hidden"  id="idtxtdb" name="db">
+                            <input type="hidden"  id="idtxtpiv" name="piv" value ="1">
+                            <button type="submit" class="btn btn-danger" >Buscar</button>
+                        </div>
+                    </form>
+            </div>
+            <div class="col-md-5">
+                <span class="input-group-text">CODIGO PING CON VRF</span>
+            </div>
+            <div class="col-md-2">
+                <span class="input-group-text">ESPACIO </span>
+            </div>
+            <script>onloadpag();</script>
+        </div>
+        
+
+        <div class="table-responsive" style="margin-top: 20px;">
+            <table id = "tablaips" class="table table table-sm">
+                    <thead >
+                    <tr>
+                        <th scope="col" width="65" >IP</th>
+                        <th scope="col" width="110">HOSTNAME</th>
+                        <th scope="col" width="10">PAIS</th>
+                        <th scope="col" width="50">MODELO</th>
+                        <th scope="col" width="40">VENDOR</th>
+                    </tr>
+                    </thead>
+                <tbody>
+                    {% for equipo in equipos %}
+                    <tr>
+                        <td width="60" >{{equipo.ip}}</td>
+                        <td width="100">{{equipo.hostname}}</td>
+                        <td width="10">{{equipo.pais}}</td>
+                        <td width="30">{{equipo.modelo}}</td>
+                        <td width="30">{{equipo.version}}</td>
+                        <td><a href=""  title="Editar" class="btn btn-danger"><i class="fa fa-edit"></i>Ver </a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> 
+
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
+{%endblock%}
+
