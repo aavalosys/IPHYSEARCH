@@ -1,4 +1,4 @@
-from .var_env import ENGINE, USER, PASSWORD, HOST, PORT, USERBK, PASSWORDBK, HOSTBK
+from .var_env import *
 
 DATABASES={
             'default': {

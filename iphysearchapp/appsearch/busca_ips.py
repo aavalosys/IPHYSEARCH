@@ -21,6 +21,6 @@ def buscaips(request):
     elif ip and piv=='1':
         return render(request, "paginas/buscaips.html", {'dbs': esquemata()})
     
-    return render(request, "paginas/buscaips.html", {'dbs': esquemata()})
+    return render(request, 'busca/home.html', {'dbs': esquemata()})
     
 
