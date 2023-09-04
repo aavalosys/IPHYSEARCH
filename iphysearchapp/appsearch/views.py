@@ -15,9 +15,9 @@ def home(request):
         mycursor.execute('select device_ip, running_config from backups_ip where device_ip like  "%10.78.7.196%" limit 1')
         encontrado = mycursor.fetchall()
         mycursor.close
-        return render(request, "paginas/home.html", {"encontrado":encontrado, 'dbs': esquemata()})
+        return render(request, "paginas/welcome.html", {"encontrado":encontrado, 'dbs': esquemata()})
     else:
-        return render(request, 'paginas/home.html', {'dbs': esquemata()})
+        return render(request, 'paginas/welcome.html', {'dbs': esquemata()})
 
 
 
