@@ -17,16 +17,17 @@
               <div class="p-3 mb-2 bg-transparent text-dark">
                   <img src="{% static '/img/logo_claro_small.png' %}" alt="...">
               </div>
-            <a class="navbar-brand" href = "{% url 'home'%}"><h2>BOIP PORTAL</h2></a>
+            <a class="navbar-brand" href = "{% url 'welcome'%}"><h2>BOIP PORTAL</h2></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="False" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarColor01">
               <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link " href="">BUSCA IPS</a></li>
-                <li class="nav-item"><a class="nav-link" href="">SATURACIONES</a></li>
-                <li class="nav-item"><a class="nav-link " href="">IMPACTO PE</a></li>
-                <li class="nav-item"><a class="nav-link" href="">MONITOREO TCNS</a></li>
+              <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'buscaips'%}">BUSCA IPS</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'impactointerfaces'%}">SATURACIONES</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'impactoporpe'%}">IMPACTO PE</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'monitoreotcns'%}">MONITOREO TCNS</a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">REPORTES</a>
                   <div class="dropdown-menu">
