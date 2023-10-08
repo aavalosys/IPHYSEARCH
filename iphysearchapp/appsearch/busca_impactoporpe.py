@@ -5,4 +5,4 @@ from iphysearchapp.var_env import *
 from iphysearchapp.var_functions import *
 from .models import *
 def impactoporpe(request):
-    return render(request,'paginas/impactointerfaces.html')
+    return render(request,'paginas/buscaimpactoporpe.html', {'dbs': esquemata()})

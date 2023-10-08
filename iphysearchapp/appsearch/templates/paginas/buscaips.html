@@ -4,13 +4,13 @@
 
 {% block contenido %}
 <div class="row" style="margin: 10px;"> 
-    <div class="col-md-10">
+    <div class="col-md-12">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <form method="GET">
                     {% csrf_token %}
                     <div class="input-group mb-3" style="margin-top: 2 px;">
-                        <span class="input-group-text">Ingrese ID RBS:</span>
+                        <span class="input-group-text">INGRESE ID RBS:</span>
                         <input type="text"  id="idtxtidrbs" name="idrbs" class="form-control"  placeholder="ID a Buscar..." required>
                         <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
                         <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
@@ -25,63 +25,120 @@
                         </tr>
                         </thead>
                     <tbody>
-                        {% for equipo in qrbss %}
+                        {% if qrbss %}
+                            {% for equipo in qrbss %}
+                            <tr>
+                                <td width="40">{{equipo.0}}</td>
+                                <td width="40"><a href = "#" class="link-primary" id = "{{equipo.1}}" onclick="copiaripnodo(this.id); return false;">{{equipo.1}}</a></td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
                         <tr>
-                            <td width="40" href = "" >{{equipo.0}}</td>
-                            <td width="40" href = "" >{{equipo.1}}</td>
+                            <td colspan="2">No se encontraron registros.</td>
                         </tr>
-                        {% endfor %}
+                        {% endif %}
                     </tbody>
                     </table>
                     <form method="GET">
                         {% csrf_token %}
                         <div class="input-group mb-3" style="margin-top: 5px;">
-                            <span class="input-group-text">Ingrese la IP :</span>
-                            <input type="text"  id="idtxtip" name="ip" class="form-control"  placeholder="IP a Buscar..." required>
-                            <input type="hidden"  id="idtxtdb" name="db">
-                            <input type="hidden"  id="idtxtpiv" name="piv" value ="1">
+                            <span class="input-group-text">INGRESE LA IP:</span>
+                            <input type="text"  id="idtxtip" name="ipcpe" class="form-control"  placeholder="IP a Buscar..." required>
+                            <input type="hidden"  id="idtxtdb" name="dbcpe">
+                            <input type="hidden"  id="idtxtpiv" name="pivcpe" value ="1">
                             <button type="submit" class="btn btn-danger" >Buscar</button>
                         </div>
                     </form>
             </div>
-            <div class="col-md-5">
-                <span class="input-group-text">CODIGO PING CON VRF</span>
+
+            <div class="col-md-7">
+                <a href = "#" id = "infor">{{infor}}</a>
             </div>
             <div class="col-md-2">
-                <span class="input-group-text">ESPACIO </span>
+                <a>UN ESPACIO ÚTIL</a>
             </div>
             <script>onloadpag();</script>
         </div>
         
+        <div class="row">   
+            <div class="col-md-7"">
+                <table id = "tablaips" class="table table table-sm">
+                        <thead >
+                        <tr>
+                            <th scope="col" width="40" >PE</th>
+                            <th scope="col" width="40">ELEMENTO</th>
+                            <th scope="col" width="15">MAC</th>
+                            <th scope="col" width="15">VLAN</th>
+                            <th scope="col" width="30">SVI</th>
+                            <th scope="col" width="50">VRF</th>
+                            <th scope="col" width="20">PAIS</th>
+                            <th scope="col" width="30">DB</th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                        {% if listaips %}
+                            {% for ip in listaips %}
+                            <tr>
+                                <td width="60" >{{ip.0}}</td>
+                                <td width="100">{{ip.1}}</td>
+                                <td width="10">{{ip.2}}</td>
+                                <td width="30">{{ip.3}}</td>
+                                <td width="30">{{ip.4}}</td>
+                                <td width="30">{{ip.5}}</td>
+                                <td width="30">{{ip.6}}</td>
+                                <td><a href=""  title="Editar" class="btn btn-danger"><i class="fa fa-edit"></i>Ver </a></td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="2">No se encontraron registros.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div> 
+            <div class="col-md-5">
+                <a>OTRO ESPACIO ÚTIL</a>
+            </div>
+        </div>
 
-        <div class="table-responsive" style="margin-top: 20px;">
-            <table id = "tablaips" class="table table table-sm">
-                    <thead >
-                    <tr>
-                        <th scope="col" width="65" >IP</th>
-                        <th scope="col" width="110">HOSTNAME</th>
-                        <th scope="col" width="10">PAIS</th>
-                        <th scope="col" width="50">MODELO</th>
-                        <th scope="col" width="40">VENDOR</th>
-                    </tr>
-                    </thead>
-                <tbody>
-                    {% for equipo in equipos %}
-                    <tr>
-                        <td width="60" >{{equipo.ip}}</td>
-                        <td width="100">{{equipo.hostname}}</td>
-                        <td width="10">{{equipo.pais}}</td>
-                        <td width="30">{{equipo.modelo}}</td>
-                        <td width="30">{{equipo.version}}</td>
-                        <td><a href=""  title="Editar" class="btn btn-danger"><i class="fa fa-edit"></i>Ver </a></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div> 
-
-    </div>
-    <div class="col-md-2">
+        <div class="row">   
+            <div class="col-md-7"">
+                <table id = "tablaips" class="table table table-sm">
+                        <thead >
+                        <tr>
+                            <th scope="col" width="15">SW</th>
+                            <th scope="col" width="15">MAC</th>
+                            <th scope="col" width="15">VLAN-PW</th>
+                            <th scope="col" width="20">INTERFACE/PEER</th>
+                            <th scope="col" width="15">#</th>
+                            <th scope="col" width="40">DESCRIPCIÓN</th>
+                            <th scope="col" width="10">ESTADO</th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                        {% if listequipos %}
+                            {% for equipo in listequipos %}
+                            <tr>
+                                <td width="60" >{{equipo.0}}</td>
+                                <td width="100">{{equipo.1}}</td>
+                                <td width="10">{{equipo.2}}</td>
+                                <td width="30">{{equipo.3}}</td>
+                                <td width="30">{{equipo.4}}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="2">No se encontraron registros.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div> 
+            <div class="col-md-5">
+                <a>MAS ESPACIO ÚTIL</a>
+            </div>
+        </div>
     </div>
 </div>
 {%endblock%}

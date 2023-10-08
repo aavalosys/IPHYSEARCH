@@ -8,6 +8,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}"> 
       <link rel="shortcut icon" type="image/png" href="{% static '/img/rana_icon.png' %}"/>
+      
   </head>
 
 <body>
@@ -27,7 +28,7 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'buscaips'%}">BUSCA IPS</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'impactointerfaces'%}">SATURACIONES</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'impactoporpe'%}">IMPACTO PE</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'monitoreotcns'%}">MONITOREO TCNS</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'monitoreotcns'%}">TCNS</a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">REPORTES</a>
                   <div class="dropdown-menu">
@@ -47,6 +48,13 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" href="">ABOUT</a></li>
                 <li class="nav-item"><a class="nav-link" href="">| SALIR |</a></li>
+                <li class="nav-item"><a class="nav-link" href="">
+                <select id="selectdb" name="selectdbs" data-placeholder="Choose" onchange="copiaseleccionado(); return false;" class="input-group-text" aria-label=".form-select-sm example">
+                  {% for  db in dbs %}
+                    <option value="{{ db }}">{{ db }}</option>
+                  {% endfor %}
+                </select>
+                </a></li>
               </ul>  
             </div>
           </div>
@@ -62,11 +70,6 @@
         </div>
 
         <div class="col-md-1" style="margin-top: 10px;">
-          <select id="selectdb" name="selectdbs" data-placeholder="Choose" onchange="copiaseleccionado(); return false;" class="input-group-text" aria-label=".form-select-sm example">
-            {% for  db in dbs %}
-              <option value="{{ db }}">{{ db }}</option>
-            {% endfor %}
-          </select>
         </div>
     </div>
 

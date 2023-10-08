@@ -1,3 +1,4 @@
+
 function onloadpag() {
     var selectBox = document.getElementById("selectdb");
     var elementoplace =selectBox.options[0].value;
@@ -11,5 +12,11 @@ function copiaseleccionado() {
     var valorseleccionado = selectBox.options[selectBox.selectedIndex].value;
     document.getElementById("idtxtdb").value = valorseleccionado;
     document.getElementById("idtxtdbrbs").value = valorseleccionado; 
+    return;
+}
+
+function copiaripnodo(ipnodo) {    //copia el valor seleccionado con clic en el input IDRBS
+    document.getElementById("idtxtip").value = ipnodo;
+    alert(ipnodo);
     return;
 }

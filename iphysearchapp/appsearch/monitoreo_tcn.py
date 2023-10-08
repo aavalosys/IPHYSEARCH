@@ -6,4 +6,4 @@ from iphysearchapp.var_functions import *
 from .models import *
 
 def monitoreotcns(request):
-    return render(request,'paginas/monitoreo_tcn.html')
+    return render(request,'paginas/monitoreotcn.html')

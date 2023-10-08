@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block titulo %}Buscador IP{% endblock %}
+
+{% block contenido %}
+<div class="row" style="margin: 10px;"> 
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-5">
+                <form method="GET">
+                    {% csrf_token %}
+                    <div class="input-group mb-3" style="margin-top: 2 px;">
+                        <span class="input-group-text">Ingrese ID RBS:</span>
+                        <input type="text"  id="idtxtidrbs" name="idrbs" class="form-control"  placeholder="ID a Buscar..." required>
+                        <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
+                        <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
+                        <button type="submit" class="btn btn-danger" >Buscar</button>
+                    </div>
+                    </form>
+                    <table id = "tablanodos" class="table table table-sm">
+                        <thead >
+                        <tr>
+                            <th scope="col" width="40">NODO</th>
+                            <th scope="col" width="40">IP</th>
+                        </tr>
+                        </thead>
+                    </table>
+            </div>
+            <div class="col-md-5">
+                <span class="input-group-text">CODIGO PING CON VRF</span>
+            </div>
+            <div class="col-md-2">
+                <span class="input-group-text">ESPACIO </span>
+            </div>
+            <script>onloadpag();</script>
+        </div>
+        
+
+        <div class="table-responsive" style="margin-top: 20px;">
+            <table id = "tablaips" class="table table table-sm">
+                    <thead >
+                    <tr>
+                        <th scope="col" width="65" >INTERFACE</th>
+                    </tr>
+                    </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div> 
+
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
+{%endblock%}
+
