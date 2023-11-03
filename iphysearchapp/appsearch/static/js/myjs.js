@@ -17,6 +17,5 @@ function copiaseleccionado() {
 
 function copiaripnodo(ipnodo) {    //copia el valor seleccionado con clic en el input IDRBS
     document.getElementById("idtxtip").value = ipnodo;
-    alert(ipnodo);
     return;
 }

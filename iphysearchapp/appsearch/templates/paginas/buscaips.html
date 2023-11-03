@@ -14,7 +14,7 @@
                         <input type="text"  id="idtxtidrbs" name="idrbs" class="form-control"  placeholder="ID a Buscar..." required>
                         <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
                         <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
-                        <button type="submit" class="btn btn-danger" >Buscar</button>
+                        <button type="submit" class="btn btn-danger" name="buscar_rbs">Buscar</button>
                     </div>
                     </form>
                     <table id = "tablanodos" class="table table table-sm">
@@ -25,8 +25,8 @@
                         </tr>
                         </thead>
                     <tbody>
-                        {% if qrbss %}
-                            {% for equipo in qrbss %}
+                        {% if listarbs %}
+                            {% for equipo in listarbs %}
                             <tr>
                                 <td width="40">{{equipo.0}}</td>
                                 <td width="40"><a href = "#" class="link-primary" id = "{{equipo.1}}" onclick="copiaripnodo(this.id); return false;">{{equipo.1}}</a></td>
@@ -46,7 +46,7 @@
                             <input type="text"  id="idtxtip" name="ipcpe" class="form-control"  placeholder="IP a Buscar..." required>
                             <input type="hidden"  id="idtxtdb" name="dbcpe">
                             <input type="hidden"  id="idtxtpiv" name="pivcpe" value ="1">
-                            <button type="submit" class="btn btn-danger" >Buscar</button>
+                            <button type="submit" class="btn btn-danger" name="buscar_ip">Buscar</button>
                         </div>
                     </form>
             </div>
@@ -65,28 +65,29 @@
                 <table id = "tablaips" class="table table table-sm">
                         <thead >
                         <tr>
-                            <th scope="col" width="40" >PE</th>
-                            <th scope="col" width="40">ELEMENTO</th>
-                            <th scope="col" width="15">MAC</th>
-                            <th scope="col" width="15">VLAN</th>
-                            <th scope="col" width="30">SVI</th>
-                            <th scope="col" width="50">VRF</th>
-                            <th scope="col" width="20">PAIS</th>
-                            <th scope="col" width="30">DB</th>
+                            <th scope="col" width="70">PE</th>
+                            <th scope="col" width="70">ELEMENTO</th>
+                            <th scope="col" width="70">MAC</th>
+                            <th scope="col" width="70">VLAN</th>
+                            <th scope="col" width="70">SVI</th>
+                            <th scope="col" width="70">VRF</th>
+                            <th scope="col" width="70">PAIS</th>
+                            <th scope="col" width="70">DB</th>
                         </tr>
                         </thead>
                     <tbody>
                         {% if listaips %}
                             {% for ip in listaips %}
                             <tr>
-                                <td width="60" >{{ip.0}}</td>
-                                <td width="100">{{ip.1}}</td>
-                                <td width="10">{{ip.2}}</td>
-                                <td width="30">{{ip.3}}</td>
-                                <td width="30">{{ip.4}}</td>
-                                <td width="30">{{ip.5}}</td>
-                                <td width="30">{{ip.6}}</td>
-                                <td><a href=""  title="Editar" class="btn btn-danger"><i class="fa fa-edit"></i>Ver </a></td>
+                                <td width="70">{{ip.0}}</td>
+                                <td width="70">{{ip.1}}</td>
+                                <td width="70">{{ip.2}}</td>
+                                <td width="70">{{ip.3}}</td>
+                                <td width="70">{{ip.4}}</td>
+                                <td width="70">{{ip.5}}</td>
+                                <td width="70">PAIS</td>
+                                <td width="70">DBS</td>
+                                <td><a id="idbuscarmac" href="{% url 'buscar_mac' ip.3 %}" title="Editar" class="btn btn-danger"> <i class="fa fa-edit"> </i>Ver</a></td>
                             </tr>
                             {% endfor %}
                         {% else %}
