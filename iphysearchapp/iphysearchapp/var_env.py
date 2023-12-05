@@ -11,6 +11,34 @@ DBBK = 'temp_db'
 
 DBSINICIAL ='f%'
 
+DBESUP = 'uptime'
+
+DEVISUP = 'SELECT status FROM uptime WHERE uptime.ip LIKE %s'
+
 INFOR = 'ping -b -c 100 -vpn-instance x.y.z.w'
-QUERBSTXT = "SELECT * FROM {}.nodob WHERE nodoid LIKE %s"
-QUECPETXT = "SELECT * FROM (SELECT * FROM  {}.arp_gt UNION SELECT * FROM  {}.arp_sv UNION  SELECT * FROM  {}.arp_hn UNION SELECT * FROM  {}.arp_ni UNION  SELECT * FROM  {}.arp_cr ) as resultado where resultado.ipcpe like %s"
+
+RBSTXT = "SELECT * FROM {}.nodob WHERE nodoid LIKE %s" #BUSCA ELEMENTO NEMONICO
+
+CPETXT = """ SELECT * FROM (
+    SELECT *, 'gt' AS table_name FROM {}.arp_gt
+    UNION ALL
+    SELECT *, 'sv' AS table_name FROM {}.arp_sv
+    UNION ALL
+    SELECT *, 'hn' AS table_name FROM {}.arp_hn
+    UNION ALL
+    SELECT *, 'ni' AS table_name FROM {}.arp_ni 
+    UNION ALL
+    SELECT *, 'cr' AS table_name FROM {}.arp_cr
+) AS resultado WHERE resultado.ipcpe LIKE %s
+"""
+#NO EN USO ACTUALMENTE
+SERVNORMALMAC = """SELECT m.*, i.description FROM {}.mac_address_cr m  
+                  JOIN {}.int_cr i ON m.ip = i.ip AND m.interface = i.interface
+                  WHERE mac LIKE "%{}%" AND vlan = "{}"
+                  ORDER BY count ASC"""
+
+TIPOSERVICIOTXT = "SELECT * FROM {}.nodob WHERE nodoid LIKE %s"
+
+PATHTXT =""
+
+ 

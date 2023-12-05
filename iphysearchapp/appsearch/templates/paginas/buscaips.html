@@ -20,8 +20,9 @@
                     <table id = "tablanodos" class="table table table-sm">
                         <thead >
                         <tr>
-                            <th scope="col" width="40">NODO</th>
+                            <th scope="col" width="40">NEMONICO</th>
                             <th scope="col" width="40">IP</th>
+                            <th scope="col" width="40">TIPO</th>
                         </tr>
                         </thead>
                     <tbody>
@@ -30,6 +31,7 @@
                             <tr>
                                 <td width="40">{{equipo.0}}</td>
                                 <td width="40"><a href = "#" class="link-primary" id = "{{equipo.1}}" onclick="copiaripnodo(this.id); return false;">{{equipo.1}}</a></td>
+                                <td width="40">{{equipo.2}}</td>
                             </tr>
                             {% endfor %}
                         {% else %}
@@ -44,50 +46,51 @@
                         <div class="input-group mb-3" style="margin-top: 5px;">
                             <span class="input-group-text">INGRESE LA IP:</span>
                             <input type="text"  id="idtxtip" name="ipcpe" class="form-control"  placeholder="IP a Buscar..." required>
-                            <input type="hidden"  id="idtxtdb" name="dbcpe">
+                            <input type="hidden" id="idtxtdb" name="dbcpe">
                             <input type="hidden"  id="idtxtpiv" name="pivcpe" value ="1">
                             <button type="submit" class="btn btn-danger" name="buscar_ip">Buscar</button>
                         </div>
                     </form>
             </div>
-
             <div class="col-md-7">
                 <a href = "#" id = "infor">{{infor}}</a>
             </div>
             <div class="col-md-2">
-                <a>UN ESPACIO ÚTIL</a>
+                <a>PRIMERA FILA 3 - 7 - 2</a>
             </div>
             <script>onloadpag();</script>
         </div>
         
+
+
         <div class="row">   
-            <div class="col-md-7"">
+            <div class="col-md-8"">
                 <table id = "tablaips" class="table table table-sm">
                         <thead >
                         <tr>
-                            <th scope="col" width="70">PE</th>
-                            <th scope="col" width="70">ELEMENTO</th>
-                            <th scope="col" width="70">MAC</th>
-                            <th scope="col" width="70">VLAN</th>
-                            <th scope="col" width="70">SVI</th>
-                            <th scope="col" width="70">VRF</th>
-                            <th scope="col" width="70">PAIS</th>
-                            <th scope="col" width="70">DB</th>
+                            <th scope="col" width="140">PE</th>
+                            <th scope="col" width="140">ELEMENTO</th>
+                            <th scope="col" width="140">MAC</th>
+                            <th scope="col" width="140">VLAN</th>
+                            <th scope="col" width="140">SVI</th>
+                            <th scope="col" width="200">VRF</th>
+                            <th scope="col" width="140">PAIS</th>
+                            <th scope="col" width="100">DB</th>
                         </tr>
                         </thead>
                     <tbody>
                         {% if listaips %}
                             {% for ip in listaips %}
                             <tr>
-                                <td width="70">{{ip.0}}</td>
-                                <td width="70">{{ip.1}}</td>
-                                <td width="70">{{ip.2}}</td>
-                                <td width="70">{{ip.3}}</td>
-                                <td width="70">{{ip.4}}</td>
-                                <td width="70">{{ip.5}}</td>
-                                <td width="70">PAIS</td>
-                                <td width="70">DBS</td>
-                                <td><a id="idbuscarmac" href="{% url 'buscar_mac' ip.3 %}" title="Editar" class="btn btn-danger"> <i class="fa fa-edit"> </i>Ver</a></td>
+                                <td width="140">{{ip.0}}</td>
+                                <td width="140">{{ip.1}}</td>
+                                <td width="140">{{ip.2}}</td>
+                                <td width="140">{{ip.3}}</td>
+                                <td width="140">{{ip.4}}</td>
+                                <td width="200">{{ip.5}}</td>
+                                <td width="140">{{ip.6}}</td>
+                                <td width="140">{{ip.7}}</td>
+                                <td><a id="idbuscaservicio" href="{% url 'buscar_mac' ip.1 ip.2 ip.3 ip.6 ip.7%}?boton=ver" title="Editar" class="btn btn-danger"> <i class="fa fa-edit"></i>Ver</a></td>
                             </tr>
                             {% endfor %}
                         {% else %}
@@ -98,17 +101,18 @@
                     </tbody>
                 </table>
             </div> 
-            <div class="col-md-5">
-                <a>OTRO ESPACIO ÚTIL</a>
+            <div class="col-md-4">
+                <a>SEGUNDA FILA 7 - 5</a>
             </div>
         </div>
 
+
         <div class="row">   
-            <div class="col-md-7"">
+            <div class="col-md-8"">
                 <table id = "tablaips" class="table table table-sm">
                         <thead >
                         <tr>
-                            <th scope="col" width="15">SW</th>
+                            <th scope="col" width="15">DISPOSITIVO</th>
                             <th scope="col" width="15">MAC</th>
                             <th scope="col" width="15">VLAN-PW</th>
                             <th scope="col" width="20">INTERFACE/PEER</th>
@@ -118,14 +122,16 @@
                         </tr>
                         </thead>
                     <tbody>
-                        {% if listequipos %}
-                            {% for equipo in listequipos %}
+                        {% if listar_mac %}
+                            {% for equipo in listar_mac %}
                             <tr>
                                 <td width="60" >{{equipo.0}}</td>
                                 <td width="100">{{equipo.1}}</td>
                                 <td width="10">{{equipo.2}}</td>
                                 <td width="30">{{equipo.3}}</td>
                                 <td width="30">{{equipo.4}}</td>
+                                <td width="30">{{equipo.5}}</td>
+                                <td width="30">{{equipo.6}}</td>
                             </tr>
                             {% endfor %}
                         {% else %}
@@ -136,8 +142,11 @@
                     </tbody>
                 </table>
             </div> 
-            <div class="col-md-5">
-                <a>MAS ESPACIO ÚTIL</a>
+            <div class="col-md-4">
+                <!--
+                <label for="mensaje"></label>
+                <textarea id="mensaje" name="mensaje" rows="4" cols="70">PLANTILLA:</textarea>
+                -->
             </div>
         </div>
     </div>
