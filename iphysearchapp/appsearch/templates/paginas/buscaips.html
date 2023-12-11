@@ -92,7 +92,7 @@
                                 <td width="140">{{ip.6}}</td>
                                 <td width="140">{{ip.7}}</td>
                                 <td width="20"><a id="idbuscaservicio" href="{% url 'buscar_mac' ip.1 ip.2 ip.3 ip.6 ip.7%}?boton=ver" title="Editar" class="btn btn-info">Ver</a></td>
-                                <td width="20"><a id="idtest" href="{% url 'pingcpe' ip.0 ip.1 ip.5 ip.7%}?boton=Test" title = "Buscar"   class="btn btn-info">Test</a></td>
+                                <td width="20"><a id="idtest" href="{% url 'ping_cpe' ip.0 ip.1 ip.5 ip.7%}?boton=Test" title = "Buscar"   class="btn btn-info">Test</a></td>
                             </tr>
                             {% endfor %}
                         {% else %}
