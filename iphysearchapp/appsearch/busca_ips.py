@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import requests
 from iphysearchapp.databases import DATABASES
 from iphysearchapp.var_env import *
 from iphysearchapp.var_functions import *
@@ -41,6 +42,7 @@ def buscacaipcpe(dbcpe, textcpe):       #BUSCA L3 DISPOSITIVO
     resultados = mycursor.fetchall()
     mydb.close()
     listaips = [(resultado + (dbcpe,)) for resultado in resultados]
+
     return listaips
 
 def buscaserviciomac (request, ipcpe, mac, vlan, pais, dbcpe):
@@ -87,7 +89,6 @@ def servicioespw(mac, subvlan, dbcpe):
     listapws = [(ip, mac, vlan, interface, count) 
                 for (ip, mac, vlan, interface, count) in resultados 
                 if subvlan in str(vlan)]
-
     return listapws
 
 def elementoesup(ipsw):
@@ -95,8 +96,37 @@ def elementoesup(ipsw):
     mycursor = mydb.cursor()
     try:
         mycursor.execute(DEVISUP, ('%' + ipsw,))
-        deviceisup = mycursor.fetchall()[0]
+        url = f"http://10.10.26.4:5000/api/ping/"
+        response = requests.post(url, json=ipsw)
+        if response.status_code == 200:
+            second_element = response.json()[1]
+            print ("ESTA RESPONDIENDO CON ->"+ second_element)
+            return second_element
+        else:
+            second_element = 'X'
+            return second_element
     except Exception as e:
-        deviceisup = "X"
-    return deviceisup[0].strip("('')")
+        second_element = 'X'
+        return second_element
+  
+def elementoesping( ippe, ipcpe, vrf, dbcpe):
+    try:
+        url = f"http://10.10.26.4:5000/api/getpingvrf/"
+        data_to_send = [dbcpe, ippe, vrf, ipcpe]
+        response = requests.post(url, json=data_to_send)
+        if response.status_code == 200:
+            segundo_elemento = response.json()
+            #resultado = segundo_elemento.replace('\n', ' ')
+            print ("ADENTRO DE PING ELEMENTO")
+            print(response.json())
+            return resultado
+        else:
+            resultado = 'Ooops ocurrio un error....'
+            return resultado
+        
+    except Exception as e:
+        resultado = 'Ooops ocurrio un error....'
+        return resultado
+    
+
 

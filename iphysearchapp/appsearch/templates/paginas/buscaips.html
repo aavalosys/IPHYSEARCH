@@ -52,11 +52,12 @@
                         </div>
                     </form>
             </div>
+
             <div class="col-md-7">
-                <a href = "#" id = "infor">{{infor}}</a>
             </div>
+
             <div class="col-md-2">
-                <a>PRIMERA FILA 3 - 7 - 2</a>
+                <!--<a>PRIMERA FILA 3 - 7 - 2</a>-->
             </div>
             <script>onloadpag();</script>
         </div>
@@ -64,7 +65,7 @@
 
 
         <div class="row">   
-            <div class="col-md-8"">
+            <div class="col-md-10"">
                 <table id = "tablaips" class="table table table-sm">
                         <thead >
                         <tr>
@@ -90,7 +91,8 @@
                                 <td width="200">{{ip.5}}</td>
                                 <td width="140">{{ip.6}}</td>
                                 <td width="140">{{ip.7}}</td>
-                                <td><a id="idbuscaservicio" href="{% url 'buscar_mac' ip.1 ip.2 ip.3 ip.6 ip.7%}?boton=ver" title="Editar" class="btn btn-danger"> <i class="fa fa-edit"></i>Ver</a></td>
+                                <td width="20"><a id="idbuscaservicio" href="{% url 'buscar_mac' ip.1 ip.2 ip.3 ip.6 ip.7%}?boton=ver" title="Editar" class="btn btn-info">Ver</a></td>
+                                <td width="20"><a id="idtest" href="{% url 'pingcpe' ip.0 ip.1 ip.5 ip.7%}?boton=Test" title = "Buscar"   class="btn btn-info">Test</a></td>
                             </tr>
                             {% endfor %}
                         {% else %}
@@ -100,25 +102,40 @@
                         {% endif %}
                     </tbody>
                 </table>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Sin Datos ...</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>                        
+                        </div>
+                      </div>
+                    </div>
+                  </div>
             </div> 
-            <div class="col-md-4">
-                <a>SEGUNDA FILA 7 - 5</a>
+            <div class="col-md-2">
+                <a>SEGUNDA FILA</a>
             </div>
         </div>
 
 
         <div class="row">   
-            <div class="col-md-8"">
+            <div class="col-md-10"">
                 <table id = "tablaips" class="table table table-sm">
                         <thead >
                         <tr>
                             <th scope="col" width="15">DISPOSITIVO</th>
+                            <th scope="col" width="10">ESTADO</th>             
                             <th scope="col" width="15">MAC</th>
                             <th scope="col" width="15">VLAN-PW</th>
                             <th scope="col" width="20">INTERFACE/PEER</th>
                             <th scope="col" width="15">#</th>
                             <th scope="col" width="40">DESCRIPCIÓN</th>
-                            <th scope="col" width="10">ESTADO</th>
                         </tr>
                         </thead>
                     <tbody>
@@ -126,12 +143,12 @@
                             {% for equipo in listar_mac %}
                             <tr>
                                 <td width="60" >{{equipo.0}}</td>
+                                <td width="30">{{equipo.6}}</td>
                                 <td width="100">{{equipo.1}}</td>
                                 <td width="10">{{equipo.2}}</td>
-                                <td width="30">{{equipo.3}}</td>
+                                <td width="30">{{equipo.3}}<a id="idtest" href="" title = "Buscar" data-bs-toggle="modal" data-bs-target="#exampleModal"  class="btn btn-info">Ver</a></td>  
                                 <td width="30">{{equipo.4}}</td>
-                                <td width="30">{{equipo.5}}</td>
-                                <td width="30">{{equipo.6}}</td>
+                                <td width="30">{{equipo.5}}</td>   
                             </tr>
                             {% endfor %}
                         {% else %}
@@ -142,7 +159,7 @@
                     </tbody>
                 </table>
             </div> 
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <!--
                 <label for="mensaje"></label>
                 <textarea id="mensaje" name="mensaje" rows="4" cols="70">PLANTILLA:</textarea>

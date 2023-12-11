@@ -9,5 +9,5 @@ urlpatterns = [
     path('monitoreotcns', monitoreo_tcn.monitoreotcns, name='monitoreotcns'),
     path('buscadorvarios', busca_varios.buscadorvarios, name='buscadorvarios'),
     path('buscar_mac/<str:ipcpe>/<str:mac>/<str:vlan>/<str:pais>/<str:dbcpe>/', busca_ips.buscaserviciomac, name='buscar_mac'),
-
+    path('ping_cpe/<str:ippe>/<str:ipcpe>/<str:vrf>/<str:dbcpe>/', busca_ips.elementoesping, name='pingcpe'),
 ]
