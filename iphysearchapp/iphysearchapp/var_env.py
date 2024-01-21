@@ -23,15 +23,15 @@ DEVISUP = 'SELECT status FROM uptime WHERE uptime.ip LIKE %s'
 RBSTXTFROM = "SELECT * FROM {}.nodob WHERE ip LIKE %s" #BUSCA ELEMENTO NEMONICO
 
 CPETXT = """ SELECT * FROM (
-    SELECT *, 'GT' AS table_name FROM {}.arp_gt
+    SELECT *, 'gt' AS table_name FROM {}.arp_gt
     UNION ALL
-    SELECT *, 'SV' AS table_name FROM {}.arp_sv
+    SELECT *, 'sv' AS table_name FROM {}.arp_sv
     UNION ALL
-    SELECT *, 'HN' AS table_name FROM {}.arp_hn
+    SELECT *, 'hn' AS table_name FROM {}.arp_hn
     UNION ALL
-    SELECT *, 'NI' AS table_name FROM {}.arp_ni 
+    SELECT *, 'ni' AS table_name FROM {}.arp_ni 
     UNION ALL
-    SELECT *, 'CR' AS table_name FROM {}.arp_cr
+    SELECT *, 'cr' AS table_name FROM {}.arp_cr
 ) AS resultado WHERE resultado.ipcpe LIKE %s
 """
 
