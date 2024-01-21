@@ -1,0 +1,77 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>{% block titulo %}  {% endblock %}</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS v5.2.0-beta1 -->
+  <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}"> 
+  <link rel="shortcut icon" type="image/png" href="{% static '/img/server-storage.png' %}"/>
+</head>
+
+<body>
+  <header>
+    <!-- place navbar here -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <div class="p-3 mb-2 bg-transparent text-dark"><img src="{% static '/img/logo_claro_small.png' %}" alt="..."></div>
+          <a class="navbar-brand" >BOIP App </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="{% url 'buscador_backups' %}"> </a>
+              </li> -->
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Utilidades</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="{% url 'buscador_backups' %}">Buscador de Backups</a>
+                  <a class="dropdown-item" href="{% url 'diferencia_historicos_a' %}">Comparación de Backups</a>
+                  <a class="dropdown-item" href="{% url 'diferencia_historicos_b' %}">Comparación Manual de Backups</a>
+                  <a class="dropdown-item" href="{% url 'generar_diagrama' %}">Diagramas Automáticos (L2)</a>
+                  <a class="dropdown-item" href="{% static '/docs/ManualDeUsuario.pdf' %}" target="_blank" rel="noopener noreferrer">Manual de Usuario</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="http://10.10.26.5:8080">Portal</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'contacto' %}">Contacto</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">-   Bienvenido {{ user.username }}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">| Salir |</a>
+              </li>
+            </ul>  
+        
+          </div>
+        </div>
+      </nav>
+    
+  </header>
+  <main>
+    <div class="container-fluid">
+      {% block contenido %} {% endblock%}
+    </div>
+  </main>
+  <footer>
+    <!-- place footer here -->
+  </footer>
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+    integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+    integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous">
+  </script>
+</body>
+</html>

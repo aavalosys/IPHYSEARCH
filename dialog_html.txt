@@ -1,0 +1,42 @@
+{% extends "base.html" %}  
+
+{% block titulo %}INICIO{% endblock %}
+
+{% block contenido %} 
+
+<div class="row">
+    <div class="col-md-6">
+            {% if dbs %}
+                {% for db in dbs %}
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('{{db}}').showModal();">
+                        Abrir # {{db}}
+                    </button>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="2">No se encontraron registros.</td>
+            </tr>
+            {% endif %}        
+    </div>
+
+    <div class="col-md-6">
+        {% for db in dbs %}
+            <dialog id="{{db}}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{db}}</h5>
+                            <button type="button" class="close" onclick="document.getElementById('{{db}}').close();">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        {{db}}
+                    </div>
+                </div>
+            </dialog>
+        {% endfor %} 
+    </div>
+</div>
+
+ {%endblock%}
+
