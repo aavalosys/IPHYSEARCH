@@ -1,13 +1,16 @@
 from django.urls import path
-from . import home, busca_ips, busca_impactointerface, busca_impactoporpe, monitoreo_tcn, busca_varios
+from . import home, busca_ips, busca_impactointerface, busca_impactoporpe, monitoreo_tcn, busca_varios, about, informativo, cgnatreport
 
 urlpatterns = [
-    path('welcome', home.home, name='welcome'),  
-    path('buscaips', busca_ips.buscaips, name='buscaips'),
+    path('welcome/', home.home, name='welcome'),  
+    path('buscaips', busca_ips.buscaips, name='buscaips'), 
     path('impactointerfaces', busca_impactointerface.impactointerfaces, name='impactointerfaces'),
     path('impactoporpe', busca_impactoporpe.impactoporpe, name='impactoporpe'),
     path('monitoreotcns', monitoreo_tcn.monitoreotcns, name='monitoreotcns'),
-    path('buscadorvarios', busca_varios.buscadorvarios, name='buscadorvarios'),
-    path('buscar_mac/<str:ipcpe>/<str:mac>/<str:vlan>/<str:pais>/<str:dbcpe>/', busca_ips.buscaserviciomac, name='buscar_mac'),
-    path('ping_cpe/<str:ippe>/<str:ipcpe>/<str:vrf>/<str:dbcpe>/', busca_ips.elementoesping, name='pingcpe'),
+    path('buscavarios/<str:selectedoption>/', busca_varios.buscavarios, name='buscavarios'),
+    path('cgnatreport', cgnatreport.cgnat, name='cgnatreport'),
+    path('about', about.about, name='about'),
+    path('informativo', informativo.informativo, name='informativo'),
+    path('buscar_mac/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:vrf>/<str:pais>/<str:dbcpe>/', busca_ips.buscaserviciomac, name='buscar_mac'),
+    path('ping_cpe/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:vrf>/<str:pais>/<str:dbcpe>/', busca_ips.elementoesping, name='ping_cpe'),
 ]

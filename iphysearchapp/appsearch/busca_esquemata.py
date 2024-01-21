@@ -7,7 +7,6 @@ def esquemata():
     cursor = connection.cursor()
     cursor.execute('select count(SCHEMA_NAME) from information_schema.schemata where SCHEMA_NAME like "'+DBSINICIAL+'"')
     nodbs = [int(tupla[0]) for tupla in cursor.fetchall()]
-    print (nodbs)
     cursor.execute('select SCHEMA_NAME  from information_schema.schemata where SCHEMA_NAME like "'+DBSINICIAL+'" order by SCHEMA_NAME desc limit '+
                    str(nodbs[0])+' offset 2')
     esquemas = [str(tupla[0]) for tupla in cursor.fetchall()]

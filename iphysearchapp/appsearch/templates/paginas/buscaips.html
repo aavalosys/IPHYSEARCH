@@ -1,16 +1,15 @@
 {% extends "base.html" %}
-
 {% block titulo %}Buscador IP{% endblock %}
+{% block contenido %} 
 
-{% block contenido %}
-<div class="row" style="margin: 10px;"> 
+<div class="row" style="margin: 10px;">
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <form method="GET">
                     {% csrf_token %}
                     <div class="input-group mb-3" style="margin-top: 2 px;">
-                        <span class="input-group-text">INGRESE ID RBS:</span>
+                        <span class="input-group-text">INGRESE ID:</span>
                         <input type="text"  id="idtxtidrbs" name="idrbs" class="form-control"  placeholder="ID a Buscar..." required>
                         <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
                         <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
@@ -18,7 +17,7 @@
                     </div>
                     </form>
                     <table id = "tablanodos" class="table table table-sm">
-                        <thead >
+                        <thead>
                         <tr>
                             <th scope="col" width="40">NEMONICO</th>
                             <th scope="col" width="40">IP</th>
@@ -29,7 +28,7 @@
                         {% if listarbs %}
                             {% for equipo in listarbs %}
                             <tr>
-                                <td width="40">{{equipo.0}}</td>
+                                <td width="40"><a href = "#" class="link-primary" id = "{{equipo.0}}">{{equipo.0}}</a></td>
                                 <td width="40"><a href = "#" class="link-primary" id = "{{equipo.1}}" onclick="copiaripnodo(this.id); return false;">{{equipo.1}}</a></td>
                                 <td width="40">{{equipo.2}}</td>
                             </tr>
@@ -50,22 +49,24 @@
                             <input type="hidden"  id="idtxtpiv" name="pivcpe" value ="1">
                             <button type="submit" class="btn btn-danger" name="buscar_ip">Buscar</button>
                         </div>
-                    </form>
+                </form>
             </div>
 
-            <div class="col-md-7">
+            <div class="col-md-4">   
+                <div class="alert alert-dismissible alert-info">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                     <strong>Heads up!</strong> This <a href="#" class="alert-link">alert needs your attention</a>, but it's not super important.
+                </div>  
             </div>
 
-            <div class="col-md-2">
-                <!--<a>PRIMERA FILA 3 - 7 - 2</a>-->
+            <div class="col-md-4">        
             </div>
+
             <script>onloadpag();</script>
         </div>
-        
 
-
-        <div class="row">   
-            <div class="col-md-10"">
+        <div class="row">    <!--SEGUNDA FILA</a>-->
+            <div class="col-md-8">
                 <table id = "tablaips" class="table table table-sm">
                         <thead >
                         <tr>
@@ -83,7 +84,7 @@
                         {% if listaips %}
                             {% for ip in listaips %}
                             <tr>
-                                <td width="140">{{ip.0}}</td>
+                                <td width="140">{{ip.0}}</td> 
                                 <td width="140">{{ip.1}}</td>
                                 <td width="140">{{ip.2}}</td>
                                 <td width="140">{{ip.3}}</td>
@@ -91,46 +92,35 @@
                                 <td width="200">{{ip.5}}</td>
                                 <td width="140">{{ip.6}}</td>
                                 <td width="140">{{ip.7}}</td>
-                                <td width="20"><a id="idbuscaservicio" href="{% url 'buscar_mac' ip.1 ip.2 ip.3 ip.6 ip.7%}?boton=ver" title="Editar" class="btn btn-info">Ver</a></td>
-                                <td width="20"><a id="idtest" href="{% url 'ping_cpe' ip.0 ip.1 ip.5 ip.7%}?boton=Test" title = "Buscar"   class="btn btn-info">Test</a></td>
+                                <td width="20">
+                                    <a  id="idbuscaservicio"
+                                        href="{% url 'buscar_mac' ip.0 ip.1 ip.2 ip.3 ip.5 ip.6 ip.7 %}?boton=ver" 
+                                        title="Ver" 
+                                        class="btn btn-info">Ver</a></td>
+                                <td width="20">
+                                    <a  id="idtest" 
+                                        href="{% url 'ping_cpe' ip.0 ip.1 ip.2 ip.3 ip.5 ip.6 ip.7 %}?boton=ping" 
+                                        title="Ping"
+                                        data-bs-target="#pingcpe" 
+                                        data-bs-toggle="modal"
+                                        class="btn btn-info">Ping</a>
+                                </td>                            
                             </tr>
                             {% endfor %}
                         {% else %}
-                            <tr>
-                                <td colspan="2">No se encontraron registros.</td>
-                            </tr>
+                            <tr><td colspan="2">No se encontraron registros.</td></tr>
                         {% endif %}
+
                     </tbody>
                 </table>
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="exampleModalLabel">Sin Datos ...</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>                        
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-            </div> 
-            <div class="col-md-2">
-                <a>SEGUNDA FILA</a>
-            </div>
         </div>
 
-
-        <div class="row">   
-            <div class="col-md-10"">
+        <div class="row" >   
+            <div class="col-md-12">
                 <table id = "tablaips" class="table table table-sm">
                         <thead >
                         <tr>
-                            <th scope="col" width="15">DISPOSITIVO</th>
-                            <th scope="col" width="10">ESTADO</th>             
+                            <th scope="col" width="15">DISPOSITIVO</th>            
                             <th scope="col" width="15">MAC</th>
                             <th scope="col" width="15">VLAN-PW</th>
                             <th scope="col" width="20">INTERFACE/PEER</th>
@@ -141,12 +131,17 @@
                     <tbody>
                         {% if listar_mac %}
                             {% for equipo in listar_mac %}
-                            <tr>
-                                <td width="60" >{{equipo.0}}</td>
-                                <td width="30">{{equipo.6}}</td>
+                            <tr {% if equipo.6 == 'Up' %} class="table-success" {% else %} class="table-danger" {% endif %}>
+                                <td width="60" >{{equipo.0}} is  {{equipo.6}} </td>
                                 <td width="100">{{equipo.1}}</td>
-                                <td width="10">{{equipo.2}}</td>
-                                <td width="30">{{equipo.3}}<a id="idtest" href="" title = "Buscar" data-bs-toggle="modal" data-bs-target="#exampleModal"  class="btn btn-info">Ver</a></td>  
+                                <td width="100">{{equipo.2}}</td>
+                                <td width="30">
+                                    <button type="button" 
+                                            class="btn btn-info" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#f{{equipo.8}}">{{equipo.3}} &#x1F50E
+                                    </button>
+                                </td>                                       
                                 <td width="30">{{equipo.4}}</td>
                                 <td width="30">{{equipo.5}}</td>   
                             </tr>
@@ -159,13 +154,27 @@
                     </tbody>
                 </table>
             </div> 
-            <div class="col-md-2">
-                <!--
-                <label for="mensaje"></label>
-                <textarea id="mensaje" name="mensaje" rows="4" cols="70">PLANTILLA:</textarea>
-                -->
-            </div>
         </div>
+    </div>
+
+    <div class="col-md-12">
+        {% for equipo in listar_mac %}
+            <div class="modal fade" id="f{{equipo.8}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">INTERFACE/PEER: {{equipo.3}}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {% for line in equipo.7 %}
+                                <p style="margin-bottom: 0px;">{{ line }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 </div>
 {%endblock%}

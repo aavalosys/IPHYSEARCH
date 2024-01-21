@@ -9,28 +9,45 @@ PASSWORDBK = 'Navalos20230720#'
 HOSTBK = '10.10.26.5'
 DBBK = 'temp_db'
 
+USEROWN = 'nelson.avalos'
+PASSWORDOWN = 'Navalos20230720#'
+HOSTOWN = '10.10.26.7'
+DBOWN = 'ipsearch_db_new'
+
+
 DBSINICIAL ='f%'
-
 DBESUP = 'uptime'
-
-DEVISUP = 'SELECT status FROM uptime WHERE uptime.ip LIKE %s'
-
 INFOR = 'ping -b -c 100 -vpn-instance x.y.z.w'
 
-RBSTXT = "SELECT * FROM {}.nodob WHERE nodoid LIKE %s" #BUSCA ELEMENTO NEMONICO
+DEVISUP = 'SELECT status FROM uptime WHERE uptime.ip LIKE %s'
+RBSTXTFROM = "SELECT * FROM {}.nodob WHERE ip LIKE %s" #BUSCA ELEMENTO NEMONICO
 
 CPETXT = """ SELECT * FROM (
-    SELECT *, 'gt' AS table_name FROM {}.arp_gt
+    SELECT *, 'GT' AS table_name FROM {}.arp_gt
     UNION ALL
-    SELECT *, 'sv' AS table_name FROM {}.arp_sv
+    SELECT *, 'SV' AS table_name FROM {}.arp_sv
     UNION ALL
-    SELECT *, 'hn' AS table_name FROM {}.arp_hn
+    SELECT *, 'HN' AS table_name FROM {}.arp_hn
     UNION ALL
-    SELECT *, 'ni' AS table_name FROM {}.arp_ni 
+    SELECT *, 'NI' AS table_name FROM {}.arp_ni 
     UNION ALL
-    SELECT *, 'cr' AS table_name FROM {}.arp_cr
+    SELECT *, 'CR' AS table_name FROM {}.arp_cr
 ) AS resultado WHERE resultado.ipcpe LIKE %s
 """
+
+CPEARP = """ SELECT * FROM (
+    SELECT *, 'GT' AS table_name FROM {}.arp_gt
+    UNION ALL
+    SELECT *, 'SV' AS table_name FROM {}.arp_sv
+    UNION ALL
+    SELECT *, 'HN' AS table_name FROM {}.arp_hn
+    UNION ALL
+    SELECT *, 'NI' AS table_name FROM {}.arp_ni 
+    UNION ALL
+    SELECT *, 'CR' AS table_name FROM {}.arp_cr
+) AS resultado WHERE resultado.mac LIKE %s
+"""
+
 #NO EN USO ACTUALMENTE
 SERVNORMALMAC = """SELECT m.*, i.description FROM {}.mac_address_cr m  
                   JOIN {}.int_cr i ON m.ip = i.ip AND m.interface = i.interface
