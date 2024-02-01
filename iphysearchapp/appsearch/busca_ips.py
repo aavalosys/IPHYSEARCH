@@ -13,7 +13,7 @@ def buscaips(request):
         dbcpe = request.GET.get('dbcpe')
         textcpe = request.GET.get('ipcpe')
         return render(request, "paginas/buscaips.html", 
-                      {'listarbs': buscarbsfrom(dbcpe,textcpe),
+                      {'listarbs': buscarbsfrom(dbcpe, textcpe),
                        'listaips': buscacaipcpe(dbcpe, textcpe), 
                        'dbs': esquemata(),
                        'infor': INFOR})

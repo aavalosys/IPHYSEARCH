@@ -8,12 +8,38 @@ from .models import *
 from django.views.decorators.http import require_GET
 import mysql.connector
 
-def cgnat(request):
+def cgnat(request):  #TITULO, WITH,VACTUAL,VMIN,VMAX
+    opcioncgnats = ['GUATEMALA','HONDURAS','EL SALVADOR','NICARAGUA','COSTA RICA']
+    ipcgnat = []
+    datoscgnats = []
     
-    return render(request, 'paginas/cgnatreport.html',
-                   {'dbs': esquemata(),
-                    #'datacgnat':intdetail() 
-                    })
+    if request.method == 'GET':
+        action = request.GET.get('action', None)
+        if action == 'graficar':
+                        #TITULO,WITH,VACTUAL,VMIN,VMAX,WITH,VACTUAL,VMIN,VMAX,WITH,VACTUAL,VMIN,VMAX
+            ipcgnat = ['10.179.28.2','10.179.28.1','10.179.28.4','10.179.28.5','10.179.28.7']
+            datoscgnats = [['CGNAT HFC','10','0','0','100','50','0','0','100','40','0','0','100'], 
+                          ['CGNAT BRAS','7','25','0','100','9','20','0','100','15','5','0','100'], 
+                          ['CGNAT GPON','3','40','0','100','11','20','0','100','15','5','0','100']]
+            return render(request, 'paginas/cgnatreport.html',
+                    {'dbs': esquemata(),
+                        'opcioncgnats':opcioncgnats,
+                        'ipcgnat':ipcgnat,
+                        'datoscgnats':datoscgnats,
+                        })
+        
+        elif action == 'reporte':
+            print()
+        
+    else:
+        return render(request, 'paginas/cgnatreport.html',
+            {'dbs': esquemata(),
+            'opcioncgnats':opcioncgnats,
+            'ipcgnat':ipcgnat,
+            'datoscgnats':datoscgnats,
+            }) 
+
+        
 
 def intdetail():
     try:

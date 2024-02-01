@@ -92,7 +92,7 @@ def buscaarp(db, idtxtabuscar):
     else:
         mydb.close()
   
-    return listaips
+    return listaips 
 
 
 def buscaequipos(db, txtequipo):       
@@ -112,7 +112,6 @@ def buscaequipos(db, txtequipo):
 def buscadescripcion(db, idtxtabuscar):
     mydb =  conexion_dbnet(db)
     mycursor = mydb.cursor()
-    print(idtxtabuscar + "hola mundo")
     mycursor.execute("SELECT ip, interface, estado, description, CASE table_name  WHEN 'GT' "+
                      "THEN 'GT' WHEN 'SV' "+
                      "THEN 'SV' WHEN 'HN'"+ 
@@ -136,7 +135,6 @@ def buscadescripcion(db, idtxtabuscar):
 def buscavaloresopticos(db, idtxtabuscar):          
     mydb =  conexion_dbnet(db)
     mycursor = mydb.cursor()
-    print(idtxtabuscar + "hola mundo")
     mycursor.execute("SELECT ip, interface, description, bw, rx, tx, CASE table_name  WHEN 'GT' "+
                      "THEN 'GT' WHEN 'SV' "+
                      "THEN 'SV' WHEN 'HN'"+ 

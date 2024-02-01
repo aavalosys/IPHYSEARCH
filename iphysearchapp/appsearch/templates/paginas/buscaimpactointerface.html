@@ -1,57 +1,106 @@
 {% extends "base.html" %}
+{% block titulo %}INICIO{% endblock %}
+{% block contenido %} 
 
-{% block titulo %}Buscador IP{% endblock %}
-
-{% block contenido %}
-<div class="row" style="margin: 10px;"> 
-    <div class="col-md-10">
-        <div class="row">
-            <div class="col-md-5">
-                <form method="GET">
-                    {% csrf_token %}
-                    <div class="input-group mb-3" style="margin-top: 2 px;">
-                        <span class="input-group-text">Ingrese ID RBS:</span>
-                        <input type="text"  id="idtxtidrbs" name="idrbs" class="form-control"  placeholder="ID a Buscar..." required>
-                        <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
-                        <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
-                        <button type="submit" class="btn btn-danger" >Buscar</button>
-                    </div>
-                    </form>
-                    <table id = "tablanodos" class="table table table-sm">
-                        <thead >
-                        <tr>
-                            <th scope="col" width="40">NODO</th>
-                            <th scope="col" width="40">IP</th>
-                        </tr>
-                        </thead>
-                    </table>
-            </div>
-            <div class="col-md-5">
-                <span class="input-group-text">CODIGO PING CON VRF</span>
-            </div>
-            <div class="col-md-2">
-                <span class="input-group-text">ESPACIO </span>
-            </div>
-            <script>onloadpag();</script>
-        </div>
-        
-
-        <div class="table-responsive" style="margin-top: 20px;">
-            <table id = "tablaips" class="table table table-sm">
-                    <thead >
-                    <tr>
-                        <th scope="col" width="65" >INTERFACE</th>
-                    </tr>
-                    </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-        </div> 
-
+<div class="row" style="margin: 10px;">
+    <div class="col-md-4">
     </div>
-    <div class="col-md-2">
+    <div class="col-md-4">
+        <form  method="GET">
+            {% csrf_token %}
+            <div class="input-group mb-3" style="margin-top: 5px;">
+                <span class="input-group-text">Ingrese la IP:</span>
+                <input type="text"  id="idtxtabuscar" name="strbuscado" class="form-control"  placeholder="Ip equipo afectado ...." required>
+                <input type="text" id="idtxtdb" name="dbstr"> 
+                <button type="submit" class="btn btn-danger" name="impactointerfaces" >Buscar</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4"> 
+        
+    </div>
+    <script>onloadpagevarios();</script>
+</div>
+
+<div class="row" style="margin: 5px;"> 
+    <div class="col-md-8">
+        <style>
+            #tablanodos thead {
+                background-color:  #f8f9f9; 
+                color: #000000; 
+            }
+        </style>
+        <table id = "tablanodos" class="table table table-sm " >
+            <thead>
+            <tr>
+                <th scope="col" width="40">ip</th>
+                <th scope="col" width="40">INTERFACE</th>
+                <th scope="col" width="40">DESCRIPCIÓN</th>
+                <th scope="col" width="40">ESTADO</th>
+                <th scope="col" width="40">VER</th>
+            </tr>
+            </thead>
+        <tbody>
+            {% if listadointerfaces %}
+                {% for interface in listadointerfaces %}
+                <tr>
+                    <td width="40"><a>{{interface.0}}</a></td>
+                    <td width="40"><a>{{interface.1}}</a></td>
+                    <td width="40"><a>{{interface.4}}</a></td>
+                    <td width="40"><a>{{interface.2}}</a></td>
+                    <td width="20"> 
+                        <a id="{{ interface.3 }}"
+                            href="{% url 'buscasaturacion' interface.0 interface.3 %}?boton=ver" 
+                            title="Ver" 
+                            class="btn btn-info">Ver
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="2">No se encontraron registros.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+        </table>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-danger mb-3" style="max-width: 32rem;">
+            <div class="card-header"><h4>Detalle:</h4></div>
+            <div class="card-body">
+                <h5>País:&nbsp{{pais}}</h5>
+                <h5>Base de Datos:&nbsp{{db}}</h5>
+                <h5>Interface:&nbsp{{interface}}</h5>
+                <ul class="list-group">
+                    <table>
+                            <tr>
+                                <th scope="col" width="40">INTERFACE</th>
+                                <th scope="col" width="40">DESCRIPCIÓN</th>
+                                <th scope="col" width="40">ESTADO</th>
+                            </tr>
+                        <tbody>
+                            {% if conteovlans %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {% for vlan in conteovlans %}
+                                        <tr>
+                                            <td style="text-align: left;"><a>{{ vlan.0 }}</a></td>
+                                            <td style="text-align: left;"><a>{{ vlan.1 }}</a></td>
+                                            <td><span class="badge bg-primary rounded-pill">{{ vlan.2 }}</span></td>  
+                                        </tr> 
+                                    {% endfor %}    
+                                </li>
+                            {% else %}
+                                <tr>
+                                    <td colspan="2">No se encontraron registros.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
-{%endblock%}
+ {%endblock%}
 
