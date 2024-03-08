@@ -25,18 +25,29 @@
     <div class="col-md-8">
         <div class="container">
             {% for ips in ipcgnat %}
-            <h4>{{ips}}</h4>
-            <div class="container">
-                {% for datos in datoscgnats %}
-                    <h6>{{datos.0}}</h6>
-                    <div class="progress mb-1">
-                        <div class="progress-bar" role="progressbar" style="width: {{ datos.1 }}%;" aria-valuenow="{{ datos.2 }}" aria-valuemin="{{ datos.3 }}" aria-valuemax="{{ datos.4 }}"></div>
-                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ datos.5 }}%;" aria-valuenow="{{ datos.6}}" aria-valuemin="{{ datos.7 }}" aria-valuemax="{{ datos.8 }}"></div>
-                        <div class="progress-bar bg-info" role="progressbar" style="width: {{ datos.9 }}%;" aria-valuenow="{{ datos.10 }}" aria-valuemin="{{ datos.11 }}" aria-valuemax="{{ datos.12 }}"></div>
-                    </div>
-                {% endfor %}
-            </div>
-            <br>
+                <h4>{{ips}}</h4>
+                <div class="container">
+                    {% for datos in datoscgnats %}
+                        <h6>{{datos.0}}</h6>
+                        <style>
+                            .progress-bar-value {
+                                color: #000000; /* Cambiar el color del texto a negro utilizando un valor hexadecimal */
+                            }
+                        </style>
+                        <div class="progress mb-1">
+                            <div class="progress-bar" role="progressbar" style="width: {{datos.1}}%;" aria-valuenow="{{ datos.2 }}" aria-valuemin="{{ datos.3 }}" aria-valuemax="{{ datos.4 }}">
+                                <span style="color: #000000;">{{ datos.1 }}</span>
+                            </div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{datos.5}}%;" aria-valuenow="{{ datos.6 }}" aria-valuemin="{{ datos.7 }}" aria-valuemax="{{ datos.8 }}">
+                                <span style="color: #000000;">{{ datos.5 }}</span>
+                            </div>
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{datos.9}}%;" aria-valuenow="{{ datos.10 }}" aria-valuemin="{{ datos.11 }}" aria-valuemax="{{ datos.12 }}">
+                                <span style="color: #000000;">{{ datos.9 }}</span>
+                            </div>
+                        </div>                        
+                    {% endfor %}
+                </div>
+                <br>
             {% endfor %}
         </div>
     </div>

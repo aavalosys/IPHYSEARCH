@@ -1,57 +1,98 @@
 {% extends "base.html" %}
+{% block titulo %}INICIO{% endblock %}
+{% block contenido %} 
 
-{% block titulo %}Buscador IP{% endblock %}
-
-{% block contenido %}
-<div class="row" style="margin: 10px;"> 
-    <div class="col-md-10">
-        <div class="row">
-            <div class="col-md-5">
-                <form method="GET">
-                    {% csrf_token %}
-                    <div class="input-group mb-3" style="margin-top: 2 px;">
-                        <span class="input-group-text">Ingrese ID RBS:</span>
-                        <input type="text"  id="idtxtidrbs" name="idrbs" class="form-control"  placeholder="ID a Buscar..." required>
-                        <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
-                        <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
-                        <button type="submit" class="btn btn-danger" >Buscar</button>
-                    </div>
-                    </form>
-                    <table id = "tablanodos" class="table table table-sm">
-                        <thead >
-                        <tr>
-                            <th scope="col" width="40">NODO</th>
-                            <th scope="col" width="40">IP</th>
-                        </tr>
-                        </thead>
-                    </table>
-            </div>
-            <div class="col-md-5">
-                <span class="input-group-text">CODIGO PING CON VRF</span>
-            </div>
-            <div class="col-md-2">
-                <span class="input-group-text">ESPACIO </span>
-            </div>
-            <script>onloadpag();</script>
-        </div>
-        
-
-        <div class="table-responsive" style="margin-top: 20px;">
-            <table id = "tablaips" class="table table table-sm">
-                    <thead >
-                    <tr>
-                        <th scope="col" width="65" >IMPACTO POR PE</th>
-                    </tr>
-                    </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-        </div> 
-
+<div class="row" style="margin: 10px;">
+    <div class="col-md-4">
     </div>
-    <div class="col-md-2">
+    <div class="col-md-4">
+        <form  method="GET">
+            {% csrf_token %}
+            <div class="input-group mb-3" style="margin-top: 5px;">
+                <span class="input-group-text">Ingrese el PE...:</span>
+                <input type="text"  id="idtxtabuscar" name="strbuscado" class="form-control"  placeholder="Ip equipo afectado ...." required>
+                <input type="hidden" id="idtxtdb" name="dbstr"> 
+                <button type="submit" class="btn btn-danger" name="impactointerfaces" >Buscar</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4"> 
+        
+    </div>
+    <script>onloadpagevarios();</script>
+</div>
+
+<div class="row" style="margin: 5px;"> 
+    <div class="col-md-7">
+        <style>
+            #tablanodos thead {
+                background-color:  #f8f9f9; 
+                color: #000000; 
+            }
+        </style>
+        <table id = "tablanodos" class="table table table-sm " >
+            <thead>
+            <tr>
+                <th scope="col" width="40">SERVICIO.</th>
+                <th scope="col" width="40">MAC</th>
+                <th scope="col" width="40">VLAN</th>
+                <th scope="col" width="40">INTERFACE</th>
+                <th scope="col" width="40">VRF</th>
+            </tr>
+            </thead>
+        <tbody>
+            {% if resultadoarp %}
+                {% for servicio  in resultadoarp %}
+                <tr>
+                    <td width="40"><a>{{servicio.1}}</a></td>
+                    <td width="40"><a>{{servicio.2}}</a></td>
+                    <td width="40"><a>{{servicio.3}}</a></td>
+                    <td width="40"><a>{{servicio.4}}</a></td>
+                    <td width="40"><a>{{servicio.5}}</a></td> 
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="2">No se encontraron registros.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-danger mb-3" style="max-width: 32rem;">
+            <div class="card-header"><h4>Detalle:</h4></div>
+            <div class="card-body">
+                <h5>País:&nbsp{{pais}}</h5>
+                <h5>Base de Datos:&nbsp{{db}}</h5>
+                <h5>PE:&nbsp{{ip}}</h5>
+                <ul class="list-group">
+                    <table>
+                            <tr>
+                                <th scope="col" width="40">VLAN </th>
+                                <th scope="col" width="40">DESCRIPCIÓN</th>
+                                <th scope="col" width="40">CANTIDAD</th>
+                            </tr>
+                        <tbody>
+                        {% if conteovlans %}
+                            {% for vlan  in conteovlans %}
+                                <tr>
+                                    <td width="40"><a>{{vlan.1}}</a></td>
+                                    <td width="40"><a>{{vlan.2}}</a></td>
+                                    <td width="40"><a>{{vlan.3}}</a></td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="2">No se encontraron registros.</td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
-{%endblock%}
+ {%endblock%}
 

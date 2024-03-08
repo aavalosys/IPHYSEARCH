@@ -11,7 +11,7 @@
             <div class="input-group mb-3" style="margin-top: 5px;">
                 <span class="input-group-text">Ingrese la IP:</span>
                 <input type="text"  id="idtxtabuscar" name="strbuscado" class="form-control"  placeholder="Ip equipo afectado ...." required>
-                <input type="text" id="idtxtdb" name="dbstr"> 
+                <input type="hidden" id="idtxtdb" name="dbstr"> 
                 <button type="submit" class="btn btn-danger" name="impactointerfaces" >Buscar</button>
             </div>
         </form>
@@ -33,10 +33,10 @@
         <table id = "tablanodos" class="table table table-sm " >
             <thead>
             <tr>
-                <th scope="col" width="40">ip</th>
+                <th scope="col" width="40">NO.</th>
+                <th scope="col" width="40">IP-EQUIPO</th>
                 <th scope="col" width="40">INTERFACE</th>
                 <th scope="col" width="40">DESCRIPCIÓN</th>
-                <th scope="col" width="40">ESTADO</th>
                 <th scope="col" width="40">VER</th>
             </tr>
             </thead>
@@ -46,11 +46,11 @@
                 <tr>
                     <td width="40"><a>{{interface.0}}</a></td>
                     <td width="40"><a>{{interface.1}}</a></td>
-                    <td width="40"><a>{{interface.4}}</a></td>
                     <td width="40"><a>{{interface.2}}</a></td>
+                    <td width="40"><a>{{interface.5}}</a></td>
                     <td width="20"> 
-                        <a id="{{ interface.3 }}"
-                            href="{% url 'buscasaturacion' interface.0 interface.3 %}?boton=ver" 
+                        <a id="{{ interface.2 }}"
+                            href="{% url 'buscasaturacion' interface.1  interface.0 %}?boton=ver" 
                             title="Ver" 
                             class="btn btn-info">Ver
                         </a>

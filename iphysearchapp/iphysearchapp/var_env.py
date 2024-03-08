@@ -20,7 +20,7 @@ DBESUP = 'uptime'
 INFOR = 'ping -b -c 100 -vpn-instance x.y.z.w'
 
 DEVISUP = 'SELECT status FROM uptime WHERE uptime.ip LIKE %s'
-RBSTXTFROM = "SELECT * FROM {}.nodob WHERE ip LIKE %s" #BUSCA ELEMENTO NEMONICO
+RBSTXTFROM = "SELECT * FROM {}.nodob WHERE ip LIKE %s" 
 
 CPETXT = """ SELECT * FROM (
     SELECT *, 'gt' AS table_name FROM {}.arp_gt
@@ -57,5 +57,34 @@ SERVNORMALMAC = """SELECT m.*, i.description FROM {}.mac_address_cr m
 TIPOSERVICIOTXT = "SELECT * FROM {}.nodob WHERE nodoid LIKE %s"
 
 PATHTXT =""
+
+datacrcgnat = [
+    ["pais", "ip", "nat-instance", "access-user limit", "IPs_Disponible", "Posibles usuarios", "Usuarios", "Utilizacion Usuarios"],
+    ["CR", "10.179.36.15", "CGNAT_HSI", 150, 200, 30000, 10443, "34.80%"],
+    ["CR", "10.179.36.15", "CGNAT_MOVIL", 65535, 8, 524280, 0, "0.00%"],
+    ["CR", "10.179.36.15", "CGNAT_MOVIL_LTE", 1400, 384, 537600, 214614, "39.90%"],
+    ["CR", "10.179.36.15", "CGNAT_IPTV_GPON", 65535, 64, 4194240, 408, "0.00%"],
+    ["CR", "10.179.36.15", "CGNAT_CR_PRIVADO", 180, 32, 5760, 5, "0.00%"],
+    ["CR", "10.179.36.16", "CGNAT_HSI", 150, 200, 30000, 13051, "43.50%"],
+    ["CR", "10.179.36.16", "CGNAT_MOVIL", 65535, 8, 524280, 0, "0.00%"],
+    ["CR", "10.179.36.16", "CGNAT_MOVIL_LTE", 1400, 384, 537600, 213886, "39.70%"],
+    ["CR", "10.179.36.16", "CGNAT_IPTV_GPON", 65535, 64, 4194240, 0, "0.00%"],
+    ["CR", "10.179.36.16", "CGNAT_CR_PRIVADO", 180, 64, 11520, 8, "0.00%"]
+    ]
+
+recordatorios = [
+    ["NO.", "SR", "DÍAS", "DESCRIPCIÓN", "PROVEEDOR","ACTUALIZADO"],
+    ["1", "123456", "2", "DESCRIPCIÓN", "HUAWEI","SI"],
+    ["2", "654321", "5", "DESCRIPCIÓN", "HUAWEI","SI"],
+    ["3", "654321", "6", "DESCRIPCIÓN", "HUAWEI","SI"],
+    ["4", "101793", "7", "DESCRIPCIÓN", "HUAWEI","SI"],
+    ["5", "123456", "9", "DESCRIPCIÓN", "CISCO","SI"],
+    ["6", "123456", "23", "DESCRIPCIÓN", "HUAWEI","SI"],
+    ["7", "101793", "22", "DESCRIPCIÓN", "HUAWEI","SI"],
+    ["8", "101793", "24", "DESCRIPCIÓN", "HUAWEI","SI"],
+    ["9", "101793", "7", "DESCRIPCIÓN", "HUAWEI","SI"],
+    ["10", "654321", "10", "DESCRIPCIÓN", "HUAWEI","SI"]
+    ]
+
 
  

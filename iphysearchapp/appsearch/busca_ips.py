@@ -5,21 +5,18 @@ from iphysearchapp.var_env import *
 from iphysearchapp.var_functions import *
 from .models import *
 
-def buscaips(request):
+def buscaips(request): 
     
     if 'buscar_rbs' in request.GET:     #SI ES EN BUSCAR RBS
         return buscarbs(request)
     elif 'buscar_ip' in request.GET:        #SI ES EN BUSCAR
-        dbcpe = request.GET.get('dbcpe')
-        textcpe = request.GET.get('ipcpe')
-        return render(request, "paginas/buscaips.html", 
-                      {'listarbs': buscarbsfrom(dbcpe, textcpe),
-                       'listaips': buscacaipcpe(dbcpe, textcpe), 
-                       'dbs': esquemata(),
-                       'infor': INFOR})
+        return busbuscar_ip(request)
     return render(request, "paginas/buscaips.html", 
-                  {'dbs': esquemata(), 
-                   'infor': INFOR})
+                  {'listarbs': [],
+                    'listaips':[], 
+                    'dbs': esquemata(), 
+                    'infor': INFOR})
+
 
 def buscarbs(request):          #BUSCA NEMONICO DISPOSITIVO
     dbrbs = request.GET.get('dbrbs')
@@ -34,6 +31,15 @@ def buscarbs(request):          #BUSCA NEMONICO DISPOSITIVO
                   {'listarbs': listarbs, 
                    'dbs': esquemata(), 
                    'infor': "entro a rbs"}) 
+
+def busbuscar_ip(request):          #BUSCA NEMONICO DISPOSITIVO
+    dbcpe = request.GET.get('dbcpe')
+    textcpe = request.GET.get('ipcpe')
+    return render(request, "paginas/buscaips.html", 
+                      {'listarbs': buscarbsfrom(dbcpe, textcpe),
+                       'listaips': buscacaipcpe(dbcpe, textcpe), 
+                       'dbs': esquemata(),
+                       'infor': INFOR})
 
 def buscarbsfrom(dbrbs, textcpe):          #BUSCA NEMONICO DISPOSITIVO
     mydb =  conexion_dbnet(dbrbs)
@@ -53,6 +59,7 @@ def buscacaipcpe(dbcpe, textcpe):            #BUSCA L3 DISPOSITIVO
     mydb.close()
     listaips = [(resultado + (dbcpe,)) for resultado in resultados]
     return listaips
+
 
 def buscaserviciomac (request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
     vlan_f = int(vlan)
@@ -116,9 +123,11 @@ def elementoesup(ipsw):
             return second_element
     except Exception as e:
         second_element = 'X'
+        
         return second_element
   
 def elementoesping(request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
+    print("Se presiono el boton ping-----------------")
     try:
         url = f"http://10.10.26.4:5000/api/getpingvrf/"
         data_to_send = [dbcpe, ippe, vrf, ipcpe]
