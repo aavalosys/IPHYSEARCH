@@ -4,18 +4,10 @@
 
 {% block contenido %} 
 
-<div class="row">
+<div class="row" style="margin: 10px;">
     <div class="col-md-4">
     </div>
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-4">
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-4">
-    </div>
     <div class="col-md-4">
         <form action=" " method="GET">
             {% csrf_token %}
@@ -28,33 +20,38 @@
             </div>
             </form>
     </div>
+
     <div class="col-md-4"> 
     </div>
 </div>
 
 <div class="row"> 
-    <div class="col-md-6">
-        <table id = "tablaresultados" class="table table table-sm">
-            <thead>
-                <tr>
-                    <th>RESULTADO</th>
-                </tr>
-            </thead>
-        <tbody>
-            {% for enstr in encontrado %}
-                <tr>
-                    <td>{{enstr.0}}</td>
-                    <td>{{enstr.1}}</td>
-                    <td>{{enstr.3}}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="col-md-3"> 
     </div>
 
-<div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
+
+        {%if encontrado %}
+            <table id = "tablaresultados" class="table table table-sm">
+                <thead>
+                    <tr>
+                        <th>RESULTADO</th>  
+                </thead>
+                <tbody>
+                    {% for enstr in encontrado %}
+                        <tr>
+                            <td>{{enstr.0}}</td>
+                            <td>{{enstr.1}}</td>
+                            <td>{{enstr.3}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {%endif%}
     </div>
-</div> 
+
+    <div class="col-md-3"> 
+    </div>
+
  {%endblock%}
 

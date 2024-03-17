@@ -1,6 +1,6 @@
 USER = 'navalos'
 PASSWORD = '44&7Ai0YHbD#'
-ENGINE = 'django.db.backends.mysql'
+ENGINE = 'django.db.backends.mysql' 
 HOST = '10.10.26.4'
 PORT = '3306'
 
@@ -10,7 +10,7 @@ HOSTBK = '10.10.26.5'
 DBBK = 'temp_db'
 
 USEROWN = 'nelson.avalos'
-PASSWORDOWN = 'Navalos20230720#'
+PASSWORDOWN = 'Alguno23'
 HOSTOWN = '10.10.26.7'
 DBOWN = 'ipsearch_db_new'
 
@@ -71,20 +71,3 @@ datacrcgnat = [
     ["CR", "10.179.36.16", "CGNAT_IPTV_GPON", 65535, 64, 4194240, 0, "0.00%"],
     ["CR", "10.179.36.16", "CGNAT_CR_PRIVADO", 180, 64, 11520, 8, "0.00%"]
     ]
-
-recordatorios = [
-    ["NO.", "SR", "DÍAS", "DESCRIPCIÓN", "PROVEEDOR","ACTUALIZADO"],
-    ["1", "123456", "2", "DESCRIPCIÓN", "HUAWEI","SI"],
-    ["2", "654321", "5", "DESCRIPCIÓN", "HUAWEI","SI"],
-    ["3", "654321", "6", "DESCRIPCIÓN", "HUAWEI","SI"],
-    ["4", "101793", "7", "DESCRIPCIÓN", "HUAWEI","SI"],
-    ["5", "123456", "9", "DESCRIPCIÓN", "CISCO","SI"],
-    ["6", "123456", "23", "DESCRIPCIÓN", "HUAWEI","SI"],
-    ["7", "101793", "22", "DESCRIPCIÓN", "HUAWEI","SI"],
-    ["8", "101793", "24", "DESCRIPCIÓN", "HUAWEI","SI"],
-    ["9", "101793", "7", "DESCRIPCIÓN", "HUAWEI","SI"],
-    ["10", "654321", "10", "DESCRIPCIÓN", "HUAWEI","SI"]
-    ]
-
-
- 

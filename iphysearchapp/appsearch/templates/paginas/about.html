@@ -7,11 +7,10 @@
 <div class="row">
     <div class="col-md-6">
             {% if dbs %}
-                {% for db in dbs %}
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{db}}">
-                        Abrir modal de {{db}}
+
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#idmodal">
+                        Abrir modal 
                         </button>
-                {% endfor %}
             {% else %}
             <tr>
                 <td colspan="2">No se encontraron registros.</td>
@@ -21,7 +20,7 @@
 
     <div class="col-md-6">
         {% for db in dbs %}
-            <div class="modal fade" id="{{db}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="idmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
