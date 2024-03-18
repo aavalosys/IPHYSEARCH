@@ -1,13 +1,15 @@
 from django.urls import path
-from . import home, busca_ips, busca_impactointerface, busca_impactoporpe, monitoreo_tcn, busca_varios, about, informativo, cgnatreport
+from . import home, busca_ips, busca_impactointerface, busca_impactoporpe, monitoreo_tcn, busca_varios, about, informativo, cgnatreport, catalogos
 
-urlpatterns = [
+urlpatterns = [                      #NAME ES EL NOMBRE DE LA URL
     path('welcome/', home.home, name='welcome'),  
     path('buscaips', busca_ips.buscaips, name='buscaips'), 
     path('impactointerfaces', busca_impactointerface.impactointerfaces, name='impactointerfaces'),
     path('impactoporpe', busca_impactoporpe.impactoporpe, name='impactoporpe'),
     path('monitoreotcns', monitoreo_tcn.monitoreotcns, name='monitoreotcns'),
     path('buscavarios/<str:selectedoption>/', busca_varios.buscavarios, name='buscavarios'),
+    path('catalogos/<str:selectedoption>/', catalogos.catalogos, name='catalogo'),
+    path('agregar_act/', catalogos.agregaractividad, name='agregar_act'),
     path('cgnatreport', cgnatreport.cgnat, name='cgnatreport'),
     path('about', about.about, name='about'),
     path('informativo', informativo.informativo, name='informativo'),

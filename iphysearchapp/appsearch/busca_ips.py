@@ -133,7 +133,7 @@ def elementoesup(ipsw):
     mydb =  conexion_dbnet(DBESUP)
     mycursor = mydb.cursor()
     try:
-        mycursor.execute(DEVISUP, ('%' + ipsw,))
+        mycursor.execute("SELECT status FROM uptime WHERE uptime.ip LIKE %s", ('%' + ipsw,))
         url = f"http://10.10.26.4:5000/api/ping/"
         response = requests.post(url, json=ipsw)
         if response.status_code == 200:
@@ -185,22 +185,4 @@ def intdetail(dbcpe, ipsw, swinterface,swtch):
                 detalleinter = datainterface[1].split('\n')
     except Exception as e:  
         return detalleinter
-
-def actualizarbitacorasr():
-    dbrbs = "dbloip130324"
-    mydb =  conexion_dbown(dbrbs)
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT *, DATEDIFF(CURDATE(), STR_TO_DATE(fecha, '%d/%m/%Y')) AS contador FROM bitacorasract ORDER BY contador DESC".format(dbrbs))
-    listarsr=mycursor.fetchall()
-    print(listarsr)
-    return listarsr
-
-def sumasr():
-    dbrbs = "dbloip130324"
-    mydb =  conexion_dbown(dbrbs)
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT count(codigosractividad) FROM {}.bitacorasract WHERE estado = 3".format(dbrbs))
-    sumasr=mycursor.fetchall()
-
-    return sumasr
 

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block titulo %}INICIO{% endblock %}
+{% block contenido %} 
+
+<div class="row" style="margin: 10px;">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+        <form action=" " method="GET">
+            {% csrf_token %}
+            <div class="input-group mb-3" style="margin-top: 5px;">
+                <span class="input-group-text">Buscar</span>
+                <input type="text"  id="idtxtabuscar" name="strbuscado" class="form-control"  placeholder="Quiero tener suerte ...." required>
+                <input type="hidden" id="idtxtdb" name="dbstr">
+                <button type="submit" class="btn btn-danger" >
+                    Buscar {{opcion}}
+                </button>
+                &nbsp&nbsp&nbsp&nbsp
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#idformact" onclick="agregafechahora(); return false;">
+                    Agregar 
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4"> 
+    </div>
+    <!--VENTANA MODAL -->
+     <div class="modal fade" id="idformact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar actividad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'agregar_act' %}" >
+                        <!-- Tus campos de formulario aquí -->
+                        {% csrf_token %}
+                        <fieldset>  
+                          <div class="form-group">
+                            <input class="form-control" id="ididentificador" type="text" name="ididentificador" placeholder="Identificador actividad">
+                          </div>
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input type="text" class="form-control" id="idtitulo" name="idtitulo" placeholder="Título actividad">
+                          </div>
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha actividad">
+                            <small id="emailHelp" class="form-text text-muted">Fecha de la actividad</small>
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora actividad">
+                            <small id="emailHelp" class="form-text text-muted">Hora de la actividad</small>
+                            </div>
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input type="text" class="form-control" id="iddescripcion" name="iddescripcion" placeholder="Descripción actividad">
+                          </div>
+                          <div>
+                            &nbsp&nbsp&nbsp&nbsp
+                            <textarea class="form-control" id="iddetalle" name="iddetalle" placeholder="Detalle" rows="3"></textarea>
+                          </div>
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input class="form-control" id="idfechahora" type="text" name="idfechahora" readonly="">
+                          </div>
+                          <div>
+                            &nbsp&nbsp&nbsp&nbsp
+                          </div>
+                          <button type="submit" class="btn btn-primary">Aceptar</button>
+                        </fieldset>
+                      </form>
+                </div>
+            </div>
+        </div>
+     </div>
+     <div class="modal fade" id="idformsr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar SRs:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    cuerpo
+                </div>
+            </div>
+        </div>
+     </div>
+    <!--VENTANA MODAL -->
+    <script>onloadpagevarios();</script>
+
+</div>
+
+<div class="row"> 
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-9">
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-active">
+                    {% if headtable %}
+                        {% for dato in headtable %}
+                            <th scope="col">{{ dato }}</th>
+                        {% endfor %}
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% if listaract %}
+                    {% for acti in listaract %}
+                    <tr {% if equipo.6 == 'Up' %} class="table-success" {% else %} class="table-danger" {% endif %}>
+                        <td >{{acti.1}}</td>
+                        <td >{{acti.2}}</td>
+                        <td >{{acti.3}}</td>
+                        <td >{{acti.4}}</td>
+                        <td >{{acti.5}}</td>
+                        <td >{{acti.6}}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </td>                                     
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1">
+    </div>
+</div>
+ {%endblock%} 

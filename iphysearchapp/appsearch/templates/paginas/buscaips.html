@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block titulo %}Buscador IP{% endblock %}
+{% block titulo %}Buscador IP{% endblock %} 
 {% block contenido %} 
 
 <div class="row" style="margin: 10px;">
@@ -56,53 +56,8 @@
                
             </div>
 
-            <div class="col-md-4">  
-                <div class="accordion" id="accordionExample">
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                          Resumen SR a Proveedores -- &nbsp&nbsp&nbsp&nbsp
-                          <span class="badge bg-primary rounded-pill">{{sumasr.0}}</span>
-                        </button>
-                      </h2>
-                      <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
-                        <div class="accordion-body">
-                            <table id = "tablaips" class="table table table-sm">
-                                <thead >
-                                   <tr>
-                                     <th scope="col">SR</th>
-                                     <th scope="col">ABIERTO</th>
-                                     <th scope="col">PAIS</th>
-                                     <th scope="col">DÍAS</th>
-                                   </tr>
-                                </thead>
-                                <tbody>
-                                   {% for doc in listarsr %}
-                                      <tr>
-                                        <td>{{doc.1}}</td> 
-                                        <td>{{doc.3}}</td>
-                                        <td>{{doc.9}}</td>
-                                        <td>{{doc.10}}</td>                            
-                                      </tr>
-                                   {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="false" aria-controls="collapsetwo">
-                            Actividades Calendarizadas &nbsp&nbsp - &nbsp&nbsp
-                          <span class="badge bg-primary rounded-pill">{{sumaotros}}</span>
-                        </button>
-                      </h2>
-                      <div id="collapsetwo" class="accordion-collapse collapse" aria-labelledby="headingtwo" data-bs-parent="#accordionExample" style="">
-                        <div class="accordion-body">
-                            <strong>body.</strong> TABLA 2.        
-                        </div>
-                    </div>
-                </div>   
+            <div class="col-md-4">   
+               
             </div>
 
             <script>onloadpag();</script>

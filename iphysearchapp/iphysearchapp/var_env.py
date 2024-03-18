@@ -19,10 +19,8 @@ DBSINICIAL ='f%'
 DBESUP = 'uptime'
 INFOR = 'ping -b -c 100 -vpn-instance x.y.z.w'
 
-DEVISUP = 'SELECT status FROM uptime WHERE uptime.ip LIKE %s'
-RBSTXTFROM = "SELECT * FROM {}.nodob WHERE ip LIKE %s" 
-
-CPETXT = """ SELECT * FROM (
+#EN BUSCAR IPS
+CPETXT = """ SELECT * FROM (                     
     SELECT *, 'gt' AS table_name FROM {}.arp_gt
     UNION ALL
     SELECT *, 'sv' AS table_name FROM {}.arp_sv
@@ -35,7 +33,8 @@ CPETXT = """ SELECT * FROM (
 ) AS resultado WHERE resultado.ipcpe LIKE %s
 """
 
-CPEARP = """ SELECT * FROM (
+#EN BUSCAR VARIOS. 
+CPEARP = """ SELECT * FROM (                    
     SELECT *, 'GT' AS table_name FROM {}.arp_gt
     UNION ALL
     SELECT *, 'SV' AS table_name FROM {}.arp_sv
@@ -48,15 +47,7 @@ CPEARP = """ SELECT * FROM (
 ) AS resultado WHERE resultado.mac LIKE %s
 """
 
-#NO EN USO ACTUALMENTE
-SERVNORMALMAC = """SELECT m.*, i.description FROM {}.mac_address_cr m  
-                  JOIN {}.int_cr i ON m.ip = i.ip AND m.interface = i.interface
-                  WHERE mac LIKE "%{}%" AND vlan = "{}"
-                  ORDER BY count ASC"""
-
-TIPOSERVICIOTXT = "SELECT * FROM {}.nodob WHERE nodoid LIKE %s"
-
-PATHTXT =""
+PATHTXT =""   #EN BUSCAR ES PWD .  
 
 datacrcgnat = [
     ["pais", "ip", "nat-instance", "access-user limit", "IPs_Disponible", "Posibles usuarios", "Usuarios", "Utilizacion Usuarios"],

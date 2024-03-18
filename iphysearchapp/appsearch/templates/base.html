@@ -29,15 +29,7 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
               <ul class="navbar-nav me-auto">
               <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'buscaips'%}"><h4>BUSCA IPS</h4></a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'impactointerfaces'%}">SATURACIONES</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'impactoporpe'%}">IMPACTO PE</a></li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">REPORTES</a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'cgnatreport'%}">CGNATS</a>
-                  </div>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'buscaips'%}"><h5>BUSCA IPS</h5></a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">BUSCADOR</a>
                   <div class="dropdown-menu">
@@ -46,6 +38,22 @@
                     <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='equipos' %}">BUSCA EQUIPOS</a>
                     <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='descripciones' %}">BUSCA DESCRIPCIONES</a>
                     <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='valoresopticos' %}">BUSCA VALORES ÓPTICOS</a>
+                  </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'impactointerfaces'%}">SATURACIONES</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'impactoporpe'%}">IMPACTO PE</a></li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">GRÁFICAS</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'cgnatreport'%}">CGNATS</a>
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">MANTENIMIENTO</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='actividades' %}">ACTIVIDADES</a>
+                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='casossr' %}">CASOS - SR</a>
+                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='catalogo'%}">CATALOGOS</a>
                   </div>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'about'%}">ABOUT</a></li>

@@ -26,6 +26,18 @@ function copiaripnodo(ipnodo) {
     return;
 }
 
+function agregafechahora() { 
+    const fechaActual = new Date();
+    const dia = fechaActual.getDate();
+    const mes = fechaActual.getMonth() + 1;  
+    const año = fechaActual.getFullYear();
+    const hora = fechaActual.getHours();
+    const minutos = fechaActual.getMinutes().toString().padStart(2, "0"); 
+    document.getElementById("idfechahora").value = `${dia}/${mes}/${año} ${hora}:${minutos} `;
+    return;
+}
+
+
 
 
 

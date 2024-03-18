@@ -5,31 +5,38 @@
 {% block contenido %} 
 
 <div class="row" style="margin: 10px;">
-    <div class="col-md-4">
+    <div class="col-md-2">
     </div>
 
     <div class="col-md-4">
         <form action=" " method="GET">
             {% csrf_token %}
-            <div class="input-group mb-3" style="margin-top: 5px;">
+            <div class="input-group mb-3" style="margin-top: 3px;">
                 <span class="input-group-text">Buscar</span>
-                <input type="text"  id="idtxtip" name="strbuscado" class="form-control"  placeholder="Quiero tener suerte ...." required>
-                <input type="hidden" id="idtxtdb" name="dbstr">
+                <input type="text"  id="idtxtbuscado" name="strbuscado" class="form-control"  placeholder="Quiero tener suerte ...." required>
+                <input type="hidden" id="iddbselected" name="dbstr">
                 <input type="hidden" id="idtxtpiv" name="pivstr" value ="0">
                 <button type="submit" class="btn btn-danger" >Buscar</button>
             </div>
             </form>
     </div>
-
-    <div class="col-md-4"> 
+    <div class="col-md-1"> 
+    </div>
+    <div class="col-md-5" style="margin-top: 3px;">
+        {% if alertsuccess == 1 %}
+            <div class="alert alert-dismissible alert-success me-4" >
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong>Bienvenidos</strong> este es el Dashboard de backofficeip.com.gt, puedes hacer clic en  
+                <a href="#" class="alert-link">BOIP PORTAL</a>, para actualizarlo..
+            </div>
+        {%endif%}
     </div>
 </div>
 
 <div class="row"> 
-    <div class="col-md-3"> 
+    <div class="col-md-1"> 
     </div>
-
-    <div class="col-md-6">
+    <div class="col-md-5">
 
         {%if encontrado %}
             <table id = "tablaresultados" class="table table table-sm">
@@ -50,8 +57,113 @@
         {%endif%}
     </div>
 
-    <div class="col-md-3"> 
+    <div class="col-md-1"> 
     </div>
 
+    <div class="col-md-5">  
+        <div class="accordion ms-3" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  Resumen SR a Proveedores -- &nbsp&nbsp&nbsp&nbsp
+                  <span class="badge bg-primary rounded-pill"><strong>{{sumacasosr}}</strong></span>
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+                <div class="accordion-body">
+                    <table id = "tablaips" class="table table table-sm">
+                        <thead >
+                           <tr>
+                             <th scope="col">SR</th>
+                             <th scope="col">FECHA APERTURA</th>
+                             <th scope="col">PAIS</th>
+                             <th scope="col">DÍAS ABIERTO</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for sr in listarsr %}
+                              <tr>
+                                <td>{{sr.1}}</td> 
+                                <td>{{sr.3}}</td>
+                                <td>{{sr.9}}</td>
+                                <td>{{sr.11}}</td>                            
+                              </tr>
+                           {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="false" aria-controls="collapsetwo">
+                    Actividades Calendarizadas -- &nbsp&nbsp&nbsp&nbsp 
+                  <span class="badge bg-primary rounded-pill"><strong>{{sumaact}}</strong></span>
+                </button>
+              </h2>
+              <div id="collapsetwo" class="accordion-collapse collapse" aria-labelledby="headingtwo" data-bs-parent="#accordionExample" style="">
+                <div class="accordion-body">
+                    <table id = "tablaips" class="table table table-sm">
+                        <thead >
+                           <tr>
+                             <th scope="col">CÓDIGO</th>
+                             <th scope="col">FECHA</th>
+                             <th scope="col">DÍAS RESTANTES</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for act in listaract %}
+                              <tr>
+                                <td>{{act.1}}</td> 
+                                <td>{{act.3}}</td>
+                                <td>{{act.11}}</td>                            
+                              </tr>
+                           {% endfor %}
+                        </tbody>
+                    </table>        
+                </div>
+              </div>
+            </div> 
+
+            <div class="row">
+                &nbsp&nbsp&nbsp&nbsp  
+            </div> 
+
+            {% if alertdanger == 1 %}
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>{{alertdanger}}</strong> esta es una alerta de prueba
+                    <a href="#" class="alert-link">BOIP PORTAL</a>, para actualizarlo.. 
+                </div>
+            {% endif %}
+
+            <div class="row">
+                &nbsp&nbsp&nbsp&nbsp  
+            </div> 
+
+            {% if alertwarning == 1 %}
+                <div class="alert alert-dismissible alert-warning">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>{{alertinfo}}</strong> esta es una alerta de prueba 
+                    <a href="#" class="alert-link">BOIP PORTAL</a>, para actualizarlo..
+                </div>
+            {% endif %}
+            
+            <div class="row">
+                &nbsp&nbsp&nbsp&nbsp  
+            </div> 
+
+            {% if alertinfo == 1 %}
+                <div class="alert alert-dismissible alert-info">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>{{alertinfo}}</strong> esta es una alerta de prueba 
+                    <a href="#" class="alert-link">BOIP PORTAL</a>, para actualizarlo..
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
  {%endblock%}
 
