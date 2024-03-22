@@ -156,6 +156,7 @@ def elementoesup(ipsw):
     return second_element
   
 def elementoesping(request, ippe, ipcpe, vrf, pais, dbcpe):
+    tipoalerta=2
     try:
         url = f"http://10.10.26.4:5000/api/getpingvrf/"
         data_to_send = [dbcpe, ippe, vrf, ipcpe]
