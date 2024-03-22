@@ -9,7 +9,10 @@ import mysql.connector
 
 def about(request):
     
-    return render(request, 'paginas/about.html', {'dbs': esquemata()})
+    return render(request, 'paginas/about.html', {
+        'dbs': esquemata(),
+        'user': usuariolog(),
+        })
    
 
 

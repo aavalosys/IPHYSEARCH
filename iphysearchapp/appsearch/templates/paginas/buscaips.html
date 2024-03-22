@@ -5,7 +5,7 @@
 <div class="row" style="margin: 10px;">
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" style="margin-top: 6px;">
                 <form action=" " method="GET">
                     {% csrf_token %}
                     <div class="input-group mb-3" style="margin-top: 2 px;">
@@ -16,33 +16,29 @@
                         <button type="submit" class="btn btn-danger" name="buscar_rbs">Buscar</button>
                     </div>
                     </form>
-                    <table id = "tablanodos" class="table table table-sm">
-                        <thead>
-                        <tr>
-                            <th scope="col" width="40">NEMONICO</th>
-                            <th scope="col" width="40">IP</th>
-                            <th scope="col" width="40">TIPO</th>
-                        </tr>
-                        </thead>
-                    <tbody>
-                        {% if listarbs %}
-                            {% for equipo in listarbs %}
+                    {% if listarbs %}
+                        <table id = "tablanodos" class="table table table-sm">
+                            <thead>
                             <tr>
-                                <td width="40"><a href = "#" class="link-primary" id = "{{equipo.0}}">{{equipo.0}}</a></td>
-                                <td width="40"><a href = "#" class="link-primary" id = "{{equipo.1}}" onclick="copiaripnodo(this.id); return false;">{{equipo.1}}</a></td>
-                                <td width="40">{{equipo.2}}</td>
+                                <th scope="col" width="40">NEMONICO</th>
+                                <th scope="col" width="40">IP</th>
+                                <th scope="col" width="40">TIPO</th>
+                            </tr>
+                            </thead>
+                        <tbody>
+                            {% for rbs in listarbs %}
+                            <tr>
+                                <td width="40"><a href = "#" class="link-primary" id = "{{rbs.0}}">{{rbs.0}}</a></td>
+                                <td width="40"><a href = "#" class="link-primary" id = "{{rbs.1}}" onclick="copiaripnodo(this.id); return false;">{{rbs.1}}</a></td>
+                                <td width="40">{{rbs.2}}</td>
                             </tr>
                             {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td colspan="2">No se encontraron registros.</td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                    </table>
+                        </tbody>
+                        </table>
+                    {% endif %}
                     <form method="GET">
                         {% csrf_token %}
-                        <div class="input-group mb-3" style="margin-top: 5px;">
+                        <div class="input-group mb-3" style="margin-top: 6px;">
                             <span class="input-group-text">INGRESE LA IP:</span>
                             <input type="text"  id="idtxtip" name="ipcpe" class="form-control"  placeholder="IP a Buscar..." required>
                             <input type="hidden" id="idtxtdb" name="dbcpe">
@@ -52,14 +48,41 @@
                 </form>
             </div>
 
-            <div class="col-md-4">   
-               
+            <div class="col-md-4" style="margin-top: 6px;"> 
+                {% if tipoalerta == '0' %}
+                    <div class="alert alert-dismissible alert-success">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>{{ res_ping }}</strong>Esta es unva versión BETA.  
+                    </div>
+                {% endif %}
+                {% if tipoalerta == '1' %}
+                    <div class="alert alert-dismissible alert-primary">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>BOIP PORTAL</strong> Esta es unva versión BETA.
+                    </div>
+                {% endif %}
+                {% if tipoalerta == '2' %}
+                    <div class="alert alert-dismissible alert-info">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>BOIP PORTAL</strong> Esta es unva versión BETA.
+                    </div>
+                {% endif %}
+                {% if tipoalerta == '3' %}
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>{{ res_ping }}</strong>Esta es unva versión BETA.
+                    </div>
+                {% endif %}
             </div>
-
-            <div class="col-md-4">   
-               
+            <div class="col-md-4" style="margin-top: 6px;">
+                <div class="card border-success mb-3" style="max-width: 30rem;">
+                    <div class="card-header">Comandos:</div>
+                    <div class="card-body">
+                      <p class="card-text"><b>{{INFOR}}</b></p>
+                    </div>
+                </div> 
             </div>
-
             <script>onloadpag();</script>
         </div>
 
@@ -101,8 +124,7 @@
                                         <a id="idtest" 
                                             href="{% url 'ping_cpe' ip.0 ip.1 ip.5 ip.6 ip.7 %}?boton=Ping" 
                                             title="Ping" 
-                                            class="btn btn-info"
-                                            onclick="updateModalBody()">Ping
+                                            class="btn btn-info">Ping
                                         </a>
                                     </td>                            
                                 </tr>
@@ -118,10 +140,11 @@
                 <table id = "tablaips" class="table table table-sm">
                         <thead >
                         <tr>
-                            <th scope="col" width="15">DISPOSITIVO</th>            
+                            <th scope="col" width="15">ESTADO</th>
+                            <th scope="col" width="20">DISPOSITIVO</th>            
                             <th scope="col" width="15">MAC</th>
                             <th scope="col" width="15">VLAN-PW</th>
-                            <th scope="col" width="20">INTERFACE/PEER</th>
+                            <th scope="col" width="30">INTERFACE/PEER</th>
                             <th scope="col" width="15">#</th>
                             <th scope="col" width="40">DESCRIPCIÓN</th>
                         </tr>
@@ -129,14 +152,13 @@
                     <tbody>
                             {% for equipo in listar_mac %}
                             <tr {% if equipo.6 == 'Up' %} class="table-success" {% else %} class="table-danger" {% endif %}>
-                                <td width="60" >{{equipo.0}} is  {{equipo.6}} </td>
+                                <td width="30" >{{equipo.6}}</td>
+                                <td width="80" >{{equipo.0}}</td>
                                 <td width="100">{{equipo.1}}</td>
                                 <td width="100">{{equipo.2}}</td>
-                                <td width="30">
-                                    <button type="button" 
-                                            class="btn btn-info" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#f{{equipo.8}}">{{equipo.3}} &#x1F50E
+                                <td width="100">{{equipo.3}}
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" 
+                                            data-bs-target="#f{{equipo.8}}">&#x1F50E
                                     </button>
                                 </td>                                       
                                 <td width="30">{{equipo.4}}</td>
@@ -155,22 +177,7 @@
 
     <div class="col-md-12">
         <!--VENTANA MODAL -->
-        <div class="modal" tabindex="-1">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">RESULTADO:</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <p>{{res_ping}}</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-        </div>
+        
         <!--VENTANA MODAL -->
     </div>
 </div>

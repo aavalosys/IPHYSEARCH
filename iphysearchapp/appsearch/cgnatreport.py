@@ -18,8 +18,8 @@ def intdetail(pais):
         response = requests.post(url, json=data_to_send)
         if response.status_code == 200:
             data = response.json()
-            datacg = data[1]
-            print (datacg)
+            #datacg = data[1][]
+            print (data)
         else:
             datacg = 'X'
         return datacg

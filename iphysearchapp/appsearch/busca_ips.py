@@ -5,8 +5,10 @@ from iphysearchapp.var_env import *
 from iphysearchapp.var_functions import *
 from .models import *
 
-def buscaips(request): 
 
+def buscaips(request):
+    res_ping = ""
+    tipoalerta = "1"
     if 'buscar_rbs' in request.GET:       #SI ES EN BUSCAR RBS
         return buscarbs(request)
     elif 'buscar_ip' in request.GET:       #SI ES EN BUSCAR
@@ -14,16 +16,17 @@ def buscaips(request):
     return render(request, "paginas/buscaips.html", 
                   {'listarbs': [],
                     'listarips':[],
-                    'listarsr':actualizarbitacorasr(),
-                    'listaotros':[],
-                    'sumasr':sumasr(),
-                    'sumaotros':15,
                     'res_ping': "",
-                    'dbs': esquemata(), 
-                    'infor': INFOR})
+                    'dbs': esquemata(),
+                    'user': usuariolog(),
+                    'tipoalerta':tipoalerta,
+                    'res_ping': res_ping, 
+                    'INFOR': INFOR})
 
 
 def buscarbs(request):          #BUSCA NEMONICO DISPOSITIVO
+    res_ping = ""
+    tipoalerta ="0"
     dbrbs = request.GET.get('dbrbs')
     textrbs = request.GET.get('idrbs')
     mydb =  conexion_dbnet(dbrbs)
@@ -35,26 +38,28 @@ def buscarbs(request):          #BUSCA NEMONICO DISPOSITIVO
     return render(request, "paginas/buscaips.html", 
                   {'listarbs': listarbs,
                    'listarsr':[],
-                   'listaotros':[], 
-                   'sumasr':10,
-                   'sumaotros':15,
                    'res_ping': "",
                    'dbs': esquemata(), 
-                   'infor': "entro a rbs"}) 
+                   'user': usuariolog(),
+                   'tipoalerta':tipoalerta,
+                   'res_ping': res_ping,
+                   'INFOR': INFOR}) 
 
-def busbuscar_ip(request):          #BUSCA NEMONICO DISPOSITIVO
+def busbuscar_ip(request): 
+    res_ping = ""
+    tipoalerta ="0"        
     dbcpe = request.GET.get('dbcpe')
     textcpe = request.GET.get('ipcpe')
+    listarbs = buscarbsfrom(dbcpe, textcpe)
+    listaips = buscacaipcpe(dbcpe, textcpe)
     return render(request, "paginas/buscaips.html", 
-                      {'listarbs': buscarbsfrom(dbcpe, textcpe),
-                       'listaips': buscacaipcpe(dbcpe, textcpe),
-                       'listarsr':[],
-                       'listaotros':[],
-                       'sumasr':10,
-                       'sumaotros':15,
-                       'res_ping': "", 
+                      {'listarbs': listarbs,
+                       'listaips': listaips, 
                        'dbs': esquemata(),
-                       'infor': INFOR})
+                       'user': usuariolog(),
+                       'tipoalerta':tipoalerta,
+                       'res_ping': res_ping,
+                       'INFO':INFOR,})
 
 def buscarbsfrom(dbrbs, textcpe):          #BUSCA NEMONICO DISPOSITIVO
     mydb =  conexion_dbnet(dbrbs)
@@ -78,6 +83,8 @@ def buscacaipcpe(dbcpe, textcpe):            #BUSCA L3 DISPOSITIVO
 
 def buscaserviciomac (request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
     switch = 0  #DESACTIVA EL DETALLE DE LA ACTIVIDAD
+    res_ping = ""
+    tipoalerta ="0"
     vlan_f = int(vlan)
     if vlan_f < 4096:
         listar_mac = servicioesnormal(mac, vlan, pais, dbcpe,switch)
@@ -92,8 +99,11 @@ def buscaserviciomac (request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
                    'sumasr':10,
                    'sumaotros':15,
                    'res_ping': "", 
-                   'dbs': esquemata(), 
-                   'infor': INFOR})
+                   'dbs': esquemata(),
+                   'user': usuariolog(),
+                   'tipoalerta':tipoalerta,
+                   'res_ping': res_ping, 
+                   'INFOR': INFOR})
 
 def servicioesnormal(mac, vlan, pais, dbcpe,switch):
     mydb =  conexion_dbnet(dbcpe)
@@ -102,7 +112,7 @@ def servicioesnormal(mac, vlan, pais, dbcpe,switch):
     if tiposerv > 0:
         print ("EN SERVICIO 0")
     elif tiposerv == 1:
-        print ("EN SERVICIO 1")
+        print ("EN SERVICIO 1") 
     elif tiposerv == 0:  
         mycursor.execute("SELECT m.*, i.description FROM "+dbcpe+".mac_address_"+pais+
         " m JOIN "+dbcpe+".int_"+pais+" i ON m.ip = i.ip AND m.interface = i.interface JOIN "+
@@ -111,11 +121,12 @@ def servicioesnormal(mac, vlan, pais, dbcpe,switch):
         "' AND m.vlan = "+vlan+") mycount ON 1=1 WHERE  m.mac = '"+mac+"' AND m.vlan = "+vlan+
         " AND (((count = 0) AND (mycount.cnt = 1)) OR ((count > 0) AND (mycount.cnt > 0))) ORDER BY m.count asc")
         resultados = mycursor.fetchall()
-        resultados_es = [(resultado + (elementoesup(resultado[0]), intdetail(dbcpe, resultado[0], resultado[3],switch ),indice,)) for indice, resultado in enumerate(resultados)]
+        resultados_es = [(resultado + (elementoesup(resultado[0]), detalleinterface(dbcpe, resultado[0], resultado[3],switch ),indice,)) for indice, resultado in enumerate(resultados)]
         print(resultados_es)
         mydb.close()
 
     return resultados_es
+
 
 def servicioespw(mac, subvlan, dbcpe):
     mydb =  conexion_dbnet(dbcpe)
@@ -130,6 +141,7 @@ def servicioespw(mac, subvlan, dbcpe):
     return listapws
 
 def elementoesup(ipsw):
+    second_element = 'X'
     mydb =  conexion_dbnet(DBESUP)
     mycursor = mydb.cursor()
     try:
@@ -138,10 +150,6 @@ def elementoesup(ipsw):
         response = requests.post(url, json=ipsw)
         if response.status_code == 200:
             second_element = response.json()[1]
-            return second_element
-        else:
-            second_element = 'X'
-            return second_element
     except Exception as e:
         second_element = 'X'
         
@@ -155,25 +163,27 @@ def elementoesping(request, ippe, ipcpe, vrf, pais, dbcpe):
         if response.status_code == 200:
             resultado = response.json()
             res_ping = resultado[1]
-            print(res_ping)
+            if "!!!!!" in res_ping:
+                tipoalerta = '0'
+            elif "....." in res_ping:
+                tipoalerta ='3'
         else:
-            res_ping = 'Ooops ocurrio un error.... Código de respuesta no es 200'
+            res_ping = 'Código de respuesta = ' + response.status_code
+            tipoalerta = '1'
     except Exception as e:
-        resultado = 'Ooops ocurrio un error.... Excepcion en la API /api/getpingvrf/'
+        resultado = 'Excepcion en la API /api/getping/ = ' + e
 
     return render(request, "paginas/buscaips.html", 
                   {'listarbs': buscarbsfrom(dbcpe,ipcpe),
                    'listaips': buscacaipcpe(dbcpe, ipcpe),
-                   'listarsr':[],
-                   'listaotros':[],
-                   'sumasr':10,
-                   'sumaotros':15, 
                    'dbs': esquemata(),
-                   'res_ping': res_ping,
-                   'infor': INFOR})
+                   'user': usuariolog(),
+                   'tipoalerta':tipoalerta,
+                   'INFOR':INFOR,
+                   'res_ping': res_ping,})
     
 
-def intdetail(dbcpe, ipsw, swinterface,swtch):
+def detalleinterface(dbcpe, ipsw, swinterface,swtch):
     detalleinter = 'X'
     try:
         if swtch == 1:   # SE DESACTIVA EL DETALLE DE LAS INTERFACES. 

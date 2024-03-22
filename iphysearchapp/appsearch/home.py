@@ -38,7 +38,8 @@ def home(request):
             'alertdanger':alertdanger,
             'alertwarning':alertwarning,
             'alertinfo':alertinfo, 
-            'dbs': esquemata()
+            'dbs': esquemata(),
+            'user': usuariolog()
             })
     
     else:
@@ -51,7 +52,8 @@ def home(request):
             'alertdanger':alertdanger,
             'alertwarning':alertwarning,
             'alertinfo':alertinfo,   
-            'dbs': esquemata()
+            'dbs': esquemata(),
+            'user': usuariolog()
             })
    
 

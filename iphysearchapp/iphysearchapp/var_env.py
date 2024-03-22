@@ -17,7 +17,7 @@ DBOWN = 'ipsearch_db_new'
 
 DBSINICIAL ='f%'
 DBESUP = 'uptime'
-INFOR = 'ping -b -c 100 -vpn-instance x.y.z.w'
+INFOR = 'ping -b -c 100 -vpn-instance '
 
 #EN BUSCAR IPS
 CPETXT = """ SELECT * FROM (                     

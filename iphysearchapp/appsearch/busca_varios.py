@@ -50,6 +50,7 @@ def buscavarios(request, selectedoption):
                     'headtable':headtable, 
                     'resultado':resultado,    
                     'dbs': esquemata(),
+                    'user': usuariolog(),
                 })
         
     return render(request,'paginas/buscavarios.html',
@@ -57,6 +58,7 @@ def buscavarios(request, selectedoption):
                     'headtable':headtable, 
                     'resultado':resultado,    
                     'dbs': esquemata(),
+                    'user': usuariolog(),
                 })
 
 

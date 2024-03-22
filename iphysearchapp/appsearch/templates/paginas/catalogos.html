@@ -6,21 +6,32 @@
     <div class="col-md-4">
     </div>
     <div class="col-md-4">
-        <form action=" " method="GET">
-            {% csrf_token %}
-            <div class="input-group mb-3" style="margin-top: 5px;">
-                <span class="input-group-text">Buscar</span>
-                <input type="text"  id="idtxtabuscar" name="strbuscado" class="form-control"  placeholder="Quiero tener suerte ...." required>
-                <input type="hidden" id="idtxtdb" name="dbstr">
-                <button type="submit" class="btn btn-danger" >
-                    Buscar {{opcion}}
-                </button>
-                &nbsp&nbsp&nbsp&nbsp
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#idformact" onclick="agregafechahora(); return false;">
-                    Agregar 
-                </button>
-            </div>
-        </form>
+        {% if opcion == 'actividades' %}
+                <form action=" " method="GET">
+                {% csrf_token %}
+                <div class="input-group mb-3" style="margin-top: 5px;">
+                    <span class="input-group-text">Buscar</span>
+                    <input type="text" id="idtxtabuscar" name="strbuscado" class="form-control" placeholder="Quiero tener suerte ...." required>
+                    <input type="hidden" id="idtxtdb" name="dbstr">
+                    <button type="submit" class="btn btn-danger">Buscar {{opcion}}</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#idformact" onclick="agregafechahora(); return false;">Agregar</button>
+                </div>
+                </form>
+            {% elif opcion == 'casos SR' %}
+                <form action=" " method="GET">
+                {% csrf_token %}
+                <div class="input-group mb-3" style="margin-top: 5px;">
+                    <span class="input-group-text">Buscar</span>
+                    <input type="text" id="idtxtabuscarsr" name="strbuscado" class="form-control" placeholder="Quiero tener suerte ...." required>
+                    <input type="hidden" id="idtxtdbsr" name="dbstr">
+                    <button type="submit" class="btn btn-danger">Buscar {{opcion}}</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#idformsr" onclick="agregafechahora(); return false;">Agregar</button>
+                </div>
+                </form>
+            {% else %}
+        {% endif %}  
     </div>
     <div class="col-md-4"> 
     </div>
@@ -38,27 +49,27 @@
                         {% csrf_token %}
                         <fieldset>  
                           <div class="form-group">
-                            <input class="form-control" id="ididentificador" type="text" name="ididentificador" placeholder="Identificador actividad">
+                            <input class="form-control" id="ididentificador" type="text" name="ididentificador" placeholder="Identificador actividad" required>
                           </div>
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
-                            <input type="text" class="form-control" id="idtitulo" name="idtitulo" placeholder="Título actividad">
+                            <input type="text" class="form-control" id="idtitulo" name="idtitulo" placeholder="Título actividad" required>
                           </div>
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
-                            <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha actividad">
+                            <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha actividad" required>
                             <small id="emailHelp" class="form-text text-muted">Fecha de la actividad</small>
                             &nbsp&nbsp&nbsp&nbsp
-                            <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora actividad">
+                            <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora actividad" required>
                             <small id="emailHelp" class="form-text text-muted">Hora de la actividad</small>
                             </div>
-                          <div class="form-group">
-                            &nbsp&nbsp&nbsp&nbsp
-                            <input type="text" class="form-control" id="iddescripcion" name="iddescripcion" placeholder="Descripción actividad">
-                          </div>
+                            <div class="form-group">
+                                &nbsp&nbsp&nbsp&nbsp
+                                <input type="text" class="form-control" id="iddescripcion" name="iddescripcion" placeholder="Descripción actividad" maxlength="150" oninput="this.value = this.value.substring(0, this.maxLength)" required>
+                            </div>
                           <div>
                             &nbsp&nbsp&nbsp&nbsp
-                            <textarea class="form-control" id="iddetalle" name="iddetalle" placeholder="Detalle" rows="3"></textarea>
+                            <textarea class="form-control" id="iddetalle" name="iddetalle" placeholder="Detalle" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)"></textarea>
                           </div>
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
@@ -74,15 +85,53 @@
             </div>
         </div>
      </div>
-     <div class="modal fade" id="idformsr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!--VENTANA MODAL -->
+    <!--VENTANA MODAL -->
+    <div class="modal fade" id="idformsr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agregar SRs:</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar Casos SR:</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    cuerpo
+                    <form method="post" action="{% url 'agregar_sr' %}" >
+                        <!-- Tus campos de formulario aquí -->
+                        {% csrf_token %}
+                        <fieldset>  
+                          <div class="form-group">
+                            <input class="form-control" id="ididentificador" type="text" name="ididentificador" placeholder="Identificador caso sr" required>
+                          </div>
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input type="text" class="form-control" id="idtitulo" name="idtitulo" placeholder="Título caso" required>
+                          </div>
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha apertura" required>
+                            <small id="emailHelp" class="form-text text-muted">Fecha de la actividad</small>
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora apertura" required>
+                            <small id="emailHelp" class="form-text text-muted">Hora de la actividad</small>
+                            </div>
+                            <div class="form-group">
+                                &nbsp&nbsp&nbsp&nbsp
+                                <input type="text" class="form-control" id="iddescripcion" name="iddescripcion" placeholder="Descripción caso" maxlength="150" oninput="this.value = this.value.substring(0, this.maxLength)" required>
+                            </div>
+                          <div>
+                            &nbsp&nbsp&nbsp&nbsp
+                            <textarea class="form-control" id="iddetalle" name="iddetalle" placeholder="Detalle del caso" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)"></textarea>
+                          </div>
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input class="form-control" id="idfechahora" type="text" name="idfechahora" readonly="">
+                          </div>
+                          <div>
+                            &nbsp&nbsp&nbsp&nbsp
+                          </div>
+                          <button type="submit" class="btn btn-primary">Aceptar</button>
+                        </fieldset>
+                      </form>
                 </div>
             </div>
         </div>
@@ -93,9 +142,9 @@
 </div>
 
 <div class="row"> 
-    <div class="col-md-2">
+    <div class="col-md-1">
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
         <table class="table table-hover">
             <thead>
                 <tr class="table-active">
@@ -109,13 +158,36 @@
             <tbody>
                 {% if listaract %}
                     {% for acti in listaract %}
-                    <tr {% if equipo.6 == 'Up' %} class="table-success" {% else %} class="table-danger" {% endif %}>
+                    <tr>
                         <td >{{acti.1}}</td>
                         <td >{{acti.2}}</td>
                         <td >{{acti.3}}</td>
                         <td >{{acti.4}}</td>
                         <td >{{acti.5}}</td>
                         <td >{{acti.6}}</td>
+                        <td >{{acti.7}}</td>
+                        <td >{{acti.8}}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </td>                                     
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+
+                {% if listasr %}
+                    {% for sr in listasr %}
+                    <tr>
+                        <td >{{sr.1}}</td>
+                        <td >{{sr.2}}</td>
+                        <td >{{sr.3}}</td>
+                        <td >{{sr.4}}</td>
+                        <td >{{sr.5}}</td>
+                        <td >{{sr.6}}</td>
+                        <td >{{sr.7}}</td>
+                        <td >{{sr.8}}</td>
+                        <td >{{sr.9}}</td>
                         <td>
                             <button type="button" class="btn btn-danger btn-sm">
                             <i class="bi bi-trash"></i> Eliminar

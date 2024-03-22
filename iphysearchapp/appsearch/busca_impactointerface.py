@@ -34,6 +34,7 @@ def impactointerfaces(request):
                     'listadointerfaces':listadointerfaces,
                     'conteovlans':conteovlans,   
                     'dbs': esquemata(),
+                    'user': usuariolog(),
                 })
 
 def verimpactointerface(request, ip, no):
@@ -68,6 +69,7 @@ def verimpactointerface(request, ip, no):
                     'listadointerfaces':listadointerfaces,
                     'conteovlans':conteovlans,   
                     'dbs': esquemata(),
+                    'user': usuariolog(),
                 })
     
 def buscainterfaces(db, idtxtabuscar): 

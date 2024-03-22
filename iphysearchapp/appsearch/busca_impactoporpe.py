@@ -30,6 +30,7 @@ def impactoporpe(request):
                     'conteovlans':conteovlans,
                     'resultadoarp':resultadoarp,  
                     'dbs': esquemata(),
+                    'user': usuariolog(),
                 })
 
 def buscaarppe(db, ip, pais): 

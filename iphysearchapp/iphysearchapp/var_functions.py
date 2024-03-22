@@ -25,6 +25,10 @@ def esquemata():
     esquemas = [str(tupla[0]) for tupla in cursor.fetchall()]
     return esquemas
 
+def usuariolog():
+    usuario = "navalos"
+    return usuario
+
 def actualizarbitacorasr(): 
     dbrbs = "dbloip130324"
     mydb =  conexion_dbown(dbrbs)
@@ -62,3 +66,35 @@ def sumaact():
     sumaact=mycursor.fetchall()
     sumaact = sumaact[0][0]
     return sumaact
+
+def buscapaises():
+    dbrbs = "dbloip130324"
+    mydb =  conexion_dbown(dbrbs)
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT *")
+    paises=mycursor.fetchall()
+    return paises
+
+def vendors():
+    dbrbs = "dbloip130324"
+    mydb =  conexion_dbown(dbrbs)
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT *")
+    vendors=mycursor.fetchall()
+    return vendors
+
+def nombrevlan():
+    dbrbs = "dbloip130324"
+    mydb =  conexion_dbown(dbrbs)
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT *")
+    vendors=mycursor.fetchall()
+    return vendors
+
+def nombrevlan():
+    dbrbs = "dbloip130324"
+    mydb =  conexion_dbown(dbrbs)
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT *")
+    vlans=mycursor.fetchall()
+    return vlans
