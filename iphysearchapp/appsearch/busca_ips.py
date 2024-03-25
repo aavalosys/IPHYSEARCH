@@ -96,7 +96,7 @@ def elementoesping(request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
             else:
                 tipoalerta= '2'
         else:
-            res_ping = response.status_code
+            res_ping ='ERR0R '+str(response.status_code) + ' PROBLEMA EN LA API.'
             tipoalerta = '2'
 
     except Exception as e:
