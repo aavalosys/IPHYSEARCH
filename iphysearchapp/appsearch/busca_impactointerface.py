@@ -11,8 +11,6 @@ def impactointerfaces(request):
     ip = request.GET.get('strbuscado')
     pais = '-'
     interface='-'
-    print (db)
-    print (ip)
     conteovlans = ''
 
     if db is not None and ip is not None:

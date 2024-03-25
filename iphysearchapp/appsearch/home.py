@@ -7,9 +7,9 @@ from .models import *
 
 def home(request):
     alertsuccess = 1
-    alertdanger = 1
-    alertwarning = 1
-    alertinfo = 1
+    alertdanger = 0
+    alertwarning = 0
+    alertinfo = 0
     strtext = request.GET.get('strbuscado')
     db = request.GET.get('dbstr')
     piv = request.GET.get('pivstr')

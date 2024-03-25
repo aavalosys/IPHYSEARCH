@@ -6,14 +6,14 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-4" style="margin-top: 6px;">
-                <form action=" " method="GET">
+                <form  action="/buscaips" method="GET">
                     {% csrf_token %}
                     <div class="input-group mb-3" style="margin-top: 2 px;">
                         <span class="input-group-text">INGRESE ID:</span>
                         <input type="text"  id="idtxtidrbs" name="idrbs" class="form-control"  placeholder="ID a Buscar..." required>
                         <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
                         <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
-                        <button type="submit" class="btn btn-danger" name="buscar_rbs">Buscar</button>
+                        <button type="submit" class="btn btn-danger"  name="buscar_rbs" value="Recargar">Buscar</button>
                     </div>
                     </form>
                     {% if listarbs %}
@@ -28,7 +28,7 @@
                         <tbody>
                             {% for rbs in listarbs %}
                             <tr>
-                                <td width="40"><a href = "#" class="link-primary" id = "{{rbs.0}}">{{rbs.0}}</a></td>
+                                <td width="40"><a class="link-primary" id = "{{rbs.0}}">{{rbs.0}}</a></td>
                                 <td width="40"><a href = "#" class="link-primary" id = "{{rbs.1}}" onclick="copiaripnodo(this.id); return false;">{{rbs.1}}</a></td>
                                 <td width="40">{{rbs.2}}</td>
                             </tr>
@@ -36,41 +36,59 @@
                         </tbody>
                         </table>
                     {% endif %}
-                    <form method="GET">
+                    <form  action="/buscaips" method="GET">
                         {% csrf_token %}
                         <div class="input-group mb-3" style="margin-top: 6px;">
                             <span class="input-group-text">INGRESE LA IP:</span>
                             <input type="text"  id="idtxtip" name="ipcpe" class="form-control"  placeholder="IP a Buscar..." required>
                             <input type="hidden" id="idtxtdb" name="dbcpe">
                             <input type="hidden"  id="idtxtpiv" name="pivcpe" value ="1">
-                            <button type="submit" class="btn btn-danger" name="buscar_ip">Buscar</button>
+                            <button type="submit" class="btn btn-danger" name="buscar_ip" value="Recargar">Buscar</button>
                         </div>
                 </form>
             </div>
 
-            <div class="col-md-4" style="margin-top: 6px;"> 
+            <div class="col-md-4" style="margin-top: 6px;">
+
                 {% if tipoalerta == '0' %}
+                <div class="alert alert-dismissible alert-info">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {%if res_ping %}
+                        <strong>{{ res_ping }}</strong>. 
+                    {% else %}
+                        <strong>{{ res_ping }}</strong>-- Excepción desde la API. 
+                    {% endif %} 
+                </div>
+                {% endif %}
+
+                {% if tipoalerta == '1' %}
                     <div class="alert alert-dismissible alert-success">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        <strong>{{ res_ping }}</strong>Esta es unva versión BETA.  
-                    </div>
-                {% endif %}
-                {% if tipoalerta == '1' %}
-                    <div class="alert alert-dismissible alert-primary">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        <strong>BOIP PORTAL</strong> Esta es unva versión BETA.
+                        {%if res_ping %}
+                            <strong>{{ res_ping }}</strong>. 
+                        {% else %}
+                            <strong>{{ res_ping }}</strong> 
+                        {% endif %} 
                     </div>
                 {% endif %}
                 {% if tipoalerta == '2' %}
-                    <div class="alert alert-dismissible alert-info">
+                    <div class="alert alert-dismissible alert-danger">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        <strong>{{ res_ping }}</strong> Esta es unva versión BETA.
+                        {%if res_ping %}
+                            <strong>{{ res_ping }}</strong>. 
+                        {% else %}
+                            <strong>{{ res_ping }}</strong>. 
+                        {% endif %} 
                     </div>
                 {% endif %}
                 {% if tipoalerta == '3' %}
-                    <div class="alert alert-dismissible alert-danger">
+                    <div class="alert alert-dismissible alert-primary">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        <strong>{{ res_ping }}</strong>Esta es unva versión BETA.
+                        {%if res_ping %}
+                            <strong>{{ res_ping }}</strong>. 
+                        {% else %}
+                            <strong>{{ res_ping }}</strong>. 
+                        {% endif %} 
                     </div>
                 {% endif %}
             </div>
@@ -78,7 +96,15 @@
                 <div class="card border-success mb-3" style="max-width: 30rem;">
                     <div class="card-header">Comandos:</div>
                     <div class="card-body">
-                      <p class="card-text"><b>{{INFOR}}</b></p>
+                        <table id = "tablanodos" class="table table table-sm">
+                            <tbody>
+                            {% for cmd in INFOR %}
+                                <tr>
+                                    <td><b>{{cmd.0}}&nbsp{{cmd.1}}&nbsp{{cmd.2}}</b></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div> 
             </div>
@@ -121,7 +147,7 @@
                                     </td>
                                     <td width="20">
                                         <a id="idtest" 
-                                            href="{% url 'ping_cpe' ip.0 ip.1 ip.5 ip.6 ip.7 %}?boton=Ping" 
+                                            href="{% url 'ping_cpe' ip.0 ip.1 ip.2 ip.3 ip.5 ip.6 ip.7 %}?boton=Ping" 
                                             title="Ping" 
                                             class="btn btn-info">Ping
                                         </a>
@@ -135,7 +161,7 @@
 
         <div class="row" >   
             <div class="col-md-8">
-                {% if listaips %}
+                {% if listar_mac %}
                 <table id = "tablaips" class="table table table-sm">
                         <thead >
                         <tr>

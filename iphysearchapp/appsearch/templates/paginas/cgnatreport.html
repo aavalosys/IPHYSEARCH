@@ -20,35 +20,38 @@
 </style>
 
 <div class="row custom-margin-top">
-    <div class="col-md-1"> 
+    <div> 
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         <div class="container">
-            {% for ips in ipcgnat %}
-                <h4>{{ips}}</h4>
-                <div class="container">
-                    {% for datos in datoscgnats %}
-                        <h6>{{datos.0}}</h6>
-                        <style>
-                            .progress-bar-value {
-                                color: #000000; /* Cambiar el color del texto a negro utilizando un valor hexadecimal */
-                            }
-                        </style>
-                        <div class="progress mb-1">
-                            <div class="progress-bar" role="progressbar" style="width: {{datos.1}}%;" aria-valuenow="{{ datos.2 }}" aria-valuemin="{{ datos.3 }}" aria-valuemax="{{ datos.4 }}">
-                                <span style="color: #000000;">{{ datos.1 }}</span>
-                            </div>
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{datos.5}}%;" aria-valuenow="{{ datos.6 }}" aria-valuemin="{{ datos.7 }}" aria-valuemax="{{ datos.8 }}">
-                                <span style="color: #000000;">{{ datos.5 }}</span>
-                            </div>
-                            <div class="progress-bar bg-info" role="progressbar" style="width: {{datos.9}}%;" aria-valuenow="{{ datos.10 }}" aria-valuemin="{{ datos.11 }}" aria-valuemax="{{ datos.12 }}">
-                                <span style="color: #000000;">{{ datos.9 }}</span>
-                            </div>
-                        </div>                        
-                    {% endfor %}
+                <div class="container ">
+                    {% for ips in ipcgnat %}
+                        <h4>{{ips}} - </h4>
+                        <div class="alert alert-dismissible alert-light">
+                        {% for datos in datoscgnats %}
+                            
+                            {% if ips == datos.1 %}
+                                <h5>{{datos.6}}</h5>
+                                <style>
+                                    .progress-bar-value {
+                                        color: #000000; 
+                                    }
+                                </style>
+                                <div class="progress mb-1">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{datos.10}};"  aria-valuemax="100">
+                                        <span style="color: #000000;"><b>{{datos.10}}</b>
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endif %}                    
+                        {% endfor %}
+                        </div>
+                        <div class="row">
+                            &nbsp 
+                        </div>
+                    {% endfor %}    
                 </div>
                 <br>
-            {% endfor %}
         </div>
     </div>
     <div class="col-md-3"> 
@@ -58,14 +61,20 @@
               <fieldset class="form-group">
                 <legend class="mt-4">CGNAT CENAM</legend>
                 {% for opcion in opcioncgnats %}
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheck{{ loop.index }}" name="opcion{{ loop.index }}" value="{{ opcion }}">
-                        <label class="form-check-label" for="flexSwitchCheck{{ loop.index }}">{{ opcion }}</label>
+                    <div class="form-check disabled">
+                        <input class="form-check-input" type="radio" id="optionsRadios3{{ loop.index }}" name="optionsRadios{{ loop.index }}"  value="{{ opcion }}">
+                        <label class="form-check-label" for="optionsRadios3{{ loop.index }}"">{{ opcion }}</label>
                     </div>
                 {% endfor %}
               </fieldset>
+              <div class="row">
+                &nbsp  
+              </div>
               <button type="submit" class="btn btn-primary" name="action" value="graficar">Graficar</button>
               <button type="submit" class="btn btn-primary" name="action" value="reporte">Reporte</button>
+              {% if download_url %}
+                <a href="{{ download_url }}">Descargar Reporte CSV ({{ filename }})</a>
+              {% endif %}
             </fieldset>
         </form>
     </div>

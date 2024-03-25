@@ -84,7 +84,18 @@ def buscaarp(db, idtxtabuscar):
     mydb =  conexion_dbnet(db)
     mycursor = mydb.cursor()
     paracpe = ('%' + idtxtabuscarmac,)
-    mycursor.execute(CPEARP.format(db, db, db, db, db), paracpe)
+    mycursor.execute(""" SELECT * FROM (                    
+                SELECT *, 'GT' AS table_name FROM {}.arp_gt
+                UNION ALL
+                SELECT *, 'SV' AS table_name FROM {}.arp_sv
+                UNION ALL
+                SELECT *, 'HN' AS table_name FROM {}.arp_hn
+                UNION ALL
+                SELECT *, 'NI' AS table_name FROM {}.arp_ni 
+                UNION ALL
+                SELECT *, 'CR' AS table_name FROM {}.arp_cr
+            ) AS resultado WHERE resultado.mac LIKE %s
+            """.format(db, db, db, db, db), paracpe)
     resultados = mycursor.fetchall()
     listaips = [(resultado + (db,)) for resultado in resultados]
     
