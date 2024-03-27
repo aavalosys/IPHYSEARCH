@@ -31,7 +31,7 @@
                         {% for datos in datoscgnats %}
                             
                             {% if ips == datos.1 %}
-                                <h5>{{datos.6}}</h5>
+                                <h5>{{datos.6}}&nbsp&nbsp&nbsp - {{datos.9}} de {{datos.8}} - Usuarios Posibles</h5>
                                 <style>
                                     .progress-bar-value {
                                         color: #000000; 
@@ -55,28 +55,99 @@
         </div>
     </div>
     <div class="col-md-3"> 
-        <form method="get">
-            {% csrf_token %}
-            <fieldset>
-              <fieldset class="form-group">
-                <legend class="mt-4">CGNAT CENAM</legend>
-                {% for opcion in opcioncgnats %}
-                    <div class="form-check disabled">
-                        <input class="form-check-input" type="radio" id="optionsRadios3{{ loop.index }}" name="optionsRadios{{ loop.index }}"  value="{{ opcion }}">
-                        <label class="form-check-label" for="optionsRadios3{{ loop.index }}"">{{ opcion }}</label>
-                    </div>
-                {% endfor %}
-              </fieldset>
-              <div class="row">
-                &nbsp  
-              </div>
-              <button type="submit" class="btn btn-primary" name="action" value="graficar">Graficar</button>
-              <button type="submit" class="btn btn-primary" name="action" value="reporte">Reporte</button>
-              {% if download_url %}
-                <a href="{{ download_url }}">Descargar Reporte CSV ({{ filename }})</a>
-              {% endif %}
-            </fieldset>
-        </form>
+        <div>
+            {% if tipoalerta == '0' %}
+            <div class="alert alert-dismissible alert-info">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {%if inforcgnat1 %}
+                        <strong>{{ inforcgnat1 }}</strong>. 
+                    {% endif %}
+                    {%if inforcgnat2 %}
+                        <strong>{{ inforcgnat2 }}</strong>. 
+                    {% endif %}  
+            </div>
+            {% endif %}
+
+            {% if tipoalerta == '1' %}
+                <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {%if inforcgnat1 %}
+                        <strong>{{ inforcgnat1 }}</strong>APP WEB para consultar el estado de los CGNAT CENAM. 
+                    {% endif %}
+                    {%if inforcgnat2 %}
+                        <strong>{{ inforcgnat2 }}</strong>. 
+                    {% endif %} 
+                </div>
+            {% endif %}
+            {% if tipoalerta == '2' %}
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {%if inforcgnat1 %}
+                        <strong>{{ inforcgnat1 }}</strong>. 
+                    {% endif %}
+                    {%if inforcgnat2 %}
+                        <strong>{{ inforcgnat2 }}</strong>. 
+                    {% endif %}  
+                </div>
+            {% endif %}
+            {% if tipoalerta == '3' %}
+                <div class="alert alert-dismissible alert-primary">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {%if inforcgnat1 %}
+                        <strong>{{ inforcgnat1 }}</strong>. 
+                    {% endif %}
+                    {%if inforcgnat2 %}
+                        <strong>{{ inforcgnat2 }}</strong>. 
+                    {% endif %} 
+                </div>
+            {% endif %}
+        </div>
+
+        <div>
+            <form method="get">
+                {% csrf_token %}
+                <fieldset>
+                <fieldset class="form-group">
+                    <legend class="mt-4">CGNAT CENAM</legend>
+                    {% for opcion in opcioncgnats %}
+                        <div class="form-check disabled">
+                            <input class="form-check-input" type="radio" id="optionsRadios3{{ loop.index }}" name="optionsRadios{{ loop.index }}" value="{{ opcion }}" onclick="copiarradio(this);">
+                            <label class="form-check-label" for="optionsRadios3{{ loop.index }}">{{ opcion }}</label>
+                        </div>
+                    {% endfor %}
+                </fieldset>
+                <script>
+                    // Asegúrate de que esta función esté definida fuera del bucle y solo una vez
+                    function copiarradio(radioElement) {
+                    var valorR = radioElement.value;
+                        document.getElementById("valorRadio").value = valorR
+                    }
+                    </script>
+                <div class="row">
+                    &nbsp  
+                </div>
+                <button id="graficar" type="submit" class="btn btn-primary" name="graficar" value="graficar">Graficar</button>
+                </fieldset>
+            </form>
+        </div>
+        <div class="row">  
+            &nbsp
+        </div>
+            <form id="formReporte" method="POST" onsubmit="enviarFormulario(); return false;">
+                {% csrf_token %} 
+                <input type="hidden" name="valorRadio" id="valorRadio" value="">
+                <button id="reporte" type="submit" class="btn btn-primary" name="reporte" value="reporte">Reporte</button>
+            </form>
+        <div>
+            <script>
+                function enviarFormulario() {
+                    var valorRadio = document.getElementById('valorRadio').value;
+                    var form = document.getElementById('formReporte');
+                    form.action = `{% url 'descargarcsv' 'placeholder' %}`.replace('placeholder', valorRadio);
+                    form.submit();
+                }
+            </script>
+        </div>
     </div>
 </div>
 

@@ -1,5 +1,5 @@
 from django.urls import path
-from . import home, busca_ips, busca_impactointerface, busca_impactoporpe, monitoreo_tcn, busca_varios, about, informativo, cgnatreport, catalogos
+from . import descargar, home, busca_ips, busca_impactointerface, busca_impactoporpe, monitoreo_tcn, busca_varios, about, cgnatreport, catalogos, descargar
 
 urlpatterns = [  #NAME ES EL NOMBRE DE LA URL
     path('welcome/', home.home, name='welcome'),  
@@ -12,8 +12,8 @@ urlpatterns = [  #NAME ES EL NOMBRE DE LA URL
     path('agregar_act/', catalogos.agregaractividad, name='agregar_act'),
     path('agregar_sr/', catalogos.agregarsr, name='agregar_sr'),
     path('cgnatreport', cgnatreport.cgnat, name='cgnatreport'),
+    path('descargarcsv/<str:pais>/', descargar.descargararchivo, name='descargarcsv'),
     path('about', about.about, name='about'),
-    path('informativo', informativo.informativo, name='informativo'),
     path('buscar_mac/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:vrf>/<str:pais>/<str:dbcpe>/', busca_ips.buscaserviciomac, name='buscar_mac'),
     path('ping_cpe/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:vrf>/<str:pais>/<str:dbcpe>/', busca_ips.elementoesping, name='ping_cpe'),
     path('buscasaturacion/<str:ip>/<str:no>/', busca_impactointerface.verimpactointerface, name='buscasaturacion'),

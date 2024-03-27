@@ -126,7 +126,7 @@ def buscarbsid(dbrbs, textrbs):
     consulta_sql = "SELECT * FROM {}.nodob WHERE nodoid LIKE %s".format(dbrbs)
     mycursor.execute(consulta_sql, pararbs)    
     listarbsid = mycursor.fetchall()
-    mydb.close()
+
     return listarbsid
 
 def buscarbsip(dbrbs, rbsip):         
