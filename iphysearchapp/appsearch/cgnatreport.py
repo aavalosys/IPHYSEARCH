@@ -15,18 +15,15 @@ def cgnat(request):
     tipoalerta = '1'
     opcioncgnats = ['GUATEMALA','HONDURAS','EL SALVADOR','NICARAGUA','COSTA RICA']
     paisselect = request.GET.get('optionsRadios')
-    print (str(paisselect)+"................") 
     if request.method == 'GET':
-        action = request.GET.get('graficar','reporte')
-        print (str(action))
+        action = request.GET.get('graficar')
         if action == 'graficar':
-            print ("adentro de graficar --------------------------------")
             if paisselect == 'GUATEMALA':
-                #datos_c =  consultarcgnat('GT')
-                datos_c =  datosdepruebagt
-                datosproc = datosalista(datos_c) #CONVIERTE EN UNA LISTA DE LISTAS
+                datosapi =  consultarcgnat('GT')
+                datos_c = convertiraformatocsv(datosapi)
+                datosproc = datosalista(datos_c)      # CONVIERTE EN UNA LISTA DE LISTAS
                 datoscgnats = datoslogicos(datosproc) # EXTRAE LOS PRIMEROS 11 VALORES
-                ipcgnat = extraeipcgnat(datosproc)   # EXTRAE LAS IPS DE LOS CGNATS
+                ipcgnat = extraeipcgnat(datosproc)    # EXTRAE LAS IPS DE LOS CGNATS
             elif paisselect == 'HONDURAS':
                 datosapi =  consultarcgnat('HN')
                 datos_c = convertiraformatocsv(datosapi)

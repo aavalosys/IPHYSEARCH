@@ -1,40 +1,40 @@
 {% extends "base.html" %}
-
-{% block titulo %}INICIO{% endblock %}
-
+{% block titulo %}Buscador IP{% endblock %} 
 {% block contenido %} 
 
-<div class="row">
-    <div class="col-md-6">
-            {% if dbs %}
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#idmodal">
-                    Abrir modal 
-                </button>
-            {% else %}
-            <tr>
-                <td colspan="2">No se encontraron registros.</td>
-            </tr>
-            {% endif %}        
-    </div>
-
-    <div class="col-md-6">
-        {% for db in dbs %}
-            <div class="modal fade" id="idmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">{{db}}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            {{db}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+<div class="row" style="margin: 10px;">
+    <div class="col-md-12">
+        <h1>Tabla de datos</h1>
+        <table id="tabla-datos">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-body">
+            </tbody>
+        </table>
+        <button onclick="cargarDatos(); return false;">Cargar datos</button>
     </div>
 </div>
 
- {%endblock%}
+<div class="row" style="margin: 10px;">
+    <div class="col-md-12">
+        <title>Visualización de Red</title>
+        <button onclick="cargarYDibujarRed(); return false;">Dibujar</button> 
+        <div id="visualizacion-red"></div> <!-- Contenedor para la visualización -->
+    </div>
+</div>
+
+<div class="row" style="margin: 10px;">
+    <div class="col-md-12">
+        <title>Visualización de Red</title>
+        <button onclick="diagramal2(); return true;">Dibujar1</button> 
+        <div id="vis-red"></div> 
+        </div> <!-- Contenedor para la visualización d3.js-->
+    </div>
+</div>
+
+{%endblock%}
 

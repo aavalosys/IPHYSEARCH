@@ -1,11 +1,23 @@
 {% load static %}
+
 <!doctype html>
 <script src="{% static 'js/myjs.js' %}"></script> 
+<script src="{% static 'js/ajax.js' %}"></script>
+<script src="{% static 'js/nododinamico.js' %}"></script>
+<script src="{% static 'js/diagramasl2.js' %}"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+      integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+      integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous">
+</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js">
+</script>
 <html lang="en">
   <head>
     <title>{% block titulo %}{% endblock %}</title> 
-      <!-- jQuery -->
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}"> 
@@ -29,41 +41,42 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
               <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'buscaips'%}">BUSCA IPS</a>
+                  <a class="nav-link" href="{% url 'buscaips'%}" style="font-size: 15px;">BUSCA IPS</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">BUSCADOR
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">BUSCADOR
                   </a>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='mac' %}">BUSCA MAC</a>
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='arp' %}">BUSCA ARP</a>
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='equipos' %}">BUSCA EQUIPOS</a>
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='descripciones' %}">BUSCA DESCRIPCIONES</a>
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='valoresopticos' %}">BUSCA VALORES ÓPTICOS</a>
+                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='mac' %}" style="font-size: 15px;" > <b>BUSCA MAC</b></a>
+                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='arp' %}" style="font-size: 15px;" >BUSCA ARP</a>
+                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='equipos' %}" style="font-size: 15px;" >BUSCA EQUIPOS</a>
+                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='descripciones' %}" style="font-size: 15px;" >BUSCA DESCRIPCIONES</a>
+                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='valoresopticos' %}" style="font-size: 15px;" >BUSCA VALORES ÓPTICOS</a>
                   </div>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'impactointerfaces'%}">SATURACIONES</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'impactoporpe'%}">IMPACTO PE</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'impactointerfaces'%}" style="font-size: 15px;" >SATURACIONES</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'impactoporpe'%}" style="font-size: 15px;" >IMPACTO PE</a></li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">GRÁFICAS</a>
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;" >GRÁFICAS</a>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'cgnatreport'%}">CGNATS POOLS</a>
-                    <a class="dropdown-item" href="{% url 'cgnatreport'%}">CGNATS ENGINES</a>
+                    <a class="dropdown-item" href="{% url 'cgnatreport'%}" style="font-size: 15px;">CGNATS POOLS</a>
+                    <a class="dropdown-item" href="{% url 'cgnatreport'%}" style="font-size: 15px;">CGNATS ENGINES</a>
                   </div>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">MANTENIMIENTO</a>
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;" >MANTENIMIENTO</a>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='actividades' %}">ACTIVIDADES</a>
-                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='casossr' %}">CASOS - SR</a>
-                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='buscaregistros' %}">BITACORA</a>
-                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='buscaregistros' %}">DIRECTORIO </a>
+                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='actividades' %}" style="font-size: 15px;" >ACTIVIDADES</a>
+                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='casossr' %}" style="font-size: 15px;" >CASOS - SR</a>
+                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='buscaregistros' %}" style="font-size: 15px;" >BITACORA</a>
+                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='buscaregistros' %}" style="font-size: 15px;" >DIRECTORIO </a>
                   </div>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'about'%}">ABOUT</a></li>
-                <li class="nav-item"><a class="nav-link" href="">| SALIR |</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'about'%}" style="font-size: 15px;">ABOUT</a></li>
+                <li class="nav-item"><a class="nav-link" href="" style="font-size: 15px;" >| SALIR |</a></li>
+                <li class="nav-item"><a class="nav-link" href="" style="font-size: 15px;" ></a></li>
                 <li class="nav-item"><a class="nav-link" href="">
-                <select id="selectdb" name="selectdbs" data-placeholder="Choose" onclick="copiaseleccionado(); return false;" class="input-group-text" aria-label=".form-select-sm example">
+                <select id="selectdb" name="selectdbs" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
                   {% for  db in dbs %}
                     <option value="{{ db }}">{{ db }}</option>
                   {% endfor %}
@@ -82,14 +95,5 @@
       {% block contenido %}{% endblock%}
     </div>
   </main> 
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
-      integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
-      integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous">
-    </script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js">
-    </script>
 </body>  
 </html>

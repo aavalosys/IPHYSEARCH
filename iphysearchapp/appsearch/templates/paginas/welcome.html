@@ -1,10 +1,12 @@
-{% extends "base.html" %}
+{% extends "basehome.html" %}
 
 {% block titulo %}INICIO{% endblock %}
 
 {% block contenido %} 
 
+
 <div class="row" style="margin: 10px;">
+    
     <div class="col-md-2">
     </div>
 
@@ -14,51 +16,54 @@
             <div class="input-group mb-3" style="margin-top: 3px;">
                 <span class="input-group-text">Buscar</span>
                 <input type="text"  id="idtxtbuscado" name="strbuscado" class="form-control"  placeholder="Quiero tener suerte ...." required>
-                <input type="hidden" id="iddbselected" name="dbstr">
+                <input type="hidden" id="iddbselectedwel" name="iddbselectedwel">
                 <input type="hidden" id="idtxtpiv" name="pivstr" value ="0">
                 <button type="submit" class="btn btn-danger" >Buscar</button>
+                <select id="selectdbwel" name="selectdbw" class="input-group-text" aria-label=".form-select-sm example" onchange="copiaselectdbs(); return;">
+                    {% for db in dbsb %}
+                        <option value="{{ db }}">{{ db }}</option>
+                    {% endfor %}
+                  </select>
             </div>
             </form>
-    </div>
+    </div> 
+    <script>onloadpagewelcome();</script>
     <div class="col-md-1"> 
     </div>
     <div class="col-md-5" style="margin-top: 3px;">
         {% if alertsuccess == 1 %}
             <div class="alert alert-dismissible alert-success me-4" >
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Bienvenidos</strong> al Dashboard de backofficeip.com.gt, puedes hacer clic en  
-                <a href="#" class="alert-link">las opciones abajo</a> para visualizar un resumen de SR y Actividades.
-                <strong>Busqueda de coincidencias, </strong> o puedes buscar en los current conf. en Quiero tener suerte.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="alert" style="margin-top: 3px;">
+                    <strong>Bienvenidos</strong> al Dashboard de backofficeip.com.gt, puedes hacer clic en
+                    <a href="#" class="alert-link">las opciones abajo</a> para visualizar un resumen de Casos y Actividades.
+                    <strong>Puedes usar la Busqueda teniendo suerte, </strong> ingresa la(s) palabra(s) a buscar separadas por espacios.
+                    </div>                   
             </div>
         {%endif%}
     </div>
 </div>
 
-<div class="row"> 
-    <div class="col-md-1"> 
-    </div>
-    <div class="col-md-5">
+<div class="row" style="margin: 5px;"> 
+    <div class="col-md-7">
 
-        {%if encontrado %}
+        {%if resultadoencontrado %}
             <table id = "tablaresultados" class="table table table-sm">
                 <thead>
                     <tr>
                         <th>RESULTADO</th>  
                 </thead>
                 <tbody>
-                    {% for enstr in encontrado %}
+                    {% for enstr in resultadoencontrado %}
                         <tr>
                             <td>{{enstr.0}}</td>
-                            <td>{{enstr.1}}</td>
-                            <td>{{enstr.3}}</td>
+                            <td >{{enstr.1}}</td>
+                            <td>{{enstr.2}}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {%endif%}
-    </div>
-
-    <div class="col-md-1"> 
     </div>
 
     <div class="col-md-5">  

@@ -138,7 +138,7 @@ def buscarbsip(dbrbs, rbsip):
     listarbsip = mycursor.fetchall()
     mydb.close()
     return listarbsip
-    
+     
 def buscaipcpe(dbcpe, textip):
     paracpe = ('%' + textip + '%',)            #BUSCA L3 DISPOSITIVO
     mydb =  conexion_dbnet(dbcpe)

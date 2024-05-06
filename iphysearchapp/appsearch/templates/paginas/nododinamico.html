@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nodo Dinámico</title>
+</head>
+<body>
+  <h1>Nodo Dinámico</h1>
+  <script src="{% static 'js/nododinamico.js' %}"></script></body>
+</html>
+
+<div id="app">
+    <div v-for="nodo in nodos" :key="nodo.id">
+      <div class="nodo">
+        {{ nodo.nombre }}
+      </div>
+    </div>
+  </div>

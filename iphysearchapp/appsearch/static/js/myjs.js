@@ -13,17 +13,21 @@ function onloadpagevarios() {
     return;
 }
 
-function copiaseleccionado() {
-    var selectBox = document.getElementById("selectdb");
-    var valorseleccionado = selectBox.options[selectBox.selectedIndex].value;
-    document.getElementById("idtxtdb").value = valorseleccionado;
-    document.getElementById("idtxtdbrbs").value = valorseleccionado; 
+function onloadpagewelcome() { 
+    var selectBox = document.getElementById("selectdbwel");
+    var elementoplace =selectBox.options[0].value;
+    document.getElementById("iddbselectedwel").value = elementoplace; 
     return;
 }
 
 function copiaripnodo(ipnodo) { 
     document.getElementById("idtxtip").value = ipnodo;
     return;
+}
+
+function copiaselectdbs(){
+    var selectedValue = document.getElementById('selectdbwel').value;
+    document.getElementById('iddbselectedwel').value = selectedValue;
 }
 
 function agregafechahora() { 
@@ -36,6 +40,4 @@ function agregafechahora() {
     document.getElementById("idfechahora").value = `${dia}/${mes}/${año} ${hora}:${minutos} `;
     return;
 }
-
-
 
