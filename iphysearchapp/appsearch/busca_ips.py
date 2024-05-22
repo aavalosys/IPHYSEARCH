@@ -82,44 +82,6 @@ def buscaserviciomac (request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
                    'res_ping': res_ping, 
                    'INFOR': INFOR})
 
-def elementoesping(request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe): 
-    limpiaINFO()
-    try:
-        url = f"http://10.10.26.4:5000/api/getpingvrf/"
-        data_to_send = [dbcpe, ippe, vrf, ipcpe]
-        response = requests.post(url, json=data_to_send)
-        if response.status_code == 200:
-            resultado = response.json()
-            res_ping = resultado[1]
-            if "!!!!!" in res_ping:
-                tipoalerta = '1'
-            elif "....." in res_ping:
-                tipoalerta ='3'
-            else:
-                tipoalerta= '2'
-        else:
-            res_ping ='ERR0R '+str(response.status_code) + ' PROBLEMA EN LA API.'
-            tipoalerta = '2'
-
-    except Exception as e:
-        res_ping = 'Excepcion en la API = ' + e
-        tipoalerta = '0'
-
-    INFOR[0][1] = vrf
-    INFOR[0][2] = ipcpe
-    INFOR[1][1] = mac
-    
-    return render(request, "paginas/buscaips.html", 
-                  {'listarbs': buscarbsip(dbcpe,ipcpe),
-                   'listaips': buscaipcpe(dbcpe, ipcpe),
-                   'listar_mac': servicioesnormal(mac, vlan, pais, dbcpe, 0),
-                   'dbs': esquemata(),
-                   'user': usuariolog(),
-                   'tipoalerta':tipoalerta,
-                   'res_ping': res_ping,
-                   'INFOR':INFOR,})
-
-
 
 def buscarbsid(dbrbs, textrbs):         
     mydb =  conexion_dbnet(dbrbs)
@@ -197,10 +159,8 @@ def servicioespw(mac, subvlan, dbcpe):
     return listapws
 
 
-
 def elementoesup(ipsw):
     second_element = 'X'
-
     if os.system("ping -n 2  " + ipsw) == 0:
         second_element = 'Up'
         print('resultado ping--- '+second_element)

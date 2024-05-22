@@ -138,19 +138,3 @@ def pingdesdepevpn(request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
             tipoalerta = '2'
     return JsonResponse({"res_ping": res_ping})
 
-def elementoesup(ipsw):
-    second_element = 'X'
-    param = '-n' if platform.system().lower()=='windows' else '-c'
-    command = ['ping', param, '1', '-W', '1', ipsw]
-    resultado = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    if resultado.returncode == 0:
-        second_element = 'up'
-        print('resultado ping--- '+second_element)
-        return second_element 
-    else:
-        second_element = 'down'
-        print('resultado ping--- '+second_element)
-        return second_element
-  
-    return second_element

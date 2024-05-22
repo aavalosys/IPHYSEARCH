@@ -98,7 +98,6 @@ function hacerpingelemento(ippe, ipcpe, mac, vlan, vrf, pais, dbcpe) {
     var selectBox = document.getElementById("selectdb");
     var dbdetalle =selectBox.options[0].value;
     //var url = 'detalleinterface/' + ipdis + '/' + mac + '/' + vlan + '/' + vlan + '/' + vrf + '/' + pais + '/' + dbdetalle + '/';
-    alert(dbdetalle+ipdis+mac+vlan+interface);
     $.ajax({
       type: 'POST',
       url: url,
