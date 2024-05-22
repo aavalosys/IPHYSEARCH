@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block titulo %}Buscador IP{% endblock %} 
 {% block contenido %} 
-
+<script>onloadpagesabout();</script>
 <div class="row" style="margin: 10px;">
     <div class="col-md-12">
         <h1>Tabla de datos</h1>
@@ -15,25 +15,9 @@
             <tbody id="tabla-body">
             </tbody>
         </table>
-        <button onclick="cargarDatos(); return false;">Cargar datos</button>
+        <button onclick="cargarDatos(); return false;">CARGAR</button>
     </div>
-</div>
-
-<div class="row" style="margin: 10px;">
-    <div class="col-md-12">
-        <title>Visualización de Red</title>
-        <button onclick="cargarYDibujarRed(); return false;">Dibujar</button> 
-        <div id="visualizacion-red"></div> <!-- Contenedor para la visualización -->
-    </div>
-</div>
-
-<div class="row" style="margin: 10px;">
-    <div class="col-md-12">
-        <title>Visualización de Red</title>
-        <button onclick="diagramal2(); return true;">Dibujar1</button> 
-        <div id="vis-red"></div> 
-        </div> <!-- Contenedor para la visualización d3.js-->
-    </div>
+    <script>onloadpagesabout();</script>
 </div>
 
 {%endblock%}

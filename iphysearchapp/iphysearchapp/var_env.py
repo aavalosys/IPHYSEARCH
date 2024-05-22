@@ -19,3 +19,9 @@ DBESUP = 'uptime'
 INFOR = [['ping -b -c 100 -m 25 -vpn-instance', '', ''],
          ['display mac-address dynamic | i ', '', ''],
          ['display interface ', '', '']]
+
+USERVPNBUSCAR = 'buscarnodosip'
+PASSVPNBUCAR = '@Ningun2024!'
+EQUIPOVPNBUSCAR = 'huawei'
+
+DBNEWLOCAL = 'dbloip130324'

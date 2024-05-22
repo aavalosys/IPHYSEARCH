@@ -100,7 +100,7 @@ def buscaarp(db, idtxtabuscar):
     listaips = [(resultado + (db,)) for resultado in resultados]
     
     if not resultados:
-        listaips = buscacaipcpe(db, idtxtabuscarip)
+        #listaips = buscacaipcpe(db, idtxtabuscarip)
         mydb.close()
     else:
         mydb.close()

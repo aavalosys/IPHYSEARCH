@@ -1,9 +1,7 @@
 {% load static %}
 
 <!doctype html>
-<script src="{% static 'js/myjs.js' %}"></script> 
-<script src="{% static 'js/ajax.js' %}"></script>
-<script src="{% static 'js/nododinamico.js' %}"></script>
+<script src="{% static 'js/myjs.js' %}"></script>
 <script src="{% static 'js/diagramasl2.js' %}"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script> 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -41,47 +39,41 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
               <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'buscaips'%}" style="font-size: 15px;">BUSCA IPS</a>
+                  <a id = "ips" class="nav-link" href="{% url 'buscaips'%}" style="font-size: 20px;">BUSCA IPS</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">BUSCADOR
+                  <a id = "buscador" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;">BUSCADOR
                   </a>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='mac' %}" style="font-size: 15px;" > <b>BUSCA MAC</b></a>
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='arp' %}" style="font-size: 15px;" >BUSCA ARP</a>
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='equipos' %}" style="font-size: 15px;" >BUSCA EQUIPOS</a>
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='descripciones' %}" style="font-size: 15px;" >BUSCA DESCRIPCIONES</a>
-                    <a class="dropdown-item" href="{% url 'buscavarios' selectedoption='valoresopticos' %}" style="font-size: 15px;" >BUSCA VALORES ÓPTICOS</a>
-                  </div>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'impactointerfaces'%}" style="font-size: 15px;" >SATURACIONES</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'impactoporpe'%}" style="font-size: 15px;" >IMPACTO PE</a></li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;" >GRÁFICAS</a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'cgnatreport'%}" style="font-size: 15px;">CGNATS POOLS</a>
-                    <a class="dropdown-item" href="{% url 'cgnatreport'%}" style="font-size: 15px;">CGNATS ENGINES</a>
+                    <a id = "macs" class="dropdown-item" href="{% url 'buscavarios' selectedoption='mac' %}" style="font-size: 15px;" >MAC</a>
+                    <a id = "arps" class="dropdown-item" href="{% url 'buscavarios' selectedoption='arp' %}" style="font-size: 15px;" >ARP</a>
+                    <a id = "equipos" class="dropdown-item" href="{% url 'buscavarios' selectedoption='equipos' %}" style="font-size: 15px;" >EQUIPOS</a>
+                    <a id = "descripciones" class="dropdown-item" href="{% url 'buscavarios' selectedoption='descripciones' %}" style="font-size: 15px;" >DESCRIPCIONES</a>
+                    <a id = "opticos" class="dropdown-item" href="{% url 'buscavarios' selectedoption='valoresopticos' %}" style="font-size: 15px;" >VALORES ÓPTICOS</a>
+                    <a id = "saturaciones" class="dropdown-item" href="{% url 'impactointerfaces'%}"  style="font-size: 15px;" >SATURACIONES</a>
+                    <a id = "impactope" class="dropdown-item" href="{% url 'impactoporpe'%}" style="font-size: 15px;" >IMPACTO PE</a>
                   </div>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;" >MANTENIMIENTO</a>
+                  <a id = "graficas" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;" >GRÁFICAS</a>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='actividades' %}" style="font-size: 15px;" >ACTIVIDADES</a>
-                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='casossr' %}" style="font-size: 15px;" >CASOS - SR</a>
-                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='buscaregistros' %}" style="font-size: 15px;" >BITACORA</a>
-                    <a class="dropdown-item" href="{% url 'catalogo' selectedoption='buscaregistros' %}" style="font-size: 15px;" >DIRECTORIO </a>
+                    <a id = "pools" class="dropdown-item" href="{% url 'cgnatreport'%}" style="font-size: 15px;">CGNATS POOLS</a>
+                    <a id = "engines" class="dropdown-item" href="{% url 'cgnatreport'%}" style="font-size: 15px;">CGNATS ENGINES</a>
                   </div>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'about'%}" style="font-size: 15px;">ABOUT</a></li>
-                <li class="nav-item"><a class="nav-link" href="" style="font-size: 15px;" >| SALIR |</a></li>
+                <li class="nav-item dropdown">
+                  <a id = "mantenimiento" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;" >MANTENIMIENTO</a>
+                  <div class="dropdown-menu">
+                    <a id = "actividades" class="dropdown-item" href="{% url 'catalogo' selectedoption='actividades' %}" style="font-size: 15px;" >ACTIVIDADES</a>
+                    <a id = "casos" class="dropdown-item" href="{% url 'catalogo' selectedoption='casossr' %}" style="font-size: 15px;" >CASOS - SR</a>
+                    <a id = "bitacora" class="dropdown-item" href="{% url 'catalogo' selectedoption='buscaregistros' %}" style="font-size: 15px;" >BITACORA</a>
+                    <a id = "directorio" class="dropdown-item" href="{% url 'catalogo' selectedoption='buscaregistros' %}" style="font-size: 15px;" >DIRECTORIO </a>
+                  </div>
+                </li>
+                <li class="nav-item"><a id = "about" class="nav-link" href="{% url 'about'%}" style="font-size: 20px;">ABOUT</a></li>
+                <li class="nav-item"><a id = "salir" class="nav-link" href="" style="font-size: 20px;" >| SALIR |</a></li>
                 <li class="nav-item"><a class="nav-link" href="" style="font-size: 15px;" ></a></li>
-                <li class="nav-item"><a class="nav-link" href="">
-                <select id="selectdb" name="selectdbs" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
-                  {% for  db in dbs %}
-                    <option value="{{ db }}">{{ db }}</option>
-                  {% endfor %}
-                </select>
-                </a></li>
+                <li class="nav-item"><a class="nav-link" href="" style="font-size: 15px;" ></a></li>
                 <li class="nav-item"><a class="nav-link" href="">&nbsp&nbsp&nbsp&nbsp</a></li>
                 <li class="nav-item"><a class="nav-link" href="">< {{user}} ></a></li>
               </ul>  

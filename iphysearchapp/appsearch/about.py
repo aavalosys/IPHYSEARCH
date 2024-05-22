@@ -17,26 +17,6 @@ def about(request):
         'user': usuariolog(),
         })
 
-def cargar_datos(request):
-    nombres = ["Juan", "María", "Pedro"]
-    apellidos = ["Pérez", "Gómez", "Martínez"]
-
-    datos = []
-    for nombre, apellido in zip(nombres, apellidos):
-        datos.append({"nombre": nombre, "apellido": apellido})
-
-    return JsonResponse({"datos": datos})
-
-
-def cargar_nodos(request):
-    datos_red = {
-        "nodos":   [{"id": 1, "nombre": "Switch 1", "grupo": 1},
-                    {"id": 2, "nombre": "Router 1", "grupo": 2},],
-        "enlaces": [{"source": 1, "target": 2},]
-                }
-    
-    return JsonResponse(datos_red)
-
 
 def diagramal2(request):
     G = nx.Graph()

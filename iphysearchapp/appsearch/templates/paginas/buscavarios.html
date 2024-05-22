@@ -11,8 +11,13 @@
             <div class="input-group mb-3" style="margin-top: 5px;">
                 <span class="input-group-text">Buscar</span>
                 <input type="text"  id="idtxtabuscar" name="strbuscado" class="form-control"  placeholder="Quiero tener suerte ...." required>
-                <input type="text" id="idtxtdb" name="dbstr">
+                <input type="hidden" id="idtxtdb" name="dbstr">
                 <button type="submit" class="btn btn-danger" >Buscar {{opcion}}</button>
+                <select id="selectdb" name="selectdbs" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
+                    {% for  db in dbs %}
+                      <option value="{{ db }}">{{ db }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </form>
     </div>

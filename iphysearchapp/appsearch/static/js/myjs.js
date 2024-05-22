@@ -1,33 +1,73 @@
-function onloadpag() {
-    var selectBox = document.getElementById("selectdb");
-    var elementoplace =selectBox.options[0].value;
-    document.getElementById("idtxtdb").value = elementoplace; 
-    document.getElementById("idtxtdbrbs").value = elementoplace;
-    return;
-}
-
-function onloadpagevarios() { 
-    var selectBox = document.getElementById("selectdb");
-    var elementoplace =selectBox.options[0].value;
-    document.getElementById("idtxtdb").value = elementoplace; 
-    return;
-}
-
-function onloadpagewelcome() { 
+function onloadpagewelcome() {  //en welcome
     var selectBox = document.getElementById("selectdbwel");
     var elementoplace =selectBox.options[0].value;
     document.getElementById("iddbselectedwel").value = elementoplace; 
     return;
 }
 
-function copiaripnodo(ipnodo) { 
+function onloadpagbuscaips() {  //en buscar ips
+    var selectBox = document.getElementById("selectdb");
+    var elementoplace =selectBox.options[0].value;
+    document.getElementById("idtxtdb").value = elementoplace; 
+    document.getElementById("idtxtdbrbs").value = elementoplace;
+    var tituloIps = document.getElementById("ips");
+    tituloIps.classList.add("font-weight-bold", "text-white");
+    return;
+}
+
+function onloadpageimpacto() { //en impacto
+    var selectBox = document.getElementById("selectdb");
+    var elementoplace =selectBox.options[0].value;
+    document.getElementById("idtxtdb").value = elementoplace; 
+    return;
+}
+function onloadpagesaturaciones() { //en saturaciones
+    var selectBox = document.getElementById("selectdb");
+    var elementoplace =selectBox.options[0].value;
+    document.getElementById("idtxtdb").value = elementoplace; 
+    return;
+}
+
+function onloadpagesgraficas() { //en saturaciones
+    var selectBox = document.getElementById("selectdb");
+    var elementoplace =selectBox.options[0].value;
+    document.getElementById("idtxtdb").value = elementoplace; 
+    return;
+}
+
+function onloadpagevarios() { //
+    var selectBox = document.getElementById("selectdb");
+    var elementoplace =selectBox.options[0].value;
+    document.getElementById("idtxtdb").value = elementoplace; 
+    return;
+}
+
+function onloadpagesmantenimiento() { //en saturaciones
+    var tituloIps = document.getElementById("mantenimiento");
+    tituloIps.classList.add("font-weight-bold", "text-white");
+    return;
+}
+
+function onloadpagesabout() { //en about
+    var tituloIps = document.getElementById("about");
+    tituloIps.classList.add("font-weight-bold", "text-white");
+    return;
+}
+
+
+function copiaripnodo(ipnodo) { //en buscarip
     document.getElementById("idtxtip").value = ipnodo;
     return;
 }
 
-function copiaselectdbs(){
+function copiaselectdbs(){ //en welcome select dbs
     var selectedValue = document.getElementById('selectdbwel').value;
     document.getElementById('iddbselectedwel').value = selectedValue;
+}
+
+function copiaselectdbsrbs(){ //en welcome select dbs
+    var selectedValue = document.getElementById('selectdb').value;
+    document.getElementById('dbrbs').value = selectedValue;
 }
 
 function agregafechahora() { 
@@ -41,3 +81,30 @@ function agregafechahora() {
     return;
 }
 
+function hacerpingelemento(ippe, ipcpe, mac, vlan, vrf, pais, dbcpe) {
+    var url = 'pingdesdepevpn/' + ippe + '/' + ipcpe + '/' + mac + '/' + vlan + '/' + vrf + '/' + pais + '/' + dbcpe + '/';
+    alert("estas adentro de la funcion hacerpingelemento: "+url);
+    $.ajax({
+      type: 'POST',
+      url: url,
+      headers: { 'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val() },
+      data: {ippe: ippe, ipcpe: ipcpe, mac: mac, vlan: vlan, vrf: vrf, pais: pais, dbcpe: dbcpe },
+      success: function(response) { alert (response.res_ping);},
+      error: function(xhr, status, error) { alert('Resultado: ' + error+status+xhr);}
+    });
+  }
+
+  function verdetalleinterface(ipdis, mac, vlan, interface, dbsw) {
+    var selectBox = document.getElementById("selectdb");
+    var dbdetalle =selectBox.options[0].value;
+    //var url = 'detalleinterface/' + ipdis + '/' + mac + '/' + vlan + '/' + vlan + '/' + vrf + '/' + pais + '/' + dbdetalle + '/';
+    alert(dbdetalle+ipdis+mac+vlan+interface);
+    $.ajax({
+      type: 'POST',
+      url: url,
+      headers: { 'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val() },
+      data: { ipdis: ipdis, mac: mac, vlan: vlan, interface: interface, bdetalle: dbsw},
+      success: function(response) { alert(response.detallainter); },
+      error: function(xhr, status, error) { alert('Resultado: ' + error); console.error('Error', error); }
+    });
+  }

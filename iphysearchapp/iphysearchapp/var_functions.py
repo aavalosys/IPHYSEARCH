@@ -1,7 +1,13 @@
 
+import time
 from iphysearchapp.var_env import *
+from netmiko import ConnectHandler
+from django.http import JsonResponse
 import mysql.connector 
 from django.db import connection
+import requests
+import subprocess
+import platform
 
 def conexion_dbbk(DBBK):  #CONEXION BK 10.10.26.5
     mydb = mysql.connector.connect(host= HOSTBK, user= USERBK, password=PASSWORDBK, database=DBBK, charset="utf8mb4")
@@ -39,7 +45,7 @@ def usuariolog():
     return usuario
 
 def actualizarbitacorasr(): 
-    dbrbs = "dbloip130324"
+    dbrbs = DBNEWLOCAL
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT *, DATEDIFF(CURDATE(), STR_TO_DATE(fecha, '%d/%m/%Y')) AS contador FROM"+
@@ -48,7 +54,7 @@ def actualizarbitacorasr():
     return listarsr
 
 def actualizarbitacoact(): 
-    dbrbs = "dbloip130324"
+    dbrbs = DBNEWLOCAL
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT *, DATEDIFF(CURDATE(), STR_TO_DATE(fecha, '%d/%m/%Y')) AS contador FROM"+
@@ -57,7 +63,7 @@ def actualizarbitacoact():
     return listaract
 
 def sumasr():
-    dbrbs = "dbloip130324"
+    dbrbs = DBNEWLOCAL
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT count(codigosractividad) FROM "+
@@ -67,7 +73,7 @@ def sumasr():
     return sumacasosr
 
 def sumaact():
-    dbrbs = "dbloip130324"
+    dbrbs = DBNEWLOCAL
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT count(codigosractividad) FROM "+
@@ -77,7 +83,7 @@ def sumaact():
     return sumaact
 
 def buscapaises():
-    dbrbs = "dbloip130324"
+    dbrbs = DBNEWLOCAL
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT *")
@@ -85,7 +91,7 @@ def buscapaises():
     return paises
 
 def vendors():
-    dbrbs = "dbloip130324"
+    dbrbs = DBNEWLOCAL
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT *")
@@ -93,7 +99,7 @@ def vendors():
     return vendors
 
 def nombrevlan():
-    dbrbs = "dbloip130324"
+    dbrbs = DBNEWLOCAL
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT *")
@@ -101,9 +107,50 @@ def nombrevlan():
     return vendors
 
 def nombrevlan():
-    dbrbs = "dbloip130324"
+    dbrbs = DBNEWLOCAL
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT *")
     vlans=mycursor.fetchall()
     return vlans
+
+def pingdesdepevpn(request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
+    pehuawei = {
+        "device_type": EQUIPOVPNBUSCAR,
+        "host": ippe,
+        "username": USERVPNBUSCAR,
+        "password": PASSVPNBUCAR,  
+        }
+    res_ping = ''
+    command1 = "terminal lenght 0"
+
+    try:
+        with ConnectHandler(**pehuawei) as net_connect:
+            output1 = net_connect.send_command(command1)
+            time.sleep(2)
+            command2 = "ping -b -m 20 -c 10 -vpn " + vrf + " " + ipcpe
+            output2 = net_connect.send_command(command2)
+            print ("Respuesta desde el PE: "+output2)
+            res_ping = output2
+            tipoalerta = '1'
+    except Exception as e:
+            res_ping = 'Ocurrio un error:' + str(e)
+            tipoalerta = '2'
+    return JsonResponse({"res_ping": res_ping})
+
+def elementoesup(ipsw):
+    second_element = 'X'
+    param = '-n' if platform.system().lower()=='windows' else '-c'
+    command = ['ping', param, '1', '-W', '1', ipsw]
+    resultado = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    if resultado.returncode == 0:
+        second_element = 'up'
+        print('resultado ping--- '+second_element)
+        return second_element 
+    else:
+        second_element = 'down'
+        print('resultado ping--- '+second_element)
+        return second_element
+  
+    return second_element

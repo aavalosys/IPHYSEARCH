@@ -1,3 +1,5 @@
+import os
+from django.http import JsonResponse
 from django.shortcuts import render
 import requests
 from iphysearchapp.var_env import *
@@ -80,7 +82,7 @@ def buscaserviciomac (request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
                    'res_ping': res_ping, 
                    'INFOR': INFOR})
 
-def elementoesping(request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
+def elementoesping(request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe): 
     limpiaINFO()
     try:
         url = f"http://10.10.26.4:5000/api/getpingvrf/"
@@ -194,18 +196,18 @@ def servicioespw(mac, subvlan, dbcpe):
                 if subvlan in str(vlan)]
     return listapws
 
+
+
 def elementoesup(ipsw):
     second_element = 'X'
-    mydb =  conexion_dbnet(DBESUP)
-    mycursor = mydb.cursor()
-    try:
-        mycursor.execute("SELECT status FROM uptime WHERE uptime.ip LIKE %s", ('%' + ipsw,))
-        url = f"http://10.10.26.4:5000/api/ping/"
-        response = requests.post(url, json=ipsw)
-        if response.status_code == 200:
-            second_element = response.json()[1]
-    except Exception as e:
-        second_element = 'X'
+
+    if os.system("ping -n 2  " + ipsw) == 0:
+        second_element = 'Up'
+        print('resultado ping--- '+second_element)
+    else:
+        second_element = 'Down'
+        print('resultado ping--- '+second_element)
+  
     return second_element
     
 
@@ -227,6 +229,4 @@ def limpiaINFO():
     INFOR[0][1] = ''
     INFOR[0][2] = ''
     INFOR[1][1] = ''
-    return
-
-
+    return 0

@@ -1,8 +1,9 @@
 from django.urls import path
-from . import descargar, home, busca_ips, busca_impactointerface, busca_impactoporpe, monitoreo_tcn, busca_varios, about, cgnatreport, catalogos, descargar
+from . import descargar, home, busca_ips, busca_impactointerface, busca_impactoporpe, monitoreo_tcn, busca_varios, about, cgnatreport, catalogos, descargar, resultaequipos
+from iphysearchapp.var_functions import pingdesdepevpn
 
 urlpatterns = [  #NAME ES EL NOMBRE DE LA URL
-    path('welcome/', home.home, name='welcome'),  
+    path('welcome/', home.home, name='welcome'),   
     path('buscaips', busca_ips.buscaips, name='buscaips'), 
     path('impactointerfaces', busca_impactointerface.impactointerfaces, name='impactointerfaces'),
     path('impactoporpe', busca_impactoporpe.impactoporpe, name='impactoporpe'),
@@ -14,8 +15,8 @@ urlpatterns = [  #NAME ES EL NOMBRE DE LA URL
     path('cgnatreport', cgnatreport.cgnat, name='cgnatreport'),
     path('descargarcsv/<str:pais>/', descargar.descargararchivo, name='descargarcsv'),
     path('about', about.about, name='about'),
-    path('about/cargar_datos/', about.cargar_datos, name='cargar_datos'),
-    path('about/cargar_nodos/', about.cargar_nodos, name='cargar_nodos'),
+    path('ping_cpeajax/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:vrf>/<str:pais>/<str:dbcpe>/', resultaequipos.elementoespingajax, name='ping_cpeajax'),
+    path('pingdesdepevpn/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:vrf>/<str:pais>/<str:dbcpe>/', pingdesdepevpn, name='pingdesdepevpn'),
     path('about/diagramal2/', about.diagramal2, name='diagramal2'),
     path('buscar_mac/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:vrf>/<str:pais>/<str:dbcpe>/', busca_ips.buscaserviciomac, name='buscar_mac'),
     path('ping_cpe/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:vrf>/<str:pais>/<str:dbcpe>/', busca_ips.elementoesping, name='ping_cpe'),

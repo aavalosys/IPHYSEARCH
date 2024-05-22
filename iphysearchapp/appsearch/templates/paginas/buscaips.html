@@ -14,6 +14,11 @@
                         <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
                         <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
                         <button type="submit" class="btn btn-danger"  name="buscar_rbs" value="Recargar">Buscar</button>
+                        <select id="selectdb" name="selectdbs" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example" onchange="copiaselectdbsrbs(); return;">
+                            {% for  db in dbs %}
+                              <option value="{{ db }}">{{ db }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     </form>
                     {% if listarbs %}
@@ -47,9 +52,9 @@
                         </div>
                 </form>
             </div>
-
+            <div class="col-md-4">
+            </div>
             <div class="col-md-4" style="margin-top: 6px;">
-
                 {% if tipoalerta == '0' %}
                 <div class="alert alert-dismissible alert-info">
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -92,23 +97,7 @@
                     </div>
                 {% endif %}
             </div>
-            <div class="col-md-4" style="margin-top: 6px;">
-                <div class="card border-success mb-3" style="max-width: 30rem;">
-                    <div class="card-header">Comandos:</div>
-                    <div class="card-body">
-                        <table id = "tablanodos" class="table table table-sm">
-                            <tbody>
-                            {% for cmd in INFOR %}
-                                <tr>
-                                    <td><b>{{cmd.0}}&nbsp{{cmd.1}}&nbsp{{cmd.2}}</b></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div> 
-            </div>
-            <script>onloadpag();</script>
+            <script>onloadpagbuscaips();</script>
         </div>
 
         <div class="row">    <!--SEGUNDA FILA</a>-->
@@ -146,18 +135,19 @@
                                         </a>
                                     </td>
                                     <td width="20">
-                                        <a id="idtest" 
-                                            href="{% url 'ping_cpe' ip.0 ip.1 ip.2 ip.3 ip.5 ip.6 ip.7 %}?boton=Ping" 
-                                            title="Ping" 
-                                            class="btn btn-info">Ping
-                                        </a>
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-primary" 
+                                            onclick="hacerpingelemento('{{ip.0}}', '{{ip.1}}', '{{ip.2}}', '{{ip.3}}', '{{ip.5}}', '{{ip.6}}', '{{ip.7}}')">
+                                            ping
+                                        </button>
                                     </td>                            
                                 </tr>
                                 {% endfor %}
                         </tbody>
                     </table>    
                 {% endif %}
-        </div>
+            </div>
 
         <div class="row" >   
             <div class="col-md-8">
@@ -170,7 +160,8 @@
                             <th scope="col" width="15">MAC</th>
                             <th scope="col" width="15">VLAN-PW</th>
                             <th scope="col" width="30">INTERFACE/PEER</th>
-                            <th scope="col" width="15">#</th>
+                            <th scope="col" width="15">DETALLE</th>
+                            <th scope="col" width="15">#MAC</th>
                             <th scope="col" width="40">DESCRIPCIÓN</th>
                         </tr>
                         </thead>
@@ -181,9 +172,14 @@
                                 <td width="80" >{{equipo.0}}</td>
                                 <td width="100">{{equipo.1}}</td>
                                 <td width="100">{{equipo.2}}</td>
-                                <td width="100">{{equipo.3}}
-                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" 
-                                            data-bs-target="#f{{equipo.8}}">&#x1F50E
+                                <td width="100">{{equipo.3}}</td> 
+                                <td width="100">
+                                    <button type="button" 
+                                            class="btn btn-info" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#f{{equipo.8}}"
+                                            onclick="verdetalleinterface('{{equipo.0}}', '{{equipo.1}}', '{{equipo.2}}', '{{equipo.3}}')">
+                                            &#x1F50E
                                     </button>
                                 </td>                                       
                                 <td width="30">{{equipo.4}}</td>
@@ -194,26 +190,7 @@
                 </table>
                 {% endif %}
             </div> 
-            <div class="col-md-4">
-                
-            </div>
         </div>
-    </div>
-
-    <div class="col-md-12">
-
-        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-              <strong class="me-auto">Bootstrap</strong>
-              <small>11 mins ago</small>
-              <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true"></span>
-              </button>
-            </div>
-            <div class="toast-body">
-              Hello, world! This is a toast message.
-            </div>
-          </div>
     </div>
 </div>
 {%endblock%}
