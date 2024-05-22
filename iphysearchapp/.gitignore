@@ -1,0 +1,13 @@
+*.pyc
+*~
+/__pycache__/
+db.sqlite3
+
+# Ignorar archivos de configuración local
+var_env.py
+
+# Ignorar archivos de configuración específicos de IDE o editor
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
