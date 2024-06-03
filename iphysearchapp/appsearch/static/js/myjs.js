@@ -80,19 +80,42 @@ function agregafechahora() {
     document.getElementById("idfechahora").value = `${dia}/${mes}/${año} ${hora}:${minutos} `;
     return;
 }
+function actualizarBarraProgreso() {
+    var porcentaje = 0;
+    var intervalo = setInterval(function() {
+    porcentaje += 100 / 8; 
+    $('#barraProgreso').css('width', porcentaje + '%').attr('aria-valuenow', porcentaje);
+        if (porcentaje >= 100) clearInterval(intervalo);
+    }, 1000);
+    }
 
-function hacerpingelemento(ippe, ipcpe, mac, vlan, vrf, pais, dbcpe) {
-    var url = 'pingdesdepevpn/' + ippe + '/' + ipcpe + '/' + mac + '/' + vlan + '/' + vrf + '/' + pais + '/' + dbcpe + '/';
-    alert("estas adentro de la funcion hacerpingelemento: "+url);
-    $.ajax({
-      type: 'POST',
-      url: url,
-      headers: { 'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val() },
-      data: {ippe: ippe, ipcpe: ipcpe, mac: mac, vlan: vlan, vrf: vrf, pais: pais, dbcpe: dbcpe },
-      success: function(response) { alert (response.res_ping);},
-      error: function(xhr, status, error) { alert('Resultado: ' + error+status+xhr);}
-    });
-  }
+
+    function hacerpingelemento(ippe, ipcpe, mac, vlan, vrf, pais, dbcpe) {
+        $('#resultadoModal').modal('show');
+        $('#barraProgreso').css('width', '0%').attr('aria-valuenow', 0);
+        actualizarBarraProgreso(); 
+        var url = 'pingdesdepevpn/' + ippe + '/' + ipcpe + '/' + mac + '/' + vlan + '/' + vrf + '/' + pais + '/' + dbcpe + '/';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            headers: { 'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val() },
+            data: { ippe: ippe, ipcpe: ipcpe, mac: mac, vlan: vlan, vrf: vrf, pais: pais, dbcpe: dbcpe },
+            success: function(response) {
+                $('#barraProgreso').css('width', '100%').attr('aria-valuenow', 100);
+                if(response && response.res_ping) {
+                    $('#resultadoPing').text(response.res_ping);
+                } else {
+                    $('#resultadoPing').text('No se pudo obtener el resultado del ping.');
+                }
+                setTimeout(function() {
+                    $('#barraProgreso').parent().hide();
+                    }, 500);
+                },
+            error: function(xhr, status, error) {
+                $('#resultadoPing').text('No se pudo obtener el resultado del ping. '+xhr+"-"+status+"-"+"Error:"+error);
+            }
+            });
+        }
 
   function verdetalleinterface(ipdis, mac, vlan, interface, dbsw) {
     var selectBox = document.getElementById("selectdb");

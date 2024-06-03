@@ -3,7 +3,7 @@ from . import descargar, home, busca_ips, busca_impactointerface, busca_impactop
 from iphysearchapp.var_functions import pingdesdepevpn
 
 urlpatterns = [  #NAME ES EL NOMBRE DE LA URL
-    path('welcome/', home.home, name='welcome'),   
+    path('welcome/', home.home, name='welcome'),    
     path('buscaips', busca_ips.buscaips, name='buscaips'), 
     path('impactointerfaces', busca_impactointerface.impactointerfaces, name='impactointerfaces'),
     path('impactoporpe', busca_impactoporpe.impactoporpe, name='impactoporpe'),

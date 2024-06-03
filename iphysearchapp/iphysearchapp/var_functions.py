@@ -122,19 +122,28 @@ def pingdesdepevpn(request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
         "password": PASSVPNBUCAR,  
         }
     res_ping = ''
+    alert = 0
     command1 = "terminal lenght 0"
-
     try:
         with ConnectHandler(**pehuawei) as net_connect:
             output1 = net_connect.send_command(command1)
             time.sleep(2)
-            command2 = "ping -b -m 20 -c 10 -vpn " + vrf + " " + ipcpe
-            output2 = net_connect.send_command(command2)
-            print ("Respuesta desde el PE: "+output2)
-            res_ping = output2
-            tipoalerta = '1'
+            command2 = "ping -b -m 20 -c 5 -vpn " + vrf + " " + ipcpe
+            output2 = net_connect.send_command(command2, read_timeout=40)
+            output2 = output2.replace("PING ", "", 1)
+            if '!!!!!' in output2:
+                output2 =  "Ping EXITOSO : "+"ping -b -m 20 -c 5 -vpn " + vrf + "\n" + output2 + "--- Favor validar RBS Gracias"
+                res_ping = output2
+                alert = '1'  
+            elif '.....' in output2:
+                output2 =  "Ping NO EXITOSO : "+command2 + "\n" + output2
+                res_ping = output2
+                alert = '2'
+            else:
+                res_ping = 'Ocurrio un error, output invalido:' + command2
+                alert = '3'
     except Exception as e:
-            res_ping = 'Ocurrio un error:' + str(e)
-            tipoalerta = '2'
-    return JsonResponse({"res_ping": res_ping})
+            res_ping = 'Ocurrio un error al ejecutar ping desde el PE:' + str(e)
+            alert = '3'
+    return JsonResponse({"res_ping": res_ping, "alert": alert})
 

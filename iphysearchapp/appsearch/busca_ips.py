@@ -30,7 +30,7 @@ def buscarbs(request):
     res_ping = "Este es el resultado de la Busqueda de elementos por ID"
     tipoalerta ="0"
     dbrbs = request.GET.get('dbrbs')
-    textrbs = request.GET.get('idrbs')
+    textrbs = request.GET.get('idrbs').lstrip()
     return render(request, "paginas/buscaips.html", 
                   {'listarbs': buscarbsid(dbrbs, textrbs),
                    'listaips': [],
@@ -46,7 +46,7 @@ def buscar_ip(request):
     res_ping = "Este es el resultado de la IP del elemento y las VPNs donde se observa."
     tipoalerta ="0"        
     dbcpe = request.GET.get('dbcpe')
-    textip = request.GET.get('ipcpe')
+    textip = request.GET.get('ipcpe').lstrip()
     return render(request, "paginas/buscaips.html", 
                       {'listarbs': buscarbsip(dbcpe, textip),
                        'listaips': buscaipcpe(dbcpe, textip),
