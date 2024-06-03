@@ -1,4 +1,5 @@
 
+import os
 import time
 from iphysearchapp.var_env import *
 from netmiko import ConnectHandler
@@ -147,3 +148,14 @@ def pingdesdepevpn(request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
             alert = '3'
     return JsonResponse({"res_ping": res_ping, "alert": alert})
 
+
+def elementoesup2(ipsw):
+    second_element = 'X'
+    if os.system("ping -n 2  " + ipsw) == 0:
+        second_element = 'Up'
+        print('resultado ping--- '+second_element)
+    else:
+        second_element = 'Down'
+        print('resultado ping--- '+second_element)
+  
+    return second_element

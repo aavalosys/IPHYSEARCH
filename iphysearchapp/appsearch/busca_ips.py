@@ -161,13 +161,16 @@ def servicioespw(mac, subvlan, dbcpe):
 
 def elementoesup(ipsw):
     second_element = 'X'
-    if os.system("ping -n 2  " + ipsw) == 0:
-        second_element = 'Up'
-        print('resultado ping--- '+second_element)
-    else:
-        second_element = 'Down'
-        print('resultado ping--- '+second_element)
-  
+    mydb =  conexion_dbnet(DBESUP)
+    mycursor = mydb.cursor()
+    try:
+        mycursor.execute("SELECT status FROM uptime WHERE uptime.ip LIKE %s", ('%' + ipsw,))
+        url = f"http://10.10.26.4:5000/api/ping/"
+        response = requests.post(url, json=ipsw)
+        if response.status_code == 200:
+            second_element = response.json()[1]
+    except Exception as e:
+        second_element = 'X'
     return second_element
     
 
