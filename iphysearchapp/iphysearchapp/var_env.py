@@ -21,7 +21,7 @@ INFOR = [['ping -b -c 100 -m 25 -vpn-instance', '', ''],
          ['display interface ', '', '']]
 
 USERVPNBUSCAR = 'buscarnodosip'
-PASSVPNBUCAR = '@Ningun2024!'
+PASSVPNBUCAR = ''
 EQUIPOVPNBUSCAR = 'huawei'
 
 DBNEWLOCAL = 'dbloip130324'
