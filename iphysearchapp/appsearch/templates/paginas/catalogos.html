@@ -4,7 +4,7 @@
 
 <div class="row" style="margin: 10px;">
     <div class="col-md-4">
-    </div>
+    </div> 
     <div class="col-md-4">
         {% if opcion == 'actividades' %}
                 <form action=" " method="GET">
@@ -35,7 +35,8 @@
     </div>
     <div class="col-md-4"> 
     </div>
-    <!--VENTANA MODAL -->
+
+    <!--VENTANA MODAL REGISTRO ACTIVIDAD-->
      <div class="modal fade" id="idformact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -49,27 +50,27 @@
                         {% csrf_token %}
                         <fieldset>  
                           <div class="form-group">
-                            <input class="form-control" id="ididentificador" type="text" name="ididentificador" placeholder="Identificador actividad" required>
+                            <input class="form-control" id="ididentificador" type="text" name="ididentificador" placeholder="Identificador actividad" required maxlength="95">  
+                        </div>
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input type="text" class="form-control" id="idtitulo" name="idtitulo" placeholder="Título actividad"  required maxlength="95">
                           </div>
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
-                            <input type="text" class="form-control" id="idtitulo" name="idtitulo" placeholder="Título actividad" required>
-                          </div>
-                          <div class="form-group">
-                            &nbsp&nbsp&nbsp&nbsp
-                            <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha actividad" required>
+                            <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha actividad" required >
                             <small id="emailHelp" class="form-text text-muted">Fecha de la actividad</small>
                             &nbsp&nbsp&nbsp&nbsp
-                            <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora actividad" required>
+                            <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora actividad" required >
                             <small id="emailHelp" class="form-text text-muted">Hora de la actividad</small>
                             </div>
                             <div class="form-group">
                                 &nbsp&nbsp&nbsp&nbsp
-                                <input type="text" class="form-control" id="iddescripcion" name="iddescripcion" placeholder="Descripción actividad" maxlength="150" oninput="this.value = this.value.substring(0, this.maxLength)" required>
+                                <input type="text" class="form-control" id="iddescripcion" name="iddescripcion" placeholder="Descripción actividad" maxlength="150" oninput="this.value = this.value.substring(0, this.maxLength)" required maxlength="140">
                             </div>
                           <div>
                             &nbsp&nbsp&nbsp&nbsp
-                            <textarea class="form-control" id="iddetalle" name="iddetalle" placeholder="Detalle" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)"></textarea>
+                            <textarea class="form-control" id="iddetalle" name="iddetalle" placeholder="Detalle" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)" required maxlength="180"></textarea>
                           </div>
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
@@ -83,10 +84,10 @@
                       </form>
                 </div>
             </div>
-        </div>
+        </div>  
      </div>
-    <!--VENTANA MODAL -->
-    <!--VENTANA MODAL -->
+
+    <!--VENTANA MODAL CASO PROVEEDOR-->
     <div class="modal fade" id="idformsr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -100,31 +101,41 @@
                         {% csrf_token %}
                         <fieldset>  
                           <div class="form-group">
-                            <input class="form-control" id="ididentificador" type="text" name="ididentificador" placeholder="Identificador caso sr" required>
+                            <input class="form-control" id="ididentificadorsr" type="text" name="ididentificadorsr" placeholder="Identificador caso sr" required maxlength="95">
                           </div>
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
-                            <input type="text" class="form-control" id="idtitulo" name="idtitulo" placeholder="Título caso" required>
+                            <input type="text" class="form-control" id="idtitulosr" name="idtitulosr" placeholder="Título caso" required maxlength="95">
                           </div>
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
-                            <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha apertura" required>
+                            <input type="date" class="form-control" id="idfechasr" name="fechasr" placeholder="Fecha apertura" required>
                             <small id="emailHelp" class="form-text text-muted">Fecha de la actividad</small>
                             &nbsp&nbsp&nbsp&nbsp
-                            <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora apertura" required>
+                            <input type="time" class="form-control" id="idhorasr" name="horasr" placeholder="Hora apertura" >
                             <small id="emailHelp" class="form-text text-muted">Hora de la actividad</small>
                             </div>
                             <div class="form-group">
                                 &nbsp&nbsp&nbsp&nbsp
-                                <input type="text" class="form-control" id="iddescripcion" name="iddescripcion" placeholder="Descripción caso" maxlength="150" oninput="this.value = this.value.substring(0, this.maxLength)" required>
+                                <input type="text" class="form-control" id="iddescripcionsr" name="iddescripcionsr" placeholder="Descripción caso" maxlength="150" oninput="this.value = this.value.substring(0, this.maxLength)" requrequired maxlength="180">
                             </div>
                           <div>
                             &nbsp&nbsp&nbsp&nbsp
-                            <textarea class="form-control" id="iddetalle" name="iddetalle" placeholder="Detalle del caso" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)"></textarea>
+                            <textarea class="form-control" id="iddetallesr" name="iddetallesr" placeholder="Detalle del caso" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)"required maxlength="180"></textarea>
                           </div>
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
-                            <input class="form-control" id="idfechahora" type="text" name="idfechahora" readonly="">
+                            <select id="idvendor" name="vendors" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
+                                {% for  items in vendors %}
+                                  <option value="{{ items }}">{{ items }}</option>
+                                {% endfor %}
+                            </select>
+                            &nbsp&nbsp&nbsp&nbsp
+                            <select id="idpais" name="paises" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
+                                {% for  pais in paises %}
+                                  <option value="{{ pais }}">{{ pais }}</option>
+                                {% endfor %}
+                            </select>
                           </div>
                           <div>
                             &nbsp&nbsp&nbsp&nbsp
@@ -136,8 +147,8 @@
             </div>
         </div>
      </div>
-    <!--VENTANA MODAL -->
-    <script>onloadpagevarios();</script>
+
+<script>onloadpagevarios();</script>
 
 </div>
 
@@ -169,7 +180,7 @@
                         <td >{{acti.8}}</td>
                         <td>
                             <button type="button" class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash"></i> Eliminar
+                            <i class="bi bi-trash"></i> Cerrar
                             </button>
                         </td>                                     
                     </tr>
@@ -190,7 +201,7 @@
                         <td >{{sr.9}}</td>
                         <td>
                             <button type="button" class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash"></i> Eliminar
+                            <i class="bi bi-trash"></i> Cerrar
                             </button>
                         </td>                                     
                     </tr>

@@ -1,19 +1,20 @@
 import os
+import requests
 from django.http import JsonResponse
 from django.shortcuts import render
-import requests
 from iphysearchapp.var_env import *
-from iphysearchapp.var_functions import *
-from .models import *
+from iphysearchapp.connect import *
+from appsearch.varias_func  import *
 
 
-def buscaips(request):
+
+def buscaips(request):   
     res_ping = "Bienvenidos al APP WEB, verificación de elementos de red"
     tipoalerta = "0"
     limpiaINFO()
-    if 'buscar_rbs' in request.GET:      
+    if 'buscar_rbs' in request.GET:    #SI ES BOTON IDRBS  
         return buscarbs(request)
-    elif 'buscar_ip' in request.GET:      
+    elif 'buscar_ip' in request.GET:   #SI ES BOTON IPCPE
         return buscar_ip(request)
     return render(request, "paginas/buscaips.html", 
                   {'listarbs': [],
@@ -25,7 +26,8 @@ def buscaips(request):
                     'res_ping': res_ping, 
                     'INFOR': INFOR})
 
-def buscarbs(request):
+
+def buscarbs(request):     #BUSQUEDA POR ID ELEMENTO
     limpiaINFO()        
     res_ping = "Este es el resultado de la Busqueda de elementos por ID"
     tipoalerta ="0"
@@ -41,7 +43,8 @@ def buscarbs(request):
                    'res_ping': res_ping,
                    'INFOR': INFOR}) 
 
-def buscar_ip(request):
+
+def buscar_ip(request):       #BUSQUEDA DE LA L3
     limpiaINFO()
     res_ping = "Este es el resultado de la IP del elemento y las VPNs donde se observa."
     tipoalerta ="0"        
@@ -57,14 +60,13 @@ def buscar_ip(request):
                        'res_ping': res_ping,
                        'INFO':INFOR,})
 
+
 def buscaserviciomac (request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
-    limpiaINFO()
-    switch = 0  #DESACTIVA EL DETALLE DE LAS INTERFACES
     res_ping = "Este es el resultado del trayecto L2 por donde se observa la MAC del elemento"
     tipoalerta ="0"
     vlan_f = int(vlan)
     if vlan_f < 4096:
-        listar_mac = servicioesnormal(mac, vlan, pais, dbcpe, switch)
+        listar_mac = servicioesnormal(mac, vlan, pais, dbcpe)
     else:
         listar_mac = servicioespw(mac, vlan, dbcpe)
     
@@ -93,6 +95,7 @@ def buscarbsid(dbrbs, textrbs):
 
     return listarbsid
 
+
 def buscarbsip(dbrbs, rbsip):         
     mydb =  conexion_dbnet(dbrbs)
     mycursor = mydb.cursor()
@@ -103,8 +106,9 @@ def buscarbsip(dbrbs, rbsip):
     mydb.close()
     return listarbsip
      
+
 def buscaipcpe(dbcpe, textip):
-    paracpe = ('%' + textip + '%',)            #BUSCA L3 DISPOSITIVO
+    paracpe = ('%' + textip + '',)            #BUSCA L3 DISPOSITIVO
     mydb =  conexion_dbnet(dbcpe)
     mycursor = mydb.cursor()
     query = """ SELECT * FROM ( 
@@ -124,7 +128,8 @@ def buscaipcpe(dbcpe, textip):
     listaips = [(resultado + (dbcpe,)) for resultado in resultados]
     return listaips
 
-def servicioesnormal(mac, vlan, pais, dbcpe, switch):
+
+def servicioesnormal(mac, vlan, pais, dbcpe):
     mydb =  conexion_dbnet(dbcpe)
     mycursor = mydb.cursor()
     tiposerv = 0
@@ -140,8 +145,7 @@ def servicioesnormal(mac, vlan, pais, dbcpe, switch):
         "' AND m.vlan = "+vlan+") mycount ON 1=1 WHERE  m.mac = '"+mac+"' AND m.vlan = "+vlan+
         " AND (((count = 0) AND (mycount.cnt = 1)) OR ((count > 0) AND (mycount.cnt > 0))) ORDER BY m.count asc")
         resultados = mycursor.fetchall()
-        resultados_es = [(resultado + (elementoesup(resultado[0]), detalleinterface(dbcpe, resultado[0], resultado[3],switch ),indice,)) for indice, resultado in enumerate(resultados)]
-        print(resultados_es)
+        resultados_es = [(resultado + (elementoesup(resultado[0]), indice,)) for indice, resultado in enumerate(resultados)]
         mydb.close()
     return resultados_es
 
@@ -172,24 +176,11 @@ def elementoesup(ipsw):
     except Exception as e:
         second_element = 'X'
     return second_element
-    
-
-def detalleinterface(dbcpe, ipsw, swinterface,swtch):
-    detalleinter = 'X'
-    try:
-        if swtch == 1:   # SE DESACTIVA EL DETALLE DE LAS INTERFACES. 
-            url = f"http://10.10.26.4:5000/api/getinterface/"
-            data_to_send = [dbcpe, ipsw, swinterface]
-            response = requests.post(url, json=data_to_send)
-            if response.status_code == 200:
-                datainterface = response.json()
-                detalleinter = datainterface[1].split('\n')
-    except Exception as e: 
-        detalleinter = 'X'
-    return detalleinter
 
 def limpiaINFO():
     INFOR[0][1] = ''
     INFOR[0][2] = ''
     INFOR[1][1] = ''
     return 0
+    
+ 

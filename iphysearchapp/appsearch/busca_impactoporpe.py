@@ -3,69 +3,48 @@ from mysql.connector import Error
 from django.core.cache import cache
 from iphysearchapp.databases import DATABASES
 from iphysearchapp.var_env import *
-from iphysearchapp.var_functions import * 
-from .models import *
+from iphysearchapp.connect import *
+from appsearch.varias_func import *
 
-def impactoporpe(request):
+
+def impactoporpe(request): 
     db = request.GET.get('dbstr')
-    ip = request.GET.get('strbuscado')
+    ippe = request.GET.get('strbuscado')
     conteovlans = []
-
-    if db is not None and ip is not None:
-        pais = obtpais(db,ip)
-        resultadoarp = buscaarppe(db, ip, pais)
-        conteovlans = contar_vlans(resultadoarp)
-        cache_key = f'interfaces_{ip}'
-        cache.set(cache_key, {'resultadoarp': resultadoarp, 'db': db})
+    backuppe = [('','','','','')]
+    equipo = [('','','','','','','','','','','','')]
+    
+    if db is not None and ippe is not None:
+        equipo = obteneequipo(db,ippe)
+        pais = obtenerpais(db,ippe)
+        print
+        resultadoarp = buscaarppe(db, ippe, pais)
+        vlan_nombre = nombrevlanspe(ippe)
+        conteovlans = contar_vlans_pe(resultadoarp, vlan_nombre)
+        backuppe = buscabackups("temp_db",ippe)
     else:
         db = '-'
-        ip = '-'
+        ippe = '-'
         pais = '-'
         resultadoarp = []
         conteovlans = []
+        backuppe = [('','','','','')]
+        equipo = [('','','','','','','','','','','','')]
+    
+    lines = backuppe[0][3].splitlines()
+    formatted_text = '\n'.join(lines)
     return render(request,'paginas/buscaimpactoporpe.html',
                 {   'db':db,  
-                    'ip':ip,
-                    'pais':pais,
+                    'ip':equipo[0][0],
+                    'nemonico':equipo[0][1],
+                    'ubicacion':equipo[0][10],
+                    'snmp':equipo[0][7],
+                    'pais':conviertepais(pais),
                     'conteovlans':conteovlans,
-                    'resultadoarp':resultadoarp,  
+                    'resultadoarp':resultadoarp,
+                    'backuppe':formatted_text,  
                     'dbs': esquemata(),
                     'user': usuariolog(),
                 })
-
-def buscaarppe(db, ip, pais): 
-    mydb =  conexion_dbnet(db)
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT * FROM "+db+".arp_"+pais+" where ip = '"+ip+"';")
-    resultadoarp = mycursor.fetchall()
-    mydb.close()
-    return resultadoarp
-
-def obtpais(db,ip):
-    mydb =  conexion_dbnet(db)
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT pais FROM "+db+".equipos where ip like '%"+ip+"';")
-    pais = mycursor.fetchall()
-    pais = pais[0][0].lower()
-    mydb.close()
-    return pais
-
-
-def contar_vlans(resultadoarp):
-    conteo = []
-    for item in resultadoarp:
-        valor_columna_3 = item[2]
-        encontrado = False
-        for elemento in conteo:
-            if elemento[0] == valor_columna_3:
-                elemento[1] += 1
-                encontrado = True
-                break
-        if not encontrado:
-            conteo.append([valor_columna_3, 1, ""])  # Puedes añadir una descripción aquí si lo necesitas
-        
-    return conteo
-
-
 
 

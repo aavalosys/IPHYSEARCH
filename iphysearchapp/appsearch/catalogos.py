@@ -3,9 +3,9 @@ from django.db import connection
 from datetime import datetime
 from iphysearchapp.databases import DATABASES
 from iphysearchapp.var_env import *
-from iphysearchapp.var_functions import *
-from appsearch.busca_ips import *
-from .models import *
+from iphysearchapp.connect import *
+from appsearch.varias_func import *
+from appsearch.busca_ips import * 
  
 
 def catalogos(request, selectedoption):
@@ -15,15 +15,17 @@ def catalogos(request, selectedoption):
     headtable = []
     listaract = []
     listasr = []
+    vendors = ['CISCO', 'HUAWEI', 'GOOGLE', 'NETFLIX', 'AKAMAI']
+    paises = ['GUATEMALA', 'EL SALVADOR', 'HONDURAS', 'NICARAGUA', 'COSTA RICA']
 
-    if selectedoption == 'actividades':
+    if selectedoption == 'actividades':           #AL BUSCAR
         opcion = 'actividades'
         headtable = headselector(selectedoption)
-        listaract = muestraactividades(20,'')
+        listaract = muestraregistros(20,'')
     elif selectedoption == 'casossr':
         opcion = 'casos SR'
         headtable = headselector(selectedoption)
-        listasr = muestraactividades(10,'')
+        listasr = muestraregistros(10,'')
     elif selectedoption == 'buscaregistros':
         opcion = 'registros'
         headtable = headselector(selectedoption)
@@ -32,9 +34,9 @@ def catalogos(request, selectedoption):
 
     if db is not None and idtxtabuscar is not None: #AL INGRESAR A LA OPCION
         if selectedoption == 'actividades':
-            listaract = muestraactividades(20,idtxtabuscar)
+            listaract = muestraregistros(20,idtxtabuscar)
         elif selectedoption == 'casossr':
-            listasr = muestraactividades(10,idtxtabuscar)
+            listasr = muestraregistros(10,idtxtabuscar)
         
 
     return render(request,'paginas/catalogos.html',
@@ -42,12 +44,15 @@ def catalogos(request, selectedoption):
                     'listaract':listaract,
                     'listasr':listasr,  
                     'headtable':headtable,
-                    'resultado':resultado,    
+                    'resultado':resultado,
+                    'vendors':vendors,
+                    'paises':paises,    
                     'dbs': esquemata(),
                     'user': usuariolog(),
                 })
 
-def muestraactividades(tipo,abuscar):
+
+def muestraregistros(tipo,abuscar):
     dbrbs = "dbloip130324"
     print(tipo)
     mydb =  conexion_dbown(dbrbs)
@@ -70,8 +75,13 @@ def  headselector(selectedoption):
         headtable = []
     return headtable
 
+
+
+
 def agregaractividad(request):
     dbrbs = "dbloip130324"
+    vendors = ['CISCO', 'HUAWEI', 'GOOGLE', 'NETFLIX', 'AKAMAI']
+    paises = ['GUATEMALA', 'EL SALVADOR', 'HONDURAS', 'NICARAGUA', 'COSTA RICA']
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     if request.method == 'POST':
@@ -84,7 +94,7 @@ def agregaractividad(request):
         descripcion = request.POST.get('iddescripcion')
         detalle = request.POST.get('iddetalle')
         observfechahoraactual = request.POST.get('idfechahora')
-        estado = "3"
+        estado = "ABIERTA"
         pais = ""
         tipo = "20"
 
@@ -105,30 +115,37 @@ def agregaractividad(request):
     return render(request,'paginas/catalogos.html',
                 {   'opcion':'actividades',  
                     'headtable':headselector('actividades'), 
-                    'resultado':[],    
+                    'resultado':[],
+                    'vendors':vendors,
+                    'paises':paises,     
                     'dbs': esquemata(),
                     'user': usuariolog(),
                 }) 
 
+
+
+
+
 def agregarsr(request):
     dbrbs = "dbloip130324"
+    vendors = ['CISCO', 'HUAWEI', 'GOOGLE', 'NETFLIX', 'AKAMAI']
+    paises = ['GUATEMALA', 'EL SALVADOR', 'HONDURAS', 'NICARAGUA', 'COSTA RICA']
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
-    paises=buscapaises()
-    vendors=vendors()
-
 
     if request.method == 'POST':
-        codigoact = request.POST.get('ididentificador')
-        titulo = request.POST.get('idtitulo')
-        fechain = request.POST.get('idfechaact').strftime('%d/%m/%Y')
-        hora = request.POST.get('idhoraact')
-        descripcion = request.POST.get('iddescripcion')
-        detalle = request.POST.get('iddetalle')
-        observendor = request.POST.get('idfechahora')
-        estado = "3"
-        pais = ""
-        tipo = "10"
+        codigoact = request.POST.get('ididentificadorsr')
+        titulo = request.POST.get('idtitulosr')
+        fecha = request.POST.get('fechasr')
+        fecha_dt = datetime.strptime(fecha, '%Y-%m-%d')  
+        fechain = fecha_dt.strftime('%d/%m/%Y')
+        hora = request.POST.get('horasr')
+        descripcion = request.POST.get('iddescripcionsr')
+        detalle = request.POST.get('iddetallesr')
+        observendor = request.POST.get('vendors')
+        estado = "ABIERTO"
+        pais = request.POST.get('paises')
+        tipo = "10"  #CASO PROVEEDOR
 
     consulta_sql = """
             INSERT INTO {}.bitacorasract (codigosractividad, titulo, fecha, hora, descripcion, 
@@ -147,10 +164,14 @@ def agregarsr(request):
     return render(request,'paginas/catalogos.html',
                 {   'opcion':'actividades',  
                     'headtable':headselector('actividades'), 
-                    'resultado':[],    
+                    'resultado':[],
+                    'vendors':vendors,
+                    'paises':paises,     
                     'dbs': esquemata(),
                     'user': usuariolog(),
                 }) 
+
+
 
 def buscaregistros():
 

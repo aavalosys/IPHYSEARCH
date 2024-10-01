@@ -4,7 +4,10 @@
 
 <div class="row" style="margin: 10px;">
     <div class="col-md-12">
+        <ion-icon name="browsers-outline"></ion-icon>
         <div class="row">
+
+            <!--PRIMERA COLUMNA FILA 1-->
             <div class="col-md-4" style="margin-top: 6px;">
                 <form  action="/buscaips" method="GET">
                     {% csrf_token %}
@@ -16,6 +19,7 @@
                         <button type="submit" class="btn btn-danger"  name="buscar_rbs" value="Recargar">Buscar</button>
                     </div>
                     </form>
+
                     {% if listarbs %}
                         <table id = "tablanodos" class="table table table-sm">
                             <thead>
@@ -36,6 +40,7 @@
                         </tbody>
                         </table>
                     {% endif %}
+
                     <form  action="/buscaips" method="GET">
                         {% csrf_token %}
                         <div class="input-group mb-3" style="margin-top: 6px;">
@@ -52,9 +57,15 @@
                         </div>
                 </form>
             </div>
+
+            <!--SEGUNDA COLUMNA FILA 1-->
             <div class="col-md-4">
+
             </div>
+
+            <!--TERCERA COLUMNA FILA 1-->
             <div class="col-md-4" style="margin-top: 6px;">
+
                 {% if tipoalerta == '0' %}
                 <div class="alert alert-dismissible alert-info">
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -70,32 +81,35 @@
                     <div class="alert alert-dismissible alert-success">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         {%if res_ping %}
-                            <strong>{{ res_ping }}</strong>. 
-                        {% else %}
                             <strong>{{ res_ping }}</strong> 
+                        {% else %}
+                            <strong>{{ res_ping }}</strong>-- Excepción desde la API.
                         {% endif %} 
                     </div>
                 {% endif %}
+
                 {% if tipoalerta == '2' %}
                     <div class="alert alert-dismissible alert-danger">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         {%if res_ping %}
                             <strong>{{ res_ping }}</strong>. 
                         {% else %}
-                            <strong>{{ res_ping }}</strong>. 
+                            <strong>{{ res_ping }}</strong>-- Excepción desde la API. 
                         {% endif %} 
                     </div>
                 {% endif %}
+
                 {% if tipoalerta == '3' %}
                     <div class="alert alert-dismissible alert-primary">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         {%if res_ping %}
                             <strong>{{ res_ping }}</strong>. 
                         {% else %}
-                            <strong>{{ res_ping }}</strong>. 
+                            <strong>{{ res_ping }}</strong>-- Excepción desde la API.
                         {% endif %} 
                     </div>
                 {% endif %}
+
             </div>
             <script>onloadpagbuscaips();</script>
         </div>
@@ -128,18 +142,21 @@
                                     <td width="140">{{ip.6}}</td>
                                     <td width="140">{{ip.7}}</td>
                                     <td width="20">
-                                        <a  id="idbuscaservicio"
-                                            href="{% url 'buscar_mac' ip.0 ip.1 ip.2 ip.3 ip.5 ip.6 ip.7 %}?boton=ver" 
-                                            title="Ver" 
-                                            class="btn btn-info">Ver
-                                        </a>
-                                    </td>
-                                    <td width="20">
-                                        <button 
+                                        <button
+                                            id="Verbtn"
+                                            type="button" 
+                                            class="btn btn-info"
+                                            onclick="listar_tabla_mac('{{ip.0}}', '{{ip.1}}', '{{ip.2}}', '{{ip.3}}', '{{ip.4}}', '{{ip.5}}', '{{ip.6}}', '{{ip.7}}');">
+                                            VER
+                                        </button>
+                                    </td> 
+                                        <td width="20">
+                                            <button
+                                            id = "Pingbtn" 
                                             type="button" 
                                             class="btn btn-primary" 
-                                            onclick="hacerpingelemento('{{ip.0}}', '{{ip.1}}', '{{ip.2}}', '{{ip.3}}', '{{ip.5}}', '{{ip.6}}', '{{ip.7}}'); return false;">
-                                            ping
+                                            onclick="hacerpingelemento('{{ip.0}}', '{{ip.1}}', '{{ip.5}}', '{{ip.6}}', '{{ip.7}}'); return false;">
+                                            PING
                                         </button>
                                     </td>                            
                                 </tr>
@@ -151,48 +168,12 @@
 
         <div class="row" >   
             <div class="col-md-8">
-                {% if listar_mac %}
-                <table id = "tablaips" class="table table table-sm">
-                        <thead >
-                        <tr>
-                            <th scope="col" width="15">ESTADO</th>
-                            <th scope="col" width="20">DISPOSITIVO</th>            
-                            <th scope="col" width="15">MAC</th>
-                            <th scope="col" width="15">VLAN-PW</th>
-                            <th scope="col" width="30">INTERFACE/PEER</th>
-                            <th scope="col" width="15">DETALLE</th>
-                            <th scope="col" width="15">#MAC</th>
-                            <th scope="col" width="40">DESCRIPCIÓN</th>
-                        </tr>
-                        </thead>
-                    <tbody>
-                            {% for equipo in listar_mac %}
-                            <tr {% if equipo.6 == 'Up' %} class="table-success" {% else %} class="table-danger" {% endif %}>
-                                <td width="30" >{{equipo.6}}</td>
-                                <td width="80" >{{equipo.0}}</td>
-                                <td width="100">{{equipo.1}}</td>
-                                <td width="100">{{equipo.2}}</td>
-                                <td width="100">{{equipo.3}}</td> 
-                                <td width="100">
-                                    <button type="button" 
-                                            class="btn btn-info" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#f{{equipo.8}}"
-                                            onclick="verdetalleinterface('{{equipo.0}}', '{{equipo.1}}', '{{equipo.2}}', '{{equipo.3}}')">
-                                            &#x1F50E
-                                    </button>
-                                </td>                                       
-                                <td width="30">{{equipo.4}}</td>
-                                <td width="30">{{equipo.5}}</td>   
-                            </tr>
-                            {% endfor %}
-                    </tbody>
-                </table>
-                {% endif %}
             </div> 
+            <table id="tablamac" class="table table-sm"></table>
         </div>
     </div>
-    <!-- Modal -->
+
+    <!-- Modal ping desde PE-->
     <div class="modal fade" id="resultadoModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -211,11 +192,39 @@
                     <p id="resultadoPing"></p>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-info" onclick="copiarAlPortapapeles()">Copiar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal detalle interface -->
+
+    <div class="modal fade" id="resultadoModalinterface" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelinterdetalle">Detalle de la Interface:</h5>
+                </div>
+                <style>
+                    .progress-bar {
+                    transition: width 1s ease-in-out;
+                    }
+                </style>
+                <div class="progress" style="margin: 0 5mm;">
+                    <div class="progress-bar" role="progressbar" id="barraProgresodetalle" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="modal-body">
+                    <p id="detalleInterface"></p>
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 {%endblock%}
 

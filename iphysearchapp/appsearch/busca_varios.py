@@ -4,9 +4,9 @@ from django.shortcuts import render
 from django.db import connection
 from iphysearchapp.databases import DATABASES
 from iphysearchapp.var_env import *
-from iphysearchapp.var_functions import *
+from iphysearchapp.connect import *
+from appsearch.varias_func import *
 from appsearch.busca_ips import *
-from .models import *
  
 
 def buscavarios(request, selectedoption):

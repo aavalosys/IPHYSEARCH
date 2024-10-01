@@ -5,20 +5,27 @@
 <div class="row" style="margin: 10px;">
     <div class="col-md-4">
     </div>
+
     <div class="col-md-4">
-        <form  method="GET">
+        <form  action="/impactointerfaces" method="GET">
             {% csrf_token %}
             <div class="input-group mb-3" style="margin-top: 5px;">
                 <span class="input-group-text">Ingrese la IP:</span>
                 <input type="text"  id="idtxtabuscar" name="strbuscado" class="form-control"  placeholder="Ip equipo afectado ...." required>
-                <input type="hidden" id="idtxtdb" name="dbstr"> 
+                <input type hidden id="idtxtdb" name="dbstr"> 
                 <button type="submit" class="btn btn-danger" name="impactointerfaces" >Buscar</button>
+                <select id="selectdb" name="selectdbs" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example" onchange="copiaselectdbsrbs(); return;">
+                    {% for  db in dbs %}
+                      <option value="{{ db }}">{{ db }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </form>
     </div>
+
     <div class="col-md-4"> 
-        
     </div>
+
     <script>onloadpagevarios();</script>
 </div>
 
@@ -32,25 +39,25 @@
         </style>
         <table id = "tablanodos" class="table table table-sm " >
             <thead>
-            <tr>
-                <th scope="col" width="40">NO.</th>
-                <th scope="col" width="40">IP-EQUIPO</th>
-                <th scope="col" width="40">INTERFACE</th>
-                <th scope="col" width="40">DESCRIPCIÓN</th>
-                <th scope="col" width="40">VER</th>
-            </tr>
+                <tr>
+                    <th scope="col" width="20">NO.</th>
+                    <th scope="col" width="40">EQUIPO</th>
+                    <th scope="col" width="40">INTERFACE</th>
+                    <th scope="col" width="40">DESCRIPCIÓN</th>
+                    <th scope="col" width="40">VER</th>
+                </tr>
             </thead>
         <tbody>
             {% if listadointerfaces %}
                 {% for interface in listadointerfaces %}
                 <tr>
-                    <td width="40"><a>{{interface.0}}</a></td>
+                    <td width="20"><a>{{interface.0}}</a></td>
                     <td width="40"><a>{{interface.1}}</a></td>
                     <td width="40"><a>{{interface.2}}</a></td>
                     <td width="40"><a>{{interface.5}}</a></td>
                     <td width="20"> 
                         <a id="{{ interface.2 }}"
-                            href="{% url 'buscasaturacion' interface.1  interface.0 %}?boton=ver" 
+                            href="{% url 'buscasaturacion' interface.1  interface.0  interface.9 pais %}?boton=ver" 
                             title="Ver" 
                             class="btn btn-info">Ver
                         </a>
@@ -65,39 +72,79 @@
         </tbody>
         </table>
     </div>
-    <div class="col-md-3">
-        <div class="card border-danger mb-3" style="max-width: 32rem;">
-            <div class="card-header"><h4>Detalle:</h4></div>
-            <div class="card-body">
-                <h5>País:&nbsp{{pais}}</h5>
-                <h5>Base de Datos:&nbsp{{db}}</h5>
-                <h5>Interface:&nbsp{{interface}}</h5>
-                <ul class="list-group">
-                    <table>
-                            <tr>
-                                <th scope="col" width="40">INTERFACE</th>
-                                <th scope="col" width="40">DESCRIPCIÓN</th>
-                                <th scope="col" width="40">ESTADO</th>
-                            </tr>
+
+    <div class="col-md-4">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <strong>RESUMEN</strong>
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <h5>País:&nbsp{{pais}}</h5>
+                    <h5 id="dbinter" name="dbinter" >Base de Datos:&nbsp{{db}}</h5>
+                    <h5>Interface:&nbsp{{interface}}</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">VLAN</th>
+                                    <th scope="col">NOMBRE</th>
+                                    <th scope="col">CONTEO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cont in conteo_vlan_mac %}
+                                    <tr>
+                                        <td style="text-align: left;"><a>{{ cont.0 }}</a></td>
+                                        <td style="text-align: left;"><a>{{ cont.1 }}</a></td>
+                                        <td style="text-align: right;"><a>{{ cont.2 }}</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <strong>DETALLE</strong>
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" >MAC</th>
+                                    <th scope="col" >VLAN</th>
+                                    <th scope="col" >NOMBRE</th>
+                                </tr>
+                            </thead>
                         <tbody>
-                            {% if conteovlans %}
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {% for vlan in conteovlans %}
-                                        <tr>
-                                            <td style="text-align: left;"><a>{{ vlan.0 }}</a></td>
-                                            <td style="text-align: left;"><a>{{ vlan.1 }}</a></td>
-                                            <td><span class="badge bg-primary rounded-pill">{{ vlan.2 }}</span></td>  
-                                        </tr> 
-                                    {% endfor %}    
-                                </li>
+                            {% if  tabla_mac_vlan  %}
+                                {% for vlan in tabla_mac_vlan %}
+                                    <tr>
+                                        <td style="text-align: left;"><a>{{ vlan.0 }}</a></td>
+                                        <td style="text-align: left;"><a>{{ vlan.1 }}</a></td>
+                                        <td style="text-align: left;"><a>{{ vlan.2 }}</a></td>  
+                                    </tr> 
+                                {% endfor %}    
                             {% else %}
                                 <tr>
                                     <td colspan="2">No se encontraron registros.</td>
                                 </tr>
                             {% endif %}
                         </tbody>
-                    </table>
-                </ul>
+                        </table>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </div>

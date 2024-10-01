@@ -4,8 +4,8 @@ from django.http import HttpResponse
 from appsearch.cgnatreport import consultarcgnat, convertiraformatocsv
 from iphysearchapp.databases import DATABASES
 from iphysearchapp.var_env import *
-from iphysearchapp.var_functions import *
-from .models import *
+from iphysearchapp.connect import *
+from appsearch.varias_func import *
 
 def descargararchivo(request, pais):
     fecha = date.today().strftime("%d-%m-%Y")

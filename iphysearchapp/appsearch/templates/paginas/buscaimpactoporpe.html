@@ -5,94 +5,167 @@
 <div class="row" style="margin: 10px;">
     <div class="col-md-4">
     </div>
+
     <div class="col-md-4">
-        <form  method="GET">
+        <form  action="/impactoporpe" method="GET"> 
             {% csrf_token %}
             <div class="input-group mb-3" style="margin-top: 5px;">
-                <span class="input-group-text">Ingrese el PE...:</span>
+                <span class="input-group-text">Ingrese la IP del PE...:</span>
                 <input type="text"  id="idtxtabuscar" name="strbuscado" class="form-control"  placeholder="Ip equipo afectado ...." required>
                 <input type="hidden" id="idtxtdb" name="dbstr"> 
-                <button type="submit" class="btn btn-danger" name="impactointerfaces" >Buscar</button>
+                <button type="submit" class="btn btn-danger" name="impactoporpe" >Buscar</button>
+                <select id="selectdb" name="selectdbs" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example" onchange="copiaselectdbsrbs(); return;">
+                    {% for  db in dbs %}
+                      <option value="{{ db }}">{{ db }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </form>
     </div>
-    <div class="col-md-4"> 
-        
+
+    <div class="col-md-4">         
     </div>
     <script>onloadpagevarios();</script>
 </div>
 
 <div class="row" style="margin: 5px;"> 
-    <div class="col-md-7">
-        <style>
-            #tablanodos thead {
-                background-color:  #f8f9f9; 
-                color: #000000; 
-            }
-        </style>
-        <table id = "tablanodos" class="table table table-sm " >
-            <thead>
-            <tr>
-                <th scope="col" width="40">SERVICIO.</th>
-                <th scope="col" width="40">MAC</th>
-                <th scope="col" width="40">VLAN</th>
-                <th scope="col" width="40">INTERFACE</th>
-                <th scope="col" width="40">VRF</th>
-            </tr>
-            </thead>
-        <tbody>
-            {% if resultadoarp %}
-                {% for servicio  in resultadoarp %}
-                <tr>
-                    <td width="40"><a>{{servicio.1}}</a></td>
-                    <td width="40"><a>{{servicio.2}}</a></td>
-                    <td width="40"><a>{{servicio.3}}</a></td>
-                    <td width="40"><a>{{servicio.4}}</a></td>
-                    <td width="40"><a>{{servicio.5}}</a></td> 
-                </tr>
-                {% endfor %}
-            {% else %}
-            <tr>
-                <td colspan="2">No se encontraron registros.</td>
-            </tr>
-            {% endif %}
-        </tbody>
-        </table>
+
+    <div class="col-md-2">
     </div>
-    <div class="col-md-4">
-        <div class="card border-danger mb-3" style="max-width: 32rem;">
-            <div class="card-header"><h4>Detalle:</h4></div>
-            <div class="card-body">
-                <h5>País:&nbsp{{pais}}</h5>
-                <h5>Base de Datos:&nbsp{{db}}</h5>
-                <h5>PE:&nbsp{{ip}}</h5>
-                <ul class="list-group">
-                    <table>
+
+    <div class="col-md-8">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <strong>RESUMEN</strong>
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>País: {{ pais }}</h5>
+                            <h5>DB: {{ db }}</h5>
+                            <h5>SNMP:</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Nemónico: {{ nemonico    }}</h5>
+                            <h5>Ip PE: {{ ip }}</h5>
+                            <h5>Ubicación: {{ ubicacion }}</h5>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <th scope="col" width="40">VLAN </th>
-                                <th scope="col" width="40">DESCRIPCIÓN</th>
-                                <th scope="col" width="40">CANTIDAD</th>
+                            <th scope="col" width="20">VLAN</th>
+                            <th scope="col" width="60">DESCRIPCIÓN</th>
+                            <th scope="col" width="20">CANTIDAD</th>
                             </tr>
+                        </thead>
                         <tbody>
-                        {% if conteovlans %}
-                            {% for vlan  in conteovlans %}
+                            {% if conteovlans %}
+                            {% for vlan in conteovlans %}
                                 <tr>
-                                    <td width="40"><a>{{vlan.1}}</a></td>
-                                    <td width="40"><a>{{vlan.2}}</a></td>
-                                    <td width="40"><a>{{vlan.3}}</a></td>
+                                <td width="20"><a>{{ vlan.0 }}</a></td>
+                                <td width="60"><a>{{ vlan.1 }}</a></td>
+                                <td width="20"><a>{{ vlan.2 }}</a></td>
                                 </tr>
                             {% endfor %}
-                        {% else %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3">No se encontraron registros.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <strong>DETALLE</strong>
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <style>
+                            #tablanodos thead {
+                                background-color:  #f8f9f9; 
+                                color: #000000; 
+                            }
+                        </style>
+                        <table id = "tablanodos" class="table table table-sm " >
+                            <thead>
+                            <tr>
+                                <th scope="col" width="40">SERVICIO.</th>
+                                <th scope="col" width="40">MAC</th>
+                                <th scope="col" width="40">VLAN</th>
+                                <th scope="col" width="40">INTERFACE</th>
+                                <th scope="col" width="40">VRF</th>
+                            </tr>
+                            </thead>
+                        <tbody>
+                            {% if resultadoarp %}   
+                                {% for servicio  in resultadoarp %}
+                                <tr>
+                                    <td width="40"><a>{{servicio.1}}</a></td>
+                                    <td width="40"><a>{{servicio.2}}</a></td>
+                                    <td width="40"><a>{{servicio.3}}</a></td>
+                                    <td width="40"><a>{{servicio.4}}</a></td>
+                                    <td width="40"><a>{{servicio.5}}</a></td> 
+                                </tr>
+                                {% endfor %}
+                            {% else %}
                             <tr>
                                 <td colspan="2">No se encontraron registros.</td>
                             </tr>
-                        {% endif %}
+                            {% endif %}
                         </tbody>
-                    </table>
-                </ul>
+                        </table>
+                    </div>
+                </div>
             </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <strong>BACKUP</strong>
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <p>{{ backuppe|safe|linebreaksbr }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <div class="col-md-2">
+    </div>
+
+
 </div>
+
+<div class="row" style="margin: 10px;">
+    <div class="col-md-4">
+    </div>
+
+    <div class="col-md-4">
+    </div>
+
+    <div class="col-md-4">         
+    </div>
+
+</div>
+
  {%endblock%}
 
