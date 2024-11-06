@@ -1,33 +1,43 @@
 {% load static %}
+
 <!doctype html>
+<script src="{% static 'js/myjs.js' %}"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+      integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+      integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous">
+</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js">
+</script>
 <html lang="en">
-
-<head>
-  <title>{% block titulo %}  {% endblock %}</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS v5.2.0-beta1 -->
-  <link rel="stylesheet" href="{% static 'Backups_App/css/bootstrap.min.css' %}"> 
-  <link rel="shortcut icon" type="image/png" href="{% static 'Backups_App/img/server-storage.png' %}"/>
-</head>
+  <head>
+    <title>{% block titulo %}{% endblock %}</title> 
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}"> 
+      <link rel="shortcut icon" type="image/png" href="{% static '/img/rana_icon.png' %}"/>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" 
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/css/ionicons.min.css">
+  </head>
 
 <body>
   <header>
     <!-- place navbar here -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <div class="p-3 mb-2 bg-transparent text-dark"><img src="{% static 'Backups_App/img/logo_claro_small.png' %}" alt="..."></div>
-          <a class="navbar-brand" >BOIP Login </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <div class="p-3 mb-2 bg-transparent text-dark">
+                <img src="{% static '/img/logo_claro_small.png' %}" alt="...">
+            </div>
+            <a class="navbar-brand" >BOIP Login </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav me-auto">
-            
-            </ul>  
-        
           </div>
         </div>
       </nav>
@@ -35,16 +45,20 @@
   </header>
   
 <div class="card">
-    <div class="card-header">
 
-    </div>
-   
+  <div class="col-md-1" style="margin: 10px;"> 
+  </div> 
+
+  <div class="col-md-6" style="margin: 10px;">
+
     <form action="{% url 'login' %}" method="post">
       {% csrf_token %}
       <div class="mb-3">
         <label for="exampleInputUser1" class="form-label">Usuario</label>
         <input type="username" name="username" class="form-control" id="exampleInputUser1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">Nunca comparta estas credenciales con nadie más.</div>
+        <div id="emailHelp" class="form-text">
+          Nunca comparta estas credenciales con nadie más.
+         </div>
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Contraseña</label>
@@ -52,10 +66,24 @@
       </div>
       <button type="submit" class="btn btn-primary">Iniciar sesión</button>
     </form>
-    <p></p>
-    <div class="card-footer text-muted">
-      BOIP Backups v1.0.0 | Contacto: backofficeip@claro.com.gt - nelson.avalos@claro.com.gt
-    </div>
+
+    {% if messages %}
+      <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+          {{ message }}<br>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+  
+  <div class="col-md-5" style="margin: 10px;"> 
+  </div>
+
+  <div class="card-footer text-muted">
+    BOIP PORTAL v1.1.0 | Contacto: backofficeip@claro.com.gt - nelson.avalos@claro.com.gt
+  </div>
+  
 </div>
   
 </body>

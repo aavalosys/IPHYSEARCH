@@ -3,7 +3,7 @@ from .var_env import *
 DATABASES={
             'default': {
                 'ENGINE': ENGINE,
-                'NAME': 'fy2023w30',
+                'NAME': 'fy2023w30',   #SE DEBE ELIMINAR Y APUNTAR A UNA DEL MANEJADOR LOCAL
                 'USER': USER,
                 'PASSWORD': PASSWORD,
                 'HOST': HOST,

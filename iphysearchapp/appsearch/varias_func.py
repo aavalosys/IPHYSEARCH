@@ -16,7 +16,7 @@ def pingdesdepevpn(request, ippe, ipcpe, vrf):             #HACE PING DESDE EL P
         "device_type": EQUIPOVPNBUSCAR,
         "host": ippe,
         "username": USERVPNBUSCAR,
-        "password": PASSVPNBUCAR,  
+        "password": PASSVPNBUCAR,   
         }
     res_ping = ''
     alert = 0
@@ -53,7 +53,7 @@ def detalleinterface(request, dbcpe, ipsw, interface):  #BUSCA DETALLE DE LA INT
         "password": PASSVPNBUCAR,  
         }
     command1 = "screen-length 0  temporary"
-    interface_bytes = bytes.fromhex(interface)
+    interface_bytes = bytes.fromhex(interface) 
     interface = interface_bytes.decode('utf-8')
     try:
         with ConnectHandler(**dispositivo) as net_connect:
@@ -97,21 +97,21 @@ def detalleinterfaceAPI(dbcpe, ipsw, swinterface, swtch):   # SE DESACTIVA EL DE
 
 
 def actualizarbitacorasr():    #ACTUALIZA EL FRONT END
-    dbrbs = DBNEWLOCAL
+    dbrbs = "dblocalip06102024"
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT *, DATEDIFF(CURDATE(), STR_TO_DATE(fecha, '%d/%m/%Y')) AS contador FROM"+
-                     " bitacorasract WHERE estado = 3 and tipo = 10 ORDER BY contador DESC".format(dbrbs))
+                     " bitacora WHERE estado = 'OPEN' and tipo = 'SR' ORDER BY contador DESC LIMIT 10".format(dbrbs))
     listarsr=mycursor.fetchall()
     return listarsr
 
 
-def actualizarbitacoact(): 
-    dbrbs = DBNEWLOCAL
+def actualizarbitacoact():     #ACTUALIZA EL FRONT END
+    dbrbs = "dblocalip06102024"     
     mydb =  conexion_dbown(dbrbs)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT *, DATEDIFF(CURDATE(), STR_TO_DATE(fecha, '%d/%m/%Y')) AS contador FROM"+
-                     " bitacorasract WHERE estado = 3 and tipo = 20 ORDER BY contador DESC".format(dbrbs))
+                     " bitacora WHERE estado = 'OPEN' and tipo = 'ACTIVIDAD' ORDER BY contador DESC".format(dbrbs))
     listaract=mycursor.fetchall()
     return listaract
 
@@ -143,11 +143,6 @@ def obtenerpais(db,ip):                     #BUSCA EL PAIS DEL EQUIPO
     mycursor = mydb.cursor()
     mycursor.execute("SELECT pais FROM "+db+".equipos where ip like '%"+ip+"';")
     pais = mycursor.fetchall()
-    print(ip)
-    print ("------------------------------------------>")
-    print(pais)
-    print ("------------------------------------------>")
-    print(db)
     pais = pais[0][0].lower()
     mydb.close()
     return pais
@@ -167,7 +162,6 @@ def nombrevlanspe(ippe):
     mycursorvl = mydbvlan.cursor()
     mycursorvl.execute("SELECT vlan, nombrevlan  FROM  dbloip130324.vlans where ippevlan ='"+ippe+"'")
     vlan_nombre =  mycursorvl.fetchall()
-    print (vlan_nombre)
     mydbvlan.close()
     return vlan_nombre
 
@@ -259,3 +253,31 @@ def buscabackups(db,ip):                     #BUSCA EL PAIS DEL EQUIPO
     backupequipo = mycursor.fetchall()
     mydb.close()
     return backupequipo
+
+
+def obtenerRMAS(registro):
+    dbrbs = "dblocalip06102024"
+    listaRMA = []
+    mydb =  conexion_dbown(dbrbs)
+    mycursor = mydb.cursor()
+
+    consulta_RMA = """
+            SELECT *
+            FROM {}.registrobitacora
+            WHERE bitacora_registrosractividad = %s 
+            ORDER BY idregistro DESC
+        """.format(dbrbs)
+
+    try:
+        mycursor.execute(consulta_RMA, (registro,))
+        listaRMA = mycursor.fetchall()
+        if all(tupla[4] == '' for tupla in listaRMA):
+            return []
+    except Exception as e:
+        print(f"Error al obtener los registros: {e}")
+    finally:
+        mycursor.close()
+        mydb.close()
+
+    return listaRMA
+

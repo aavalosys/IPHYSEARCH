@@ -3,37 +3,53 @@
 {% block contenido %} 
 
 <div class="row" style="margin: 10px;">
-    <div class="col-md-4">
+    <div class="col-md-1">
     </div> 
-    <div class="col-md-4">
+    <div class="col-md-8">
         {% if opcion == 'actividades' %}
-                <form action=" " method="GET">
+                <form action="" method="GET">  
                 {% csrf_token %}
-                <div class="input-group mb-3" style="margin-top: 5px;">
-                    <span class="input-group-text">Buscar</span>
-                    <input type="text" id="idtxtabuscar" name="strbuscado" class="form-control" placeholder="Quiero tener suerte ...." required>
-                    <input type="hidden" id="idtxtdb" name="dbstr">
-                    <button type="submit" class="btn btn-danger">Buscar {{opcion}}</button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#idformact" onclick="agregafechahora(); return false;">Agregar</button>
-                </div>
+                  <div class="input-group mb-3" style="margin-top: 5px;">
+                      <span class="input-group-text">Buscar</span>
+                      <input type="text" id="idtxtabuscar" name="strbuscado" class="form-control" placeholder="Buscar texto ...." >
+                      <input type="hidden" id="idtxtdb" name="dbstr">
+                      <input type="hidden" id="idestadoact" name="idestadossact">
+                      <button type="submit" class="btn btn-danger">Buscar {{opcion}}</button>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="date" class="form-control" id="idfechabusqueda" name="idfechabusqueda" placeholder="Fecha a buscar" >
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <select id="estadoact" name="estadoact" data-placeholder="Choose" class="form-select" aria-label=".form-select-sm example" onchange="copiaselectestadoact(); return;">
+                        {% for estado in estados %}
+                          <option value="{{ estado }}">{{ estado }}</option>
+                        {% endfor %}
+                      </select>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#idformact" onclick="agregafechahora(); return false;">Agregar</button>
+                  </div>
                 </form>
-            {% elif opcion == 'casos SR' %}
-                <form action=" " method="GET">
+        {% elif opcion == 'casos SR' %}
+                <form action="" method="GET">
                 {% csrf_token %}
                 <div class="input-group mb-3" style="margin-top: 5px;">
                     <span class="input-group-text">Buscar</span>
-                    <input type="text" id="idtxtabuscarsr" name="strbuscado" class="form-control" placeholder="Quiero tener suerte ...." required>
+                    <input type="text" id="idtxtabuscarsr" name="strbuscado" class="form-control" placeholder="Buscar texto ...." >
                     <input type="hidden" id="idtxtdbsr" name="dbstr">
+                    <input type="hidden" id="idestadosr" name="idestadossr">
                     <button type="submit" class="btn btn-danger">Buscar {{opcion}}</button>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#idformsr" onclick="agregafechahora(); return false;">Agregar</button>
+                    <select id="estadosr" name="estadosr" data-placeholder="Choose" class="form-select" aria-label=".form-select-sm example" onchange="copiaselectestadosr(); return;">
+                      {% for estado in estados %}
+                        <option value="{{ estado }}">{{ estado }}</option>
+                      {% endfor %}
+                    </select>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#idformsr" onclick="agregafechahora(); return false;">Agregar</button>
                 </div>
                 </form>
             {% else %}
         {% endif %}  
     </div>
-    <div class="col-md-4"> 
+    <div class="col-md-2"> 
     </div>
 
     <!--VENTANA MODAL REGISTRO ACTIVIDAD-->
@@ -45,41 +61,63 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{% url 'agregar_act' %}" >
-                        <!-- Tus campos de formulario aquí -->
+                    <form method="post" id = "idformagregaract" action="{% url 'agregar_act' %}" >
+                    
                         {% csrf_token %}
                         <fieldset>  
-                          <div class="form-group">
-                            <input class="form-control" id="ididentificador" type="text" name="ididentificador" placeholder="Identificador actividad" required maxlength="95">  
-                        </div>
-                          <div class="form-group">
-                            &nbsp&nbsp&nbsp&nbsp
-                            <input type="text" class="form-control" id="idtitulo" name="idtitulo" placeholder="Título actividad"  required maxlength="95">
-                          </div>
-                          <div class="form-group">
-                            &nbsp&nbsp&nbsp&nbsp
-                            <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha actividad" required >
-                            <small id="emailHelp" class="form-text text-muted">Fecha de la actividad</small>
-                            &nbsp&nbsp&nbsp&nbsp
-                            <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora actividad" required >
-                            <small id="emailHelp" class="form-text text-muted">Hora de la actividad</small>
-                            </div>
                             <div class="form-group">
-                                &nbsp&nbsp&nbsp&nbsp
-                                <input type="text" class="form-control" id="iddescripcion" name="iddescripcion" placeholder="Descripción actividad" maxlength="150" oninput="this.value = this.value.substring(0, this.maxLength)" required maxlength="140">
+                              <input class="form-control" id="ididentificador" type="text" name="ididentificador" placeholder="Identificador actividad" required maxlength="95">  
                             </div>
-                          <div>
-                            &nbsp&nbsp&nbsp&nbsp
-                            <textarea class="form-control" id="iddetalle" name="iddetalle" placeholder="Detalle" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)" required maxlength="180"></textarea>
-                          </div>
-                          <div class="form-group">
-                            &nbsp&nbsp&nbsp&nbsp
-                            <input class="form-control" id="idfechahora" type="text" name="idfechahora" readonly="">
-                          </div>
-                          <div>
-                            &nbsp&nbsp&nbsp&nbsp
-                          </div>
-                          <button type="submit" class="btn btn-primary">Aceptar</button>
+
+                            <div class="form-group">
+                              &nbsp&nbsp&nbsp&nbsp
+                              <input type="text" class="form-control" id="idtitulo" name="idtitulo" placeholder="Título actividad"  required maxlength="95">
+                            </div>
+
+                            <div class="form-group">
+                              &nbsp&nbsp&nbsp&nbsp
+                              <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha actividad" required >
+                              <small id="emailHelp" class="form-text text-muted">Fecha de la actividad</small>
+                            </div>  
+
+                            <div class="form-group">
+                              &nbsp&nbsp&nbsp&nbsp
+                              <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora actividad" required >
+                              <small id="emailHelp" class="form-text text-muted">Hora de la actividad</small>
+                            </div>
+
+                            <div class="form-group">
+                              &nbsp&nbsp&nbsp&nbsp
+                              <input type="text" class="form-control" id="iddescripcion" name="iddescripcion" placeholder="Descripción actividad" maxlength="145" oninput="this.value = this.value.substring(0, this.maxLength)" required maxlength="145">
+                            </div>
+
+                            <div class="form-group">
+                              &nbsp&nbsp&nbsp&nbsp
+                              <textarea class="form-control" id="iddetalle" name="iddetalle" placeholder="Detalle" rows="3" maxlength="195" oninput="this.value = this.value.substring(0, this.maxLength)"  maxlength="195"></textarea>
+                            </div>
+
+                            <div class="form-group"> 
+                              &nbsp&nbsp&nbsp&nbsp
+                              <div class="row">
+                                <div class="col-md-4">
+                                    <select id="idvendoract" name="idvendoract" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
+                                      {% for  items in vendors %}
+                                        <option value="{{ items }}">{{ items }}</option>
+                                      {% endfor %}
+                                    </select>  
+                                </div>
+                                <div class="col-md-3">
+                                  <input class="form-control" id="idusuarioact" type="text" name="idusuarioact" readonly="" value ="navalos">
+                                </div>
+                                <div class="col-md-5">
+                                  <input class="form-control" id="idfechaactgra" type="text" name="idfechaactgra" readonly="">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="modal-footer" style="margin-top: 5px;">
+                              <button type="button" class="btn btn-primary" onclick="confirmarYEnviarsr()">Aceptar</button>
+                            </div>
                         </fieldset>
                       </form>
                 </div>
@@ -96,66 +134,97 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{% url 'agregar_sr' %}" >
-                        <!-- Tus campos de formulario aquí -->
+                    <form method="post" id = "idformagregarsr" action="{% url 'agregar_sr' %}" >
                         {% csrf_token %}
-                        <fieldset>  
+                        <fieldset> 
+
                           <div class="form-group">
-                            <input class="form-control" id="ididentificadorsr" type="text" name="ididentificadorsr" placeholder="Identificador caso sr" required maxlength="95">
+                            <input class="form-control" id="ididentificadorsr" type="text" name="ididentificadorsr" placeholder="Número de SR" required maxlength="95">
                           </div>
+
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
                             <input type="text" class="form-control" id="idtitulosr" name="idtitulosr" placeholder="Título caso" required maxlength="95">
                           </div>
+
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
                             <input type="date" class="form-control" id="idfechasr" name="fechasr" placeholder="Fecha apertura" required>
-                            <small id="emailHelp" class="form-text text-muted">Fecha de la actividad</small>
-                            &nbsp&nbsp&nbsp&nbsp
-                            <input type="time" class="form-control" id="idhorasr" name="horasr" placeholder="Hora apertura" >
-                            <small id="emailHelp" class="form-text text-muted">Hora de la actividad</small>
-                            </div>
-                            <div class="form-group">
-                                &nbsp&nbsp&nbsp&nbsp
-                                <input type="text" class="form-control" id="iddescripcionsr" name="iddescripcionsr" placeholder="Descripción caso" maxlength="150" oninput="this.value = this.value.substring(0, this.maxLength)" requrequired maxlength="180">
-                            </div>
-                          <div>
-                            &nbsp&nbsp&nbsp&nbsp
-                            <textarea class="form-control" id="iddetallesr" name="iddetallesr" placeholder="Detalle del caso" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)"required maxlength="180"></textarea>
+                            <small id="emailHelp2" class="form-text text-muted">Fecha de apertura</small>
+                          </div> 
+
+                          <div class="form-group">
+                              &nbsp&nbsp&nbsp&nbsp  
+                              <input type="time" class="form-control" id="idhorasr" name="horasr" placeholder="Hora apertura" >
+                              <small id="emailHelp1" class="form-text text-muted">Hora de apertura</small>
                           </div>
+
+                          <div class="form-group">
+                              &nbsp&nbsp&nbsp&nbsp
+                              <input type="text" class="form-control" id="iddescripcionsr" name="iddescripcionsr" placeholder="Descripción caso" maxlength="145" oninput="this.value = this.value.substring(0, this.maxLength)" requrequired maxlength="145">
+                          </div>
+
                           <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
-                            <select id="idvendor" name="vendors" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
-                                {% for  items in vendors %}
-                                  <option value="{{ items }}">{{ items }}</option>
-                                {% endfor %}
-                            </select>
-                            &nbsp&nbsp&nbsp&nbsp
-                            <select id="idpais" name="paises" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
-                                {% for  pais in paises %}
-                                  <option value="{{ pais }}">{{ pais }}</option>
-                                {% endfor %}
-                            </select>
+                            <textarea class="form-control" id="iddetallesr" name="iddetallesr" placeholder="Detalle del caso" rows="3" maxlength="195" oninput="this.value = this.value.substring(0, this.maxLength)" maxlength="195"></textarea>
                           </div>
-                          <div>
+
+                          <div class="form-group">
                             &nbsp&nbsp&nbsp&nbsp
+                            <div class="row"> 
+                              
+                              <div class="col-md-3">
+                                <select id="idvendorsr" name="idvendorsr" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
+                                  {% for  items in vendors %}
+                                    <option value="{{ items }}">{{ items }}</option>
+                                  {% endfor %}
+                                </select>  
+                              </div>
+
+                              <div class="col-md-4">
+                                 <select id="idpaissr" name="idpaissr" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
+                                  {% for  pais in paises %}
+                                    <option value="{{ pais }}">{{ pais }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+
+                              <div class="col-md-4">
+                                <input class="form-control" id="idfechahorasr" type="text" name="idfechahorasr" readonly="">
+                              </div>
+
+                            </div>
                           </div>
-                          <button type="submit" class="btn btn-primary">Aceptar</button>
+
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <input class="form-control" id="idusuariosr" type="text" name="idusuariosr" readonly="" value ="navalos">
+                          </div>
+
+                          <div class="modal-footer" style="margin-top: 5px;">
+                            <button type="button" class="btn btn-primary" onclick="confirmarYEnviaract()">Aceptar</button>
+                          </div>
+                          
                         </fieldset>
+        
                       </form>
                 </div>
             </div>
         </div>
      </div>
 
-<script>onloadpagevarios();</script>
-
+<script>onloadpagecasosr(); </script>
+<script>onloadpagecasoact(); </script>
 </div>
 
 <div class="row"> 
-    <div class="col-md-1">
-    </div>
-    <div class="col-md-10">
+  <div class="col-md-12" style="margin-left: 3mm; margin-right: 3mm;">
+      <style>
+        .disabled-button {
+          background-color: #d3d3d3; /* Color gris */
+          cursor: not-allowed; /* Cambiar el cursor */
+      }
+      </style>
         <table class="table table-hover">
             <thead>
                 <tr class="table-active">
@@ -170,18 +239,24 @@
                 {% if listaract %}
                     {% for acti in listaract %}
                     <tr>
-                        <td >{{acti.1}}</td>
+                        <td >
+                          <a href="#" id="idactividadtabla" onclick="mostrarActualizacionesAct('{{acti.0}}')">{{acti.1}}</a>
+                        </td>
                         <td >{{acti.2}}</td>
                         <td >{{acti.3}}</td>
                         <td >{{acti.4}}</td>
                         <td >{{acti.5}}</td>
-                        <td >{{acti.6}}</td>
-                        <td >{{acti.7}}</td>
                         <td >{{acti.8}}</td>
+                        <td >{{acti.9}}</td>
                         <td>
-                            <button type="button" class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash"></i> Cerrar
-                            </button>
+                          <button
+                            id="idopcionesact" 
+                            type="button" 
+                            class="btn btn-info {% if acti.9 == 'CLOSED' %}disabled-button{% endif %}" 
+                            onclick="actualizaract('{{acti.0}}','{{acti.1}}','{{acti.8}}','{{acti.9}}'); return false;"
+                            {% if acti.9 == 'CLOSED' %} disabled {% endif %}>
+                            Admin
+                          </button>
                         </td>                                     
                     </tr>
                     {% endfor %}
@@ -190,27 +265,43 @@
                 {% if listasr %}
                     {% for sr in listasr %}
                     <tr>
-                        <td >{{sr.1}}</td>
-                        <td >{{sr.2}}</td>
-                        <td >{{sr.3}}</td>
-                        <td >{{sr.4}}</td>
-                        <td >{{sr.5}}</td>
-                        <td >{{sr.6}}</td>
-                        <td >{{sr.7}}</td>
-                        <td >{{sr.8}}</td>
-                        <td >{{sr.9}}</td>
                         <td>
-                            <button type="button" class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash"></i> Cerrar
-                            </button>
-                        </td>                                     
+                            <a href="#" id="detallermasr" onclick="mostrarInformacionfechacrea('{{sr.12}}','{{sr.13}}')">{{sr.14}}</a> <!--RMA-->
+                        </td>
+                        <td >{{sr.1}}</td><!--SR-->
+                        <td >{{sr.2}}</td><!--TÍTULO-->
+                        <td >{{sr.3}}</td><!--APERTURA--> 
+                        <td >{{sr.4}}</td><!--HORA-->
+                        <td>
+                          <a href="#" id="descripcionSR" onclick="mostrarInformacionDescripcion('{{sr.5}}')">Descripción</a>                        
+                        </td><!--descripcion -->
+                        <td>
+                          {% for rma in sr.15 %}
+                              <a href="#" id="detallermasr" onclick="mostrarInformacionRMAS('{{rma.0}}','{{rma.3}}','{{rma.5}}','{{rma.6}}','{{rma.8}}','{{rma.9}}')">{{ rma.4}}</a> <!-- RMA -->
+                          {% endfor %}
+                        </td>
+                        <td>
+                          <a href="#" id="detallesr" onclick="mostrarInformacionDetalle('{{sr.6}}')">Detalle</a>
+                        </td><!--detalle {{sr.11}} -->
+                        <td >{{sr.8}}</td> <!--vendor-->
+                        <td >{{sr.9}}</td> <!--estado--> 
+                        <td >{{sr.10}}</td> <!--pais-->
+                        <td>
+                          <button
+                            id="idopcionessr" 
+                            type="button" 
+                            class="btn btn-info {% if sr.9 == 'CLOSED' %}disabled-button{% endif %}" 
+                            onclick="actualizarsr('{{sr.0}}','{{sr.1}}','{{sr.8}}','{{sr.9}}','{{sr.10}}'); return false;"
+                            {% if sr.9 == 'CLOSED' %} disabled {% endif %}>
+                            Admin
+                          </button>
+                        </td>                                      
                     </tr>
                     {% endfor %}
                 {% endif %}
             </tbody>
         </table>
     </div>
-    <div class="col-md-1">
-    </div>
 </div>
+
  {%endblock%} 

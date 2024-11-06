@@ -28,7 +28,9 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',]
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'appsearch.middleware.RedirectIfNotAuthenticated',
+    ]
 
 ROOT_URLCONF = 'iphysearchapp.urls'
 
@@ -95,3 +97,4 @@ BOOTSTRAP5 = {
   'include_jquery': True,
 }
 
+LOGIN_URL = 'login/'  # Redirige a esta URL si no está autenticado

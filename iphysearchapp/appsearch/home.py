@@ -1,13 +1,15 @@
 import datetime
 from datetime import datetime
 from django.shortcuts import render
+from requests import request
 from iphysearchapp.databases import DATABASES
 from iphysearchapp.var_env import *
 from iphysearchapp.connect import *
 from appsearch.varias_func import *
-
+from django.contrib.auth.decorators import login_required
 
 def home(request):
+    username = request.session.get('username', None)
     alertsuccess = 1
     alertdanger = 0
     alertwarning = 0
@@ -60,7 +62,7 @@ def home(request):
             'alertwarning':alertwarning,
             'alertinfo':alertinfo, 
             'dbsb': dbsb,
-            'user': usuariolog()
+            'user': username
             })
     
     else:
@@ -75,7 +77,7 @@ def home(request):
             'alertwarning':alertwarning,
             'alertinfo':alertinfo,   
             'dbsb': dbsb,
-            'user': usuariolog()
+            'user': username
             })
    
 
