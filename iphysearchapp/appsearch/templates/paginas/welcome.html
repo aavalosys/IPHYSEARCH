@@ -4,8 +4,52 @@
 
 {% block contenido %} 
 
-
 <div class="row" style="margin: 10px;">
+    <div class="col-md-12">
+      <div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toastMessage" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <strong id="toastTitle"></strong>
+                    <p id="toastContent"></p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+      </div>
+    </div>
+        <script>
+          function mostrarToast(conexiondb) {
+              var toastEl = document.getElementById('toastMessage');
+              var toastTitle = document.getElementById('toastTitle');
+              var toastContent = document.getElementById('toastContent');
+  
+              if (conexiondb == 0) {
+                  toastEl.classList.remove('bg-danger');
+                  toastEl.classList.add('bg-success');
+                  toastTitle.textContent = 'Conexión Exitosa';
+                  toastContent.textContent = 'Conectado a la base de datos.';
+              } else {
+                  toastEl.classList.remove('bg-success');
+                  toastEl.classList.add('bg-danger');
+                  toastTitle.textContent = 'Error de Conexión';
+                  toastContent.textContent = 'No se pudo conectar a la base de datos. Por favor, inténtalo de nuevo más tarde.';
+              }
+  
+              var toast = new bootstrap.Toast(toastEl);
+              toast.show();
+          }
+  
+          $(document).ready(function() {
+              var conexiondb = {{ conexiondb }};  
+              mostrarToast(conexiondb);
+          });
+      </script>
+</div>
+
+
+
+  <div class="row" style="margin: 10px;">
     
     <div class="col-md-2">
     </div>
@@ -19,34 +63,35 @@
                 <input type="hidden" id="iddbselectedwel" name="iddbselectedwel">
                 <input type="hidden" id="idtxtpiv" name="pivstr" value ="0">
                 <button type="submit" class="btn btn-danger" >Buscar</button>
-                <select id="selectdbwel" name="selectdbw" class="input-group-text" aria-label=".form-select-sm example" onchange="copiaselectdbs(); return;">
+                  <select id="selectdbwel" name="selectdbw" class="input-group-text" aria-label=".form-select-sm example" onchange="copiaselectdbsbackup(); return;">
                     {% for db in dbsb %}
-                        <option value="{{ db }}">{{ db }}</option>
+                        <option value="{{ db.0 }}">{{ db.0 }}</option>
                     {% endfor %}
-                  </select>
+                </select>
             </div>
-            </form>
+            </form> 
     </div> 
-    <script>onloadpagewelcome();</script>
     <div class="col-md-1"> 
     </div>
     <div class="col-md-5" style="margin-top: 3px;">
         {% if alertsuccess == 1 %}
-            <div class="alert alert-dismissible alert-success me-4" >
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="alert alert-dismissible alert-success me-4">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 <div class="alert" style="margin-top: 3px;">
-                    <strong>Bienvenidos</strong> al Dashboard de backofficeip.com.gt, puedes hacer clic en
-                    <a href="#" class="alert-link">las opciones abajo</a> para visualizar un resumen de Casos y Actividades.
-                    <strong>Puedes usar la Busqueda teniendo suerte, </strong> ingresa la(s) palabra(s) a buscar separadas por espacios.
-                    </div>                   
-            </div>
+                    <strong>Bienvenidos</strong> al Dashboard de backofficeip, puedes hacer clic en
+                    <a href="#" class="alert-link">las opciones abajo</a> para visualizar un resumen de 
+                    <a href="{% url 'agregar_sr' pagina=1 %}" class="alert-link">Casos</a> y 
+                    <a href="{% url 'agregar_act' pagina=1 %}" class="alert-link">Actividades</a>.
+                    Puedes usar la Búsqueda teniendo suerte, ingresa la(s) palabra(s) a buscar separadas por | "pipe".
+                </div>
+            </div>        
         {%endif%}
     </div>
+    <script>onloadpagewelcome();</script>
 </div>
 
 <div class="row" style="margin: 5px;"> 
     <div class="col-md-7">
-
         {%if resultadoencontrado %}
             <table id = "tablaresultados" class="table table table-sm">
                 <thead>
@@ -71,7 +116,7 @@
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                  Resumen SR a Proveedores -- &nbsp&nbsp&nbsp&nbsp
+                  Resumen SR a Proveedores -- &nbsp;&nbsp;&nbsp;&nbsp;
                   <span class="badge bg-primary rounded-pill"><strong>{{sumacasosr}}</strong></span>
                 </button>
               </h2>
@@ -83,16 +128,16 @@
                              <th scope="col">SR</th>
                              <th scope="col">FECHA APERTURA</th>
                              <th scope="col">PAIS</th>
-                             <th scope="col">DÍAS ABIERTO</th>
+                             <th scope="col">DÍAS</th>
                            </tr>
                         </thead>
                         <tbody>
                            {% for sr in listarsr %}
                               <tr>
-                                <td>{{sr.1}}</td> 
-                                <td>{{sr.3}}</td>
-                                <td>{{sr.9}}</td>
-                                <td>{{sr.14}}</td>                            
+                                <td>{{sr.codigo}}</td> 
+                                <td>{{sr.fecha}}</td>
+                                <td>{{sr.pais}}</td>
+                                <td>{{sr.dias}}</td>                            
                               </tr>
                            {% endfor %}
                         </tbody>
@@ -104,7 +149,7 @@
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingTwo">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="false" aria-controls="collapsetwo">
-                    Actividades Calendarizadas -- &nbsp&nbsp&nbsp&nbsp 
+                    Actividades Calendarizadas -- &nbsp;&nbsp;&nbsp;&nbsp; 
                   <span class="badge bg-primary rounded-pill"><strong>{{sumaact}}</strong></span>
                 </button>
               </h2>
@@ -114,16 +159,18 @@
                         <thead >
                            <tr>
                              <th scope="col">CÓDIGO</th>
+                             <th scope="col">VENDOR</th>
                              <th scope="col">FECHA</th>
-                             <th scope="col">DÍAS RESTANTES</th>
+                             <th scope="col">DÍAS:</th>
                            </tr>
                         </thead>
                         <tbody>
                            {% for act in listaract %}
                               <tr>
-                                <td>{{act.1}}</td> 
-                                <td>{{act.3}}</td>
-                                <td>{{act.14}}</td>                            
+                                <td>{{act.codigo}}</td> 
+                                <td>{{act.vendor}}</td> 
+                                <td>{{act.fecha}}</td>
+                                <td>{{act.dias}}</td>                            
                               </tr>
                            {% endfor %}
                         </tbody>
@@ -131,43 +178,6 @@
                 </div>
               </div>
             </div> 
-
-            <div class="row">
-                &nbsp&nbsp&nbsp&nbsp  
-            </div> 
-
-            {% if alertdanger == 1 %}
-                <div class="alert alert-dismissible alert-danger">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    <strong>{{alertdanger}}</strong> esta es una alerta de prueba
-                    <a href="#" class="alert-link">BOIP PORTAL</a>, para actualizarlo.. 
-                </div>
-            {% endif %} 
-
-            <div class="row">
-                &nbsp&nbsp&nbsp&nbsp  
-            </div> 
-
-            {% if alertwarning == 1 %}
-                <div class="alert alert-dismissible alert-warning">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    <strong>{{alertinfo}}</strong> esta es una alerta de prueba 
-                    <a href="#" class="alert-link">BOIP PORTAL</a>, para actualizarlo..
-                </div>
-            {% endif %}
-            
-            <div class="row">
-                &nbsp&nbsp&nbsp&nbsp  
-            </div> 
-
-            {% if alertinfo == 1 %}
-                <div class="alert alert-dismissible alert-info">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    <strong>{{alertinfo}}</strong> esta es una alerta de prueba 
-                    <a href="#" class="alert-link">BOIP PORTAL</a>, para actualizarlo..
-                </div>
-            {% endif %}
-
         </div>
     </div>
 </div>

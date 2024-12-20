@@ -1,6 +1,6 @@
 
 from pathlib import Path
-from .databases import DATABASES
+from .databases import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,7 +18,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'appsearch',
-    'webpack_loader'
 ]
 
 MIDDLEWARE = [
@@ -81,6 +80,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+ 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -97,4 +97,8 @@ BOOTSTRAP5 = {
   'include_jquery': True,
 }
 
-LOGIN_URL = 'login/'  # Redirige a esta URL si no está autenticado
+LOGIN_URL = '/login/'  
+LOGIN_REDIRECT_URL = '/welcome'
+LOGOUT_REDIRECT_URL = '/login/'
+SESSION_COOKIE_AGE = 1800  # 30 minutos en segundos
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Cerrar la sesión al cerrar el navegador

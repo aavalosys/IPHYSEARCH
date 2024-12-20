@@ -23,7 +23,7 @@
             integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
             crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/css/ionicons.min.css">
-  </head>
+  </head>  
 
 <body>
     <header>
@@ -32,51 +32,46 @@
               <div class="p-3 mb-2 bg-transparent text-dark">
                   <img src="{% static '/img/logo_claro_small.png' %}" alt="...">
               </div>
-            <a class="navbar-brand" href = "{% url 'welcome'%}"><h2>BOIP PORTAL</h2></a>
+            <a class="navbar-brand" href = "{% url 'welcome'%}" style="font-size: 60px;" >BOIP PORTAL</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="False" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarColor01">
               <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                  <a id = "ips" class="nav-link" href="{% url 'buscaips'%}" style="font-size: 20px;">BUSCA IPS</a>
+                  <a id = "ips" class="nav-link" href="{% url 'buscaips'%}" style="font-size: 25px;">| BUSCA IPS</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a id = "buscador" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;">BUSCADOR
+                  <a id = "buscador" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 25px;">| BUSCADOR
                   </a>
                   <div class="dropdown-menu">
-                    <a id = "macs" class="dropdown-item" href="{% url 'buscavarios' selectedoption='mac' %}" style="font-size: 15px;" >MAC</a>
-                    <a id = "arps" class="dropdown-item" href="{% url 'buscavarios' selectedoption='arp' %}" style="font-size: 15px;" >ARP</a>
-                    <a id = "equipos" class="dropdown-item" href="{% url 'buscavarios' selectedoption='equipos' %}" style="font-size: 15px;" >EQUIPOS</a>
-                    <a id = "descripciones" class="dropdown-item" href="{% url 'buscavarios' selectedoption='descripciones' %}" style="font-size: 15px;" >DESCRIPCIONES</a>
-                    <a id = "opticos" class="dropdown-item" href="{% url 'buscavarios' selectedoption='valoresopticos' %}" style="font-size: 15px;" >VALORES ÓPTICOS</a>
-                    <a id = "saturaciones" class="dropdown-item" href="{% url 'impactointerfaces'%}"  style="font-size: 15px;" >SATURACIONES</a>
-                    <a id = "impactope" class="dropdown-item" href="{% url 'impactoporpe'%}" style="font-size: 15px;" >IMPACTO PE</a>
+                    <a id = "macs" class="dropdown-item" href="{% url 'buscavarios' selectedoption='mac' %}" style="font-size: 20px;" >MAC</a>
+                    <a id = "arps" class="dropdown-item" href="{% url 'buscavarios' selectedoption='arp' %}" style="font-size: 20px;" >ARP</a>
+                    <a id = "equipos" class="dropdown-item" href="{% url 'buscavarios' selectedoption='equipos' %}" style="font-size: 20px;" >EQUIPOS</a>
+                    <a id = "descripciones" class="dropdown-item" href="{% url 'buscavarios' selectedoption='descripciones' %}" style="font-size: 20px;" >DESCRIPCIONES</a>
+                    <a id = "opticos" class="dropdown-item" href="{% url 'buscavarios' selectedoption='valoresopticos' %}" style="font-size: 20px;" >VALORES ÓPTICOS</a>
+                    <a id = "saturaciones" class="dropdown-item" href="{% url 'impactointerfaces'%}"  style="font-size: 20px;" >SATURACIONES</a>
+                    <a id = "impactope" class="dropdown-item" href="{% url 'impactoporpe'%}" style="font-size: 20px;" >IMPACTO PE</a>
                   </div>
                 </li>
                 <li class="nav-item dropdown">
-                  <a id = "graficas" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;" >GRÁFICAS</a>
+                  <a id = "graficas" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 25px;" >| GRÁFICAS</a>
                   <div class="dropdown-menu">
-                    <a id = "pools" class="dropdown-item" href="{% url 'cgnatreport'%}" style="font-size: 15px;">CGNATS POOLS</a>
-                    <a id = "engines" class="dropdown-item" href="{% url 'cgnatreport'%}" style="font-size: 15px; pointer-events: none; color: grey;">CGNATS ENGINES</a>
+                    <a id = "pools" class="dropdown-item" href="{% url 'cgnatreport'%}" style="font-size: 20px;">CGNATS POOLS</a>
+                    <a id = "engines" class="dropdown-item" href="{% url 'errorpage'%}" style="font-size: 20px;">CGNATS ENGINES</a>
                   </div>
                 </li>
                 <li class="nav-item dropdown">
-                  <a id = "mantenimiento" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;" >MANTENIMIENTO</a>
+                  <a id = "mantenimiento" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 25px;" >| MANTENIMIENTO</a>
                   <div class="dropdown-menu">
-                    <a id = "actividades" class="dropdown-item" href="{% url 'catalogo' selectedoption='actividades' %}" style="font-size: 15px;" >ACTIVIDADES</a>
-                    <a id = "casos" class="dropdown-item" href="{% url 'catalogo' selectedoption='casossr' %}" style="font-size: 15px;" >CASOS - SR</a>
-                    <a id = "bitacora" class="dropdown-item" href="{% url 'catalogo' selectedoption='buscaregistros' %}" style="font-size: 15px; pointer-events: none; color: grey;">BITACORA</a>
-                    <a id="directorio" class="dropdown-item" style="font-size: 15px; pointer-events: none; color: grey;">DIRECTORIO</a>
+                    <a id="actividades" class="dropdown-item" href="{% url 'agregar_act' pagina=1 %}" style="font-size: 20px;">ACTIVIDADES</a>
+                    <a id="casos" class="dropdown-item" href="{% url 'agregar_sr' pagina=1 %}" style="font-size: 20px;">CASOS - SR</a>
+                    <a id = "revisionftp" class="dropdown-item" href="" style="font-size: 20px;">REVISIÓN FTP</a>
                   </div>
                 </li>
-                <li class="nav-item"><a id = "about" class="nav-link" href="{% url 'about'%}" style="font-size: 20px;">ABOUT</a></li>
-                <li class="nav-item"><a id = "about" class="nav-link" href="{% url 'login'%}" style="font-size: 20px;">login</a></li>
-                <li class="nav-item"><a id = "salir" class="nav-link" href="" style="font-size: 20px;" >| SALIR |</a></li>
-                <li class="nav-item"><a class="nav-link" href="" style="font-size: 15px;" ></a></li>
-                <li class="nav-item"><a class="nav-link" href="" style="font-size: 15px;" ></a></li>
-                <li class="nav-item"><a class="nav-link" href="">&nbsp&nbsp&nbsp&nbsp</a></li>
-                <li class="nav-item"><a class="nav-link" href="">< {{user}} ></a></li>
+                <li class="nav-item"><a id = "about" class="nav-link" href="{% url 'about'%}" style="font-size: 25px;">| ABOUT</a></li>
+                <li class="nav-item"><a id = "salir" class="nav-link" href="{% url 'logout'%}" style="font-size: 25px;" >| SALIR |</a></li>
+                <li class="nav-item"><a id = "idusers" class="nav-link" href="#" style="font-size: 25px;">  <b>< {{user}} ></b></a></li>
               </ul>  
             </div>
           </div>

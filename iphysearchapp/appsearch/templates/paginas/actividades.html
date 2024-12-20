@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% block titulo %}INICIO{% endblock %}
+{% block contenido %} 
+
+<div class="row" style="margin: 10px;">
+  <div class="col-md-12">
+    <div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <div id="toastMessage" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+              <div class="toast-body">
+                  <strong id="toastTitle"></strong>
+                  <p id="toastContent"></p>
+              </div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+      </div>
+    </div>
+  </div>
+      <script>
+        function mostrarToast(conexiondb) {
+            var toastEl = document.getElementById('toastMessage');
+            var toastTitle = document.getElementById('toastTitle');
+            var toastContent = document.getElementById('toastContent');
+
+            if (conexiondb == 0) {
+                toastEl.classList.remove('bg-danger');
+                toastEl.classList.add('bg-success');
+                toastTitle.textContent = 'Conexión Exitosa';
+                toastContent.textContent = 'Conectado a la base de datos.';
+            } else {
+                toastEl.classList.remove('bg-success');
+                toastEl.classList.add('bg-danger');
+                toastTitle.textContent = 'Error de Conexión';
+                toastContent.textContent = 'No se pudo conectar a la base de datos. Por favor, inténtalo de nuevo más tarde.';
+            }
+
+            var toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+
+        $(document).ready(function() {
+            var conexiondb = {{ conexiondb }};  
+            mostrarToast(conexiondb);
+        });
+    </script>
+</div> 
+
+<div class="col-md-2">
+</div> 
+
+    <div class="col-md-8">
+          <form id="formact" action="" method="GET">  
+             {% csrf_token %}
+              <div class="input-group mb-3" style="margin-top: 5px;">
+                  <span class="input-group-text">Buscar</span>
+                  <input type="text" id="idtxtabuscaract" name="idtxtabuscaract" class="form-control" placeholder="Buscar texto ...." >
+                  <input type="hidden" id="idestadoact" name="idestadoact">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type="date" class="form-control" id="idfechabusquedaact" name="idfechabusquedaact" >
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <select id="estadoact" name="estadoact" data-placeholder="Choose" class="form-select" aria-label=".form-select-sm example" onchange="copiaselectestadoact(); return;">
+                    {% for estado in estados %}
+                      <option value="{{ estado }}">{{ estado }}</option>
+                    {% endfor %}
+                  </select>
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="submit" class="btn btn-danger">Buscar {{opcion}}</button>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#idformact" onclick="agregafechahora(); return false;">Agregar</button>
+              </div>
+          </form>
+        <script>  onloadpagecasoact();  </script>
+    </div>
+
+    <div class="col-md-2"> 
+</div>
+
+
+
+
+    <div class="modal fade" id="idformact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar actividad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="idformagregaract" novalidate>
+                        {% csrf_token %}
+                        <fieldset>  
+                            <div class="form-group">
+                              <input class="form-control" id="ididentificadoract" type="text" name="ididentificadoract" placeholder="ID actividad" required maxlength="95">  
+                            </div>
+                            <div class="form-group">
+                              &nbsp;
+                              <input type="text" class="form-control" id="idtituloact" name="idtituloact" placeholder="Título - max 95 carateres..."  required maxlength="95">
+                            </div>
+                            <div class="form-group">
+                              &nbsp;
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <input type="date" class="form-control" id="idfechaact" name="idfechaact" placeholder="Fecha actividad" required >
+                                  <small id="emailHelp" class="form-text text-muted">Fecha de la actividad</small> 
+                                </div>
+                                <div class="col-md-6"> 
+                                  <input type="time" class="form-control" id="idhoraact" name="idhoraact" placeholder="Hora actividad" required >
+                                  <small id="emailHelp" class="form-text text-muted">Hora de la actividad</small>
+                                </div>
+                              </div>
+                            </div>  
+                            <div class="form-group">
+                              &nbsp;
+                              <textarea  class="form-control" id="iddescripcionact" name="iddescripcionact" placeholder="Descripción - max 300 caracteres...." rows="4" maxlength="300" oninput="this.value = this.value.substring(0, this.maxLength)" required ></textarea>
+                            </div>
+                            <div class="form-group"> 
+                              &nbsp;
+                              <div class="row">
+                                <div class="col-md-4">
+                                    <select id="idvendoract" name="idvendoract" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example">
+                                      {% for  items in vendors %}
+                                        <option value="{{ items }}">{{ items }}</option>
+                                      {% endfor %}
+                                    </select>  
+                                </div>
+                                <div class="col-md-3">
+                                  <input class="form-control" id="idusuarioact" type="text" name="idusuarioact" readonly="" value = "{{user}}">
+                                </div>
+                                <div class="col-md-5">
+                                  <input class="form-control" id="idfechaactgra" type="text" name="idfechaactgra" readonly="">
+                                </div>
+                              </div>
+                            </div>
+                            &nbsp;
+                            <div class="modal-footer" style="margin-top: 5px;">
+                              <button type="button" class="btn btn-primary" onclick="confirmarYEnviaract()">Aceptar</button>
+                            </div>
+                        </fieldset>
+                      </form>
+                </div>
+            </div>
+        </div>  
+     </div>
+</div>
+
+<div class="row">
+  <div class="col-md-5">
+  </div>
+  <div class="col-md-2">
+    <div>
+      <ul class="pagination" id="paginadoract">
+        <li class="page-item {% if pagina_actual == 1 %}disabled{% endif %}">
+          <a class="page-link" href="{% url 'agregar_act' 1 %}" aria-label="Primera página">
+            &laquo;
+          </a>
+        </li>
+            {% for i in rango_paginas %}
+          <li class="page-item {% if i == pagina_actual %}active{% endif %}">
+            <a class="page-link" href="{% url 'agregar_act' i %}">{{ i }}</a>
+          </li>
+            {% endfor %}
+            <li class="page-item {% if pagina_actual == total_paginas %}disabled{% endif %}">
+          <a class="page-link" href="{% url 'agregar_act' total_paginas %}" aria-label="Última página">
+            &raquo;
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-5">
+  </div> 
+  <div class="col-md-12" style="margin-left: 3mm; margin-right: 3mm;">
+      <style>
+        .disabled-button {
+          background-color: #d3d3d3; /* Color gris */
+          cursor: not-allowed; /* Cambiar el cursor */
+      }
+      </style>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-active">
+                    {% if headtable %}
+                        {% for dato in headtable %}
+                            <th scope="col">{{ dato }}</th>
+                        {% endfor %}
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% if listaract %}
+                    {% for acti in listaract %}
+                    <tr>
+                        <td >
+                          <a href="#"  onclick="mostrarInformacionfechacrea('{{acti.12}}','{{acti.13}}')">{{acti.15}}</a> 
+                        </td>
+                        <td >
+                          <a href="#" id="idactividadtabla" onclick="mostrarActualizaciones('{{acti.0}}')">{{acti.1}}</a> 
+                        </td>
+                        <td >{{acti.2}}</td> <!-- TITULO -->
+                        <td >{{acti.3}} {{acti.4}}</td> <!-- FECHA HORA -->
+                        <td >
+                           <a href="#" id="acti.0" onclick="mostrarInformacionDescripcionact('{{acti.0}}'); return false;">Descripción</a>
+                        </td>
+                        <td >{{acti.8}}</td>
+                        <td >{{acti.9}}</td>
+                        <td>    <!-- ADMIN -->
+                          <button
+                            id="idopcionesact" 
+                            type="button" 
+                            class="btn btn-info {% if acti.9 == 'CLOSED' %}disabled-button{% endif %}" 
+                            onclick="actualizaract('{{acti.0}}','{{acti.1}}','{{acti.8}}','{{acti.9}}','{{user}}'); return false;"
+                            {% if acti.9 == 'CLOSED' %} disabled {% endif %}>
+                            Admin
+                          </button>
+                        </td>                                     
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+ {%endblock%} 

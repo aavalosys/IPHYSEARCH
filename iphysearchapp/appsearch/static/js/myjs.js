@@ -6,7 +6,14 @@ function onloadpagewelcome() {  //en welcome
     return;
 }
 
-function onloadpagbuscaips() {  //en buscar ips s
+function copiaselectdbsbackup() { //en welcome
+    var selecteddbbaciup = document.getElementById("selectdbwel").value;
+    document.getElementById("iddbselectedwel").value = selecteddbbaciup; 
+    return;
+}
+
+
+function onloadpagbuscaips() {  //en buscar ipss
     var selectBox = document.getElementById("selectdb");
     var elementoplace =selectBox.options[0].value;
     document.getElementById("idtxtdb").value = elementoplace; 
@@ -57,7 +64,6 @@ function onloadpagecasosr() {
     return;
 }
 
-
 function onloadpagesmantenimiento() { 
     var tituloIps = document.getElementById("mantenimiento");
     tituloIps.classList.add("font-weight-bold", "text-white");
@@ -72,12 +78,6 @@ function onloadpagesabout() {
 
 function copiaripnodo(ipnodo) { 
     document.getElementById("idtxtip").value = ipnodo;
-    return;
-}
-
-function copiaselectdbs(){ 
-    var selectedValue = document.getElementById('selectdbwel').value;
-    document.getElementById('iddbselectedwel').value = selectedValue;
     return;
 }
 
@@ -108,21 +108,20 @@ function agregafechahora() {
     const hora = fechaActual.getHours();
     const minutos = fechaActual.getMinutes().toString().padStart(2, "0"); 
     document.getElementById("idfechaactgra").value = `${dia}/${mes}/${año} ${hora}:${minutos} `;
-    document.getElementById("idfechahorasr").value = `${dia}/${mes}/${año} ${hora}:${minutos} `;
-    document.getElementById("idusuariomodifica").value = `${dia}/${mes}/${año} ${hora}:${minutos} `;
     return;
 }
 
-function agregafechahorasract() { 
+function agregafechahorasr() { 
     const fechaActual = new Date();
     const dia = fechaActual.getDate();
     const mes = fechaActual.getMonth() + 1;  
     const año = fechaActual.getFullYear();
-    document.getElementById("idfechaactgra").value = `${dia}/${mes}/${año} ${hora}:${minutos} `;
+    const hora = fechaActual.getHours();
+    const minutos = fechaActual.getMinutes().toString().padStart(2, "0"); 
     document.getElementById("idfechahorasr").value = `${dia}/${mes}/${año} ${hora}:${minutos} `;
-    document.getElementById("idusuariomodifica").value = `${dia}/${mes}/${año} ${hora}:${minutos} `;
     return;
 }
+
 
 function actualizarBarraProgreso() {
     var porcentaje = 0;
@@ -248,6 +247,7 @@ function verdetalleinterface(dbsw, ipdis, interface) {
 }
 
 //------------------------------------------------------------------------------------------------------------------------
+
 $(document).on('click', 'button[id^="btn-"]', function() {
     var idParts = this.id.split('-');
     var dbsw = idParts[1];
@@ -255,6 +255,7 @@ $(document).on('click', 'button[id^="btn-"]', function() {
     var interface = idParts[3];
     verdetalleinterface(dbsw, ipdis, interface);
 });
+
 //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -306,10 +307,7 @@ function copiarAlPortapapelesdetalle() {
 }
 
 
-
-//GENERAR MODAL ACTIVIDAD
-
-function actualizaract(registroact, codigoact, vendoract, estadoact) {
+function actualizaract(registroact, codigoact, vendoract, estadoact, username) { 
     const fechaActual = new Date();
     const dia = fechaActual.getDate();
     const mes = fechaActual.getMonth() + 1;  
@@ -317,9 +315,7 @@ function actualizaract(registroact, codigoact, vendoract, estadoact) {
     const hora = fechaActual.getHours();
     const minutos = fechaActual.getMinutes().toString().padStart(2, "0");
     const grabacion = `${dia}/${mes}/${año} ${hora}:${minutos}`;
-    
-    var url = '/actualizarmodales/'; 
-
+    var url = 'obtiene_vendors_estados/'; 
     $.ajax({
         url: url,
         type: 'POST',
@@ -347,13 +343,13 @@ function actualizaract(registroact, codigoact, vendoract, estadoact) {
                                         </div>
 
                                         <div class="form-group">
-                                            <span id="idfechahoraactactmolay" name="idfechahoraactactmolay">Fecha  Hora: </span>
+                                            <span id="idfechahoraactactmolay" name="idfechahoraactactmolay">Fecha-Hora Actual: </span>
                                             <span id="idfechahoraactactmo" name="idfechahoraactactmo">${grabacion}</span>
                                         </div>
 
                                         <div class="form-group">
                                             <span id="idusuariomodificaactmodlay" name="idusuariomodificaactmodlay">Usuario: </span>
-                                            <span id="idusuariomodificaactmod" name="idusuariomodificaactmod">navalos</span>
+                                            <span id="idusuariomodificaactmod" name="idusuariomodificaactmod">${username}</span>
                                         </div>
                                         
                                         <div class="form-group">
@@ -402,6 +398,7 @@ function actualizaract(registroact, codigoact, vendoract, estadoact) {
             $('#exampleModalact').modal('show');
             $('#exampleModalact').on('hidden.bs.modal', function () {
                 $(this).remove();
+                location.reload();
             });
         },
         error: function(xhr, status, error) {
@@ -412,30 +409,27 @@ function actualizaract(registroact, codigoact, vendoract, estadoact) {
 
 
 function actualizacionactmodal() {
-    // Obtener los valores desde el DOM
     var registroact = document.getElementById('idregistroactdb').textContent;
     var fechamodal = document.getElementById('idfechahoraactactmo').textContent;
-    var fechaactmodal = toHexString(fechamodal);  // Convertir fecha a hex
+    var fechaactmodal = toHexString(fechamodal);  
     var actualizacion = sanitizeString(document.getElementById('idinfoactualizacionactmod').value);
     var usuarioact = document.getElementById('idusuariomodificaactmod').textContent;
     var estadoact = document.getElementById('estadoactmod').value;
     var vendoract = document.getElementById('idvendoractmod').value;
 
-    // Validación: Verificar que el campo 'actualizacion' no esté vacío
     if (actualizacion.trim() === "") {
-        alert("Por favor, ingrese una actualización antes de guardar.");
-        return;  // Detener la ejecución si no hay actualización
+        alert("Ingrese una actualización antes de guardar.");
+        return;  
     }
+    var pageNumber = getPageNumberFromURLact();
+    var url = '/agregar_act/actividades/' + encodeURIComponent(pageNumber) +
+              '/actualizacionact/' + encodeURIComponent(registroact) +
+              '/' + encodeURIComponent(fechaactmodal) +
+              '/' + encodeURIComponent(actualizacion) +
+              '/' + encodeURIComponent(usuarioact) +
+              '/' + encodeURIComponent(estadoact) +
+              '/' + encodeURIComponent(vendoract) + '/';
 
-    // Generar la URL con encodeURIComponent para asegurar que los valores sean válidos en la URL
-    var url = 'actualizacionact/' + encodeURIComponent(registroact) +
-                              '/' + encodeURIComponent(fechaactmodal) +
-                              '/' + encodeURIComponent(actualizacion) +
-                              '/' + encodeURIComponent(usuarioact) +
-                              '/' + encodeURIComponent(estadoact) +
-                              '/' + encodeURIComponent(vendoract) + '/';
-
-    // Confirmación antes de enviar los cambios
     var confirmar = confirm("¿Desea grabar los cambios?");
 
     if (confirmar) {
@@ -451,6 +445,7 @@ function actualizacionactmodal() {
                 $('#exampleModalact').on('hidden.bs.modal', function () {
                     $(this).remove();
                     location.reload();
+                    window.location.reload();
                 });
             },
             error: function(xhr, status, error) {
@@ -462,8 +457,22 @@ function actualizacionactmodal() {
     }
 }
 
+function getPageNumberFromURLact() {
+    var currentURL = window.location.href;
+    var pageNumberMatch = currentURL.match(/\/agregar_act\/(\d+)\//); // Cambia la expresión regular para el nuevo formato
+    return pageNumberMatch ? pageNumberMatch[1] : 0; // Si no se encuentra, asumimos la página 0
+}
 
-function actualizarsr(registrosractividadsr, codigosr, vendorsr, estadosr, paisNombresr) {
+function getPageNumberFromURLsr() {
+    var currentURL = window.location.href;
+    var pageNumberMatch = currentURL.match(/\/agregar_sr\/(\d+)\//); // Cambia la expresión regular para el nuevo formato
+    return pageNumberMatch ? pageNumberMatch[1] : 0; // Si no se encuentra, asumimos la página 0
+}
+
+
+
+//GENERAR MODAL ACTIVIDAD
+function actualizarsr(registrosractividadsr, codigosr, vendorsr, estadosr, paisNombresr, username) {
     const fechaActual = new Date();
     const dia = fechaActual.getDate();
     const mes = fechaActual.getMonth() + 1;  
@@ -493,65 +502,80 @@ function actualizarsr(registrosractividadsr, codigosr, vendorsr, estadosr, paisN
             paissr = 'País no reconocido';
     }
 
-    var url = '/actualizarmodales/';  
-
+    var url = 'obtiene_proveedores_estados_paises/';  
     $.ajax({
         url: url,
         type: 'POST',
         beforeSend: function(xhr) {
-        xhr.setRequestHeader("X-CSRFToken", $('input[name="csrfmiddlewaretoken"]').val());
-    },
-    success: function(response) {
-        var vendors = response.vendors || [];
-        var estados = response.estados || [];
-        var paises = response.paises || [];
-        var modalHtml = `
-        <div class="modal fade" id="exampleModalsr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Administrar Caso #:  ${codigosr}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form >
-                            <fieldset>
-                                <div class="form-group">
-                                    <span id="idregistrosrdbly" name="idregistrosrdbly">Registro: </span>
-                                    <span id="idregistrosrdb" name="idregistrosrdb">${registrosractividadsr}</span>    
-                                </div>
+            xhr.setRequestHeader("X-CSRFToken", $('input[name="csrfmiddlewaretoken"]').val());
+        },
+        success: function(response) {
+            var proveedores = response.proveedores || [];
+            var estados = response.estados || [];
+            var paises = response.paises || [];
+            var modalHtml = `
+            <div class="modal fade" id="exampleModalsr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Administrar Caso #:  ${codigosr}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <fieldset>
+                                    <div class="form-group">
+                                        <span id="idregistrosrdbly" name="idregistrosrdbly">Registro: </span>
+                                        <span id="idregistrosrdb" name="idregistrosrdb">${registrosractividadsr}</span>    
+                                    </div>
 
-                                <div class="form-group">
-                                    <span id="idfechahoraactsrmoly" name="idfechahoraactsrmoly">Fecha  Hora: </span>
-                                    <span id="idfechahoraactsrmo" name="idfechahoraactsrmo">${grabacion}</span>
-                                </div>
+                                    <div class="form-group">
+                                        <span id="idfechahoraactsrmoly" name="idfechahoraactsrmoly">Fecha  Hora: </span>
+                                        <span id="idfechahoraactsrmo" name="idfechahoraactsrmo">${grabacion}</span>
+                                    </div>
 
-                                <div class="form-group">
-                                    <span id="idusuariomodificasrmodly" name="idusuariomodificasrmodly">Usuario: </span>
-                                    <span id="idusuariomodificasrmod" name="idusuariomodificasrmod">navalos</span>
-                                </div>
+                                    <div class="form-group">
+                                        <span id="idusuariomodificasrmodly" name="idusuariomodificasrmodly">Usuario: </span>
+                                        <span id="idusuariomodificasrmod" name="idusuariomodificasrmod">${username}</span>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div>
 
-                                 <div class="form-group">
+                                    <div class="form-group">
+                                        <button id="btnActualizacion" type="button" class="btn btn-info" 
+                                            onclick="toggleActualizacion();">
+                                            Actualización
+                                        </button>
+                                    </div>
+
+                                    <!-- Campo RMA -->
+                                    <div class="form-group">
+                                    &nbsp&nbsp&nbsp&nbsp;
+                                        <input type="text" class="form-control" id="idsrrmamod" name="idsrrmamod" placeholder="No. RMA ..." > <!-- RMA -->
+                                    </div>
+
+                                    <!-- Campo adicional -->
+                                    <div class="form-group">
                                     &nbsp&nbsp&nbsp&nbsp
-                                    <input type="text" class="form-control" id="idsrrmamod" name="idsrrmamod" placeholder="No. RMA ..." >
-                                 </div>
+                                        <input type="text" class="form-control" id="idsrttmod" name="idsrttmod" placeholder="ITEM ..." > <!-- ITEM -->
+                                    </div>
 
-                                 <div class="form-group">
+                                    <!-- Campo fecha -->
+                                    <div class="form-group">
                                     &nbsp&nbsp&nbsp&nbsp
-                                    <input type="text" class="form-control" id="idsrttmod" name="idsrttmod" placeholder="Dato adicional ..." >
-                                 </div>
+                                        <input type="date" class="form-control" id="idfechasropen" name="idfechasropen" placeholder="Fecha apertura" required>
+                                        <small id="emailHelp2" class="form-text text-muted">Fecha de apertura RMA</small>
+                                    </div>
+                                    
+                                    <!-- Campo Actualización -->
+                                    <div class="form-group">
+                                    &nbsp&nbsp&nbsp&nbsp
+                                        <textarea class="form-control" id="idinfoactualizacionsrmod" name="idinfoactualizacionsrmod" 
+                                            placeholder="Actualización" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)" required></textarea>
+                                    </div>
 
-                                 <div class="form-group">
+                                    <div class="form-group">
                                     &nbsp&nbsp&nbsp&nbsp
-                                    <input type="text" class="form-control" id="idsrttmodfecharma" name="idsrttmodfecharma" placeholder="Fecha-Hora Entrega RMA ..." >
-                                 </div>
-                                
-                                <div class="form-group">
-                                    &nbsp&nbsp&nbsp&nbsp
-                                    <textarea class="form-control" id="idinfoactualizacionsrmod" name="idinfoactualizacionsrmod" placeholder="Actualización" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)"required maxlength="180"></textarea>
-                                </div>
-
-                                <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4">
                                          &nbsp&nbsp&nbsp&nbsp
@@ -568,14 +592,14 @@ function actualizarsr(registrosractividadsr, codigosr, vendorsr, estadosr, paisN
                                             <input class="form-control" id="idepaissrmodac" type="text" name="idepaissrmodac" readonly="" value="${paissr}">
                                         </div>
                                     </div>
-                                </div>
+                                 </div>
 
-                                <div class="form-group">
+                                 <div class="form-group">
                                     &nbsp&nbsp&nbsp&nbsp    
                                     <div class="row">
                                         <div class="col-md-4">
                                             <select id="idvendorsrmod" name="idvendorsrmod" class="form-select">
-                                                ${vendors.map(v => `<option value="${v}" ${v === vendorsr ? 'selected' : ''}>${v}</option>`).join('')}
+                                                ${proveedores.map(v => `<option value="${v}" ${v === vendorsr ? 'selected' : ''}>${v}</option>`).join('')}
                                             </select>
                                         </div>
 
@@ -593,25 +617,26 @@ function actualizarsr(registrosractividadsr, codigosr, vendorsr, estadosr, paisN
 
                                     </div>
                                 </div>
-                            </fieldset>
-                        </form>
 
-                        <div class="modal-footer" style="margin-top: 10px;" >
-                            <button id="idopcionessrr" type="button" class="btn btn-primary" onclick="actualizacionsrmodal(); return false;">
-                                Actualizar
-                            </button>
+                                </fieldset>
+                            </form>
+
+                            <div class="modal-footer">
+                                <button id="idopcionessrr" type="button" class="btn btn-primary" onclick="actualizacionsrmodal(); return false;">
+                                    Guardar
+                                </button>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-        </div>
-    `;
+            `;
 
-    $('body').append(modalHtml);
-    $('#exampleModalsr').modal('show');
-    $('#exampleModalsr').on('hidden.bs.modal', function () {
+            $('body').append(modalHtml);
+            $('#exampleModalsr').modal('show');
+            $('#exampleModalsr').on('hidden.bs.modal', function () {
                 $(this).remove();
+                location.reload();
             });
         },
         error: function(xhr, status, error) {
@@ -620,17 +645,55 @@ function actualizarsr(registrosractividadsr, codigosr, vendorsr, estadosr, paisN
     });
 }
 
+
+function toggleActualizacion() {
+    const campoRMA = document.getElementById('idsrrmamod');
+    const campoAdicional = document.getElementById('idsrttmod');
+    const campoFecha = document.getElementById('idfechasropen');
+    const deshabilitado = campoRMA.disabled;
+
+    campoRMA.disabled = !deshabilitado;
+    campoAdicional.disabled = !deshabilitado;
+    campoFecha.disabled = !deshabilitado;
+
+    if (!deshabilitado) {
+        campoRMA.disabled = false;
+        campoAdicional.disabled = false;
+        campoFecha.disabled = false;
+
+        campoRMA.value = '0';
+        campoAdicional.value = '0';
+        campoFecha.value = '00/00/00';
+        campoRMA.disabled = true;
+        campoAdicional.disabled = true;
+        campoFecha.disabled = true;
+    }
+
+    const btnActualizacion = document.getElementById('btnActualizacion');
+    if (deshabilitado) {
+        btnActualizacion.textContent = 'Actvar Actualización';
+    } else {
+        btnActualizacion.textContent = 'Desactivar Actualización';
+    }
+}
+
+
 function actualizacionsrmodal() {
     var registrosr = document.getElementById('idregistrosrdb').textContent;
     var fechahoragrabacion = toHexString(document.getElementById('idfechahoraactsrmo').textContent);
     var rmarecibido = document.getElementById('idsrrmamod').value;
     var ttrmarecibido = document.getElementById('idsrttmod').value;
-    var fecharmasrrecibida = document.getElementById('idsrttmodfecharma').value;
+    var fecharmasrrecibida = document.getElementById('idfechasropen').value;
     var actualizacion = document.getElementById('idinfoactualizacionsrmod').value;
     var usuariosr = document.getElementById('idusuariomodificasrmod').textContent;
     var estadosr = document.getElementById('estadosrmod').value;
     var vendorsr = document.getElementById('idvendorsrmod').value;
     var paissr = document.getElementById('paissrmod').value;
+
+    if (actualizacion.trim() === "") {
+        alert('El campo de actualización es obligatorio.');
+        return; 
+    }
 
     if (rmarecibido.trim() === "") {
         rma = "0";
@@ -645,11 +708,10 @@ function actualizacionsrmodal() {
     }
     
     if (fecharmasrrecibida.trim() === "") {
-        fecharmasr = toHexString("sin_fecha");
+        fecharmasr = toHexString("0");
     } else {
         fecharmasr_ = sanitizeString(fecharmasrrecibida);
         fecharmasr = toHexString(fecharmasr_);
-
     }
     
     if (actualizacion.trim() === "") {
@@ -657,10 +719,10 @@ function actualizacionsrmodal() {
     } else {
         actualizacion = sanitizeString(actualizacion);
     }
-    
-    alert(rma);
-    var url = 'actualizacionsr/' + 
-    encodeURIComponent(registrosr) + '/' +
+
+    var pageNumber = getPageNumberFromURLsr();
+    var url = '/agregar_sr/casossr/' + encodeURIComponent(pageNumber) +
+              '/actualizacionsr/' +  encodeURIComponent(registrosr) + '/' +
     encodeURIComponent(fechahoragrabacion) + '/' +
     encodeURIComponent(rma) + '/' +
     encodeURIComponent(ttrma) + '/' +
@@ -697,11 +759,50 @@ function actualizacionsrmodal() {
     }
 }
 
+function mostrarInformacionDescripcionsr(registro) {
+    var url = '/muestradescripcionsr/' + encodeURIComponent(registro) +'/'; 
+    $.ajax({
+        url: url,
+        type: 'GET', 
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", $('input[name="csrfmiddlewaretoken"]').val());
+        },
+        success: function(response) {
+            if (response.descripcionSR) {
+                alert('Descripción: ' + response.descripcionSR);
+            } else {
+                alert('No se encontró información para este registro.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('Ocurrió un error al obtener la descripción');
+        }
+    }); 
+    return false;
+}
 
 
-
-function mostrarInformacionDescripcion(descripcion) {
-    alert('Descripción:  ' + descripcion);
+function mostrarInformacionDescripcionact(registro) {
+    var url = '/muestradescripcionact/' + encodeURIComponent(registro) +'/'; 
+    $.ajax({
+        url: url,
+        type: 'GET', 
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", $('input[name="csrfmiddlewaretoken"]').val());
+        },
+        success: function(response) {
+            if (response.descripcionACT) {
+                alert('Descripción: ' + response.descripcionACT);
+            } else {
+                alert('No se encontró información para este registro.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('Ocurrió un error al obtener la descripción');
+        }
+    }); 
     return false;
   }
 
@@ -715,14 +816,192 @@ function mostrarInformacionfechacrea(fechacreacioncaso, usuario) {
     return false;
 }
 
-function mostrarInformacionRMAS(registro, fechagrab, ttrma, actualizacion, fechaentrega, usuariomodifica) {
-    alert('Detalle: ' + registro + ' Fecha Grabación: ' + fechagrab + 
-        ' TTRMA: ' + ttrma + ' Actualización: ' + actualizacion + 
-        ' Fecha Entrega: ' + fechaentrega + ' Usuario: ' + usuariomodifica);
-    return false;
-  }
+function cierreRMAS(registrosractividadsr, codigosr, vendorsr, estadosr, paissr, idregistro, rma, ttrma, actualizacion, fechahoragrabacion, username) {
+    const fechaActual = new Date();
+    const dia = fechaActual.getDate();
+    const mes = fechaActual.getMonth() + 1;
+    const año = fechaActual.getFullYear();
+    const hora = fechaActual.getHours();
+    const minutos = fechaActual.getMinutes().toString().padStart(2, "0");
+    const grabacion = `${dia}/${mes}/${año} ${hora}:${minutos}`;
 
-  function mostrarActualizacionesAct(registro) {
+    // Determina si el estado es CLOSED
+    const isClosed = estadosr === "CLOSED";
+    const disableAttributes = isClosed ? "disabled" : "";
+
+    // Usa los valores que vienen como parámetros si el estado es CLOSED
+    const fechaHora = isClosed ? fechahoragrabacion : grabacion;
+    const detalleActualizacion = isClosed ? actualizacion : "";
+
+    var modalHtml = `
+    <div class="modal fade" id="exampleModalsrcr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Administrar Caso #:  ${codigosr}</h5> <!-- RMA -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <fieldset>
+                            <div class="form-group">
+                                <span id="idregistrosrdbcrly" name="idregistrosrdbcrly">Registro dbrma: </span>
+                                <span id="idregistrosrdbcr" name="idregistrosrdbcr">${registrosractividadsr}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <span id="idrmaactualrmacridly" name="idrmaactualrmacridly">Registro dbcierre </span>
+                                <span id="idrmaactualrmacrid" name="idrmaactualrmacrid">${idregistro}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <span id="idfechahoraactsrmocrly" name="idfechahoraactsrmocrly">Fecha  Hora: </span>
+                                <span id="idfechahoraactsrmocr" name="idfechahoraactsrmocr">${fechaHora}</span>
+                            </div>
+
+                             <div class="form-group">
+                                <span id="idrmaactualrmacrly" name="idrmaactualrmacrly">RMA: </span>
+                                <span id="idrmaactualrmacr" name="idrmaactualrmacr">${rma}</span>
+                            </div>
+
+                             <div class="form-group">
+                                <span id="idrmaactualttrmacrly" name="idrmaactualttrmacrly">Dato: </span>
+                                <span id="idrmaactualttrmacr" name="idrmaactualttrmacr">${ttrma}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <span id="idusuariomodificasrmodcrly" name="idusuariomodificasrmodcrly">Usuario: </span>
+                                <span id="idusuariomodificasrmodcr" name="idusuariomodificasrmodcr">${username}</span>
+                            </div>
+
+                            <div class="form-group">
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="date" class="form-control" id="idfechaclosermacr" name="idfechaclosermacr" placeholder="Fecha apertura" required ${disableAttributes}>
+                                <small id="emailHelp2" class="form-text text-muted">Fecha de cierre RMA</small>
+                            </div>
+
+                            <!-- Campo Actualización -->
+                            <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                                <textarea class="form-control" id="idinfoactualizacionsrmodcr" name="idinfoactualizacionsrmodcr"
+                                    placeholder="Detalle cierre" rows="3" maxlength="200" oninput="this.value = this.value.substring(0, this.maxLength)" required ${disableAttributes}>${detalleActualizacion}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <div class="row">
+                                <div class="col-md-4">
+                                 &nbsp&nbsp&nbsp&nbsp
+                                    <input class="form-control" id="idvendorsrmodaccr" type="text" name="idvendorsrmodaccr" readonly="" value="${vendorsr}">
+                                </div>
+
+                                <div class="col-md-4">
+                                 &nbsp&nbsp&nbsp&nbsp
+                                    <input class="form-control" id="idestadosrmodaccr" type="text" name="idestadosrmodaccr" readonly="" value="${estadosr}">
+                                </div>
+
+                                <div class="col-md-4">
+                                 &nbsp&nbsp&nbsp&nbsp
+                                    <input class="form-control" id="idepaissrmodaccr" type="text" name="idepaissrmodaccr" readonly="" value="${paissr}">
+                                </div>
+                            </div>
+                         </div>
+                        </fieldset>
+                    </form>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="modal-footer">
+                        <button id="idopcionessrrcr" type="button" class="btn btn-primary" onclick="cierrasrmodal(); return false;" ${disableAttributes}>
+                            Cerrar RMA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+
+    $('body').append(modalHtml);
+    $('#exampleModalsrcr').modal('show');
+    $('#exampleModalsrcr').on('hidden.bs.modal', function () {
+        $(this).remove();
+        location.reload();
+    });
+}
+
+
+    
+    function cierrasrmodal() {
+        var registrosr = document.getElementById('idregistrosrdbcr').textContent;
+        var fechahoragrabacion = toHexString(document.getElementById('idfechahoraactsrmocr').textContent);
+        var rmarecibido = document.getElementById('idrmaactualrmacr').textContent;
+        var ttrmarecibido = document.getElementById('idrmaactualttrmacr').textContent;
+        var fecharmasr = document.getElementById('idfechaclosermacr').value;
+        var actualizacioncierre = document.getElementById('idinfoactualizacionsrmodcr').value;
+        var usuariosr = document.getElementById('idusuariomodificasrmodcr').textContent;
+        var vendorsr = document.getElementById('idvendorsrmodaccr').value;
+        var estadosr = document.getElementById('idestadosrmodaccr').value;
+        var paissr = document.getElementById('idepaissrmodaccr').value;
+        function getValueOrDefault(value, defaultValue) {
+            return (value === undefined || value.trim() === "") ? defaultValue : sanitizeString(value);
+        }
+    
+        if (fecharmasr.trim() === "") {
+            alert('El campo de fecha cierre es obligatorio.');
+            return;
+        }
+    
+        fecharmasrcierre = toHexString(sanitizeString(fecharmasr));
+    
+        if (actualizacioncierre.trim() === "") {
+            alert('El campo de actualización es obligatorio.');
+            return;
+        }
+    
+        rmarecibido = getValueOrDefault(rmarecibido, "0");
+        ttrmarecibido = getValueOrDefault(ttrmarecibido, "0");
+        actualizacioncierre = getValueOrDefault(actualizacioncierre, "sin_act");
+    
+        var pageNumber = getPageNumberFromURLsr();
+        var url = '/agregar_sr/casossr/' + encodeURIComponent(pageNumber) +
+                  '/cierrermas/' + encodeURIComponent(registrosr) + '/' +
+                  encodeURIComponent(fechahoragrabacion) + '/' +
+                  encodeURIComponent(rmarecibido) + '/' +
+                  encodeURIComponent(ttrmarecibido) + '/' +
+                  encodeURIComponent(fecharmasrcierre) + '/' +
+                  encodeURIComponent(actualizacioncierre) + '/' +
+                  encodeURIComponent(usuariosr) + '/' +
+                  encodeURIComponent(estadosr) + '/' +
+                  encodeURIComponent(vendorsr) + '/' +
+                  encodeURIComponent(paissr) + '/';
+        var confirmar = confirm("¿Desea grabar los cambios?");
+    
+        if (confirmar) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", $('input[name="csrfmiddlewaretoken"]').val());
+                },
+                success: function(response) {
+                    alert('Los cambios se han grabado exitosamente.');
+                    $('#exampleModalsrcr').modal('hide');
+                    $('#exampleModalsrcr').on('hidden.bs.modal', function () {
+                        $(this).remove();
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    alert('Error: ' + error);
+                }
+            });
+        } else {
+            alert('La grabación ha sido cancelada.');
+        }
+    }
+    
+
+
+  function mostrarActualizaciones(registro) {
     var url = '/actualizacionactividades/' + registro + '/'; 
     $.ajax({
         url: url,
@@ -744,27 +1023,7 @@ function mostrarInformacionRMAS(registro, fechagrab, ttrma, actualizacion, fecha
         }
     }); 
     return false;
-}
-
-function confirmarYEnviarsr() {
-    var confirmar = confirm("¿Desea guardar los cambios?");
-    if (confirmar) {
-        document.getElementById('idformagregaract').submit();
-        location.reload();
-    } else {
-        alert('La acción ha sido cancelada.');
-    }
-}
-
-function confirmarYEnviaract() {
-    var confirmar = confirm("¿Desea guardar los cambios?");
-    if (confirmar) {
-        document.getElementById('idformagregarsr').submit();
-        location.reload();
-    } else {
-        alert('La acción ha sido cancelada.');
-    }
-}
+} 
 
 
 function sanitizeString(str) {
@@ -776,73 +1035,44 @@ function sanitizeString(str) {
 
 
 
+function confirmarYEnviarsr() {
+    var identificador = document.getElementById('ididentificadorsr').value.trim(); 
+    if (!identificador) {
+        alert("El campo 'ID caso es obligatori' es obligatorio.");
+        return; 
+    }
 
-//--------------------------------- GRAFICOS --------------------------------------------//
-function diagramal2() {
-    fetch('/about/diagramal2/')
-    .then(response => response.json())
-    .then(data => {
-    var svgWidth = 700;
-    var svgHeight = 400;
-    
-    var svg = d3.select("#vis-red").append("svg")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight);
-    
-    var simulation = d3.forceSimulation(data.nodes)
-    .force("link", d3.forceLink(data.links).id(d => d.id).distance(100))
-    .force("charge", d3.forceManyBody().strength(-200))
-    .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2));
-    
-    var links = svg.selectAll(".link")
-    .data(data.links)
-    .enter().append("line")
-    .attr("class", "link")
-    .style("stroke", "#999")
-    .style("stroke-opacity", 0.6)
-    .style("stroke-width", 4);
-    
-    var nodes = svg.selectAll(".node")
-    .data(data.nodes)
-    .enter().append("image")
-    .attr("class", "node")
-    .attr("xlink:href", function(d) { 
-    return "/static/img/" + d.tipo + ".png"; 
-    })
-    .attr("width", 60)
-    .attr("height", 60)
-    .call(d3.drag()
-    .on("start", dragstarted)
-    .on("drag", dragged)
-    .on("end", dragended));
+    var confirmar = confirm("¿Desea guardar los cambios?");
+    if (confirmar) {
+        document.getElementById('idformagregarsr').submit(); 
+    } else {
+        alert('La acción ha sido cancelada.');
+    }
+}
 
-    
-    simulation.on("tick", () => {
-    links.attr("x1", d => d.source.x)
-    .attr("y1", d => d.source.y)
-    .attr("x2", d => d.target.x)
-    .attr("y2", d => d.target.y);
+function confirmarYEnviaract() {
+    var identificador = document.getElementById('ididentificadoract').value.trim();
+    if (!identificador) {
+        alert("El campo 'ID actividad' es obligatorio.");
+        return;
+    }
 
-    nodes.attr("x", d => d.x - 15)
-    .attr("y", d => d.y - 15);
-    });
-    
-    function dragstarted(d) {
-    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
+    var confirmar = confirm("¿Desea guardar los cambios?");
+    if (confirmar) {
+        document.getElementById('idformagregaract').submit();
+    } else {
+        alert('La acción ha sido cancelada.');
     }
-    
-    function dragged(d) {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
+}
+
+
+function confirmarSalida() {
+    var confirmar = confirm("¿Desea salir de la aplicación?");
+    if (confirmar) {
+        window.location.href = "{% url 'logout' %}";
+    } else {
+        alert('La acción ha sido cancelada.');
     }
-    
-    function dragended(d) {
-    if (!d3.event.active) simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-    }
-    })
-    .catch(error => console.error('Error:', error));
-    }
+}
+
+

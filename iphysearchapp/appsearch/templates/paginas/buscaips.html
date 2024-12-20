@@ -5,7 +5,7 @@
 <div class="row" style="margin: 10px;">
     <div class="col-md-12">
         <ion-icon name="browsers-outline"></ion-icon>
-        <div class="row"> 
+        <div class="row">  
 
             <!--PRIMERA COLUMNA FILA 1-->
             <div class="col-md-4" style="margin-top: 6px;"> 
@@ -14,7 +14,7 @@
                     <div class="input-group mb-3" style="margin-top: 2 px;">
                         <span class="input-group-text">INGRESE ID:</span>
                         <input type="text"  id="idtxtidrbs" name="idrbs" class="form-control"  placeholder="ID a Buscar..." required>
-                        <input type="hidden"  id="idtxtdbrbs" name="dbrbs">
+                        <input type="hidden"  id="idtxtdbrbs" name="idtxtdbrbs">
                         <input type="hidden"  id="idtxtpivrbs" name="pivrbsrbs" value ="0">
                         <button type="submit" class="btn btn-danger"  name="buscar_rbs" value="Recargar">Buscar</button>
                     </div>
@@ -49,12 +49,12 @@
                             <input type="hidden" id="idtxtdb" name="dbcpe">
                             <input type="hidden"  id="idtxtpiv" name="pivcpe" value ="1">
                             <button type="submit" class="btn btn-danger" name="buscar_ip" value="Recargar">Buscar</button>
-                            <select id="selectdb" name="selectdbs" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example" onchange="copiaselectdbsrbs(); return;">
+                            <select id="selectdb" name="selectdb" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example" onchange="copiaselectdbsrbs(); return;">
                                 {% for  db in dbs %}
-                                  <option value="{{ db }}">{{ db }}</option>
+                                  <option value="{{ db.0 }}">{{ db.0 }}</option>
                                 {% endfor %}
                             </select>
-                        </div>
+                        </div> 
                 </form>
             </div>
 
@@ -86,7 +86,7 @@
                             <strong>{{ res_ping }}</strong>-- Excepción desde la API.
                         {% endif %} 
                     </div>
-                {% endif %}
+                {% endif %} 
 
                 {% if tipoalerta == '2' %}
                     <div class="alert alert-dismissible alert-danger">
@@ -116,7 +116,7 @@
 
         <div class="row">    <!--SEGUNDA FILA</a>-->
             <div class="col-md-8">
-                {% if listaips %}
+                {% if listaips %} 
                     <table id = "tablaips" class="table table table-sm">
                             <thead >
                             <tr>
@@ -140,7 +140,7 @@
                                     <td width="140">{{ip.4}}</td>
                                     <td width="200">{{ip.5}}</td>
                                     <td width="140">{{ip.6}}</td>
-                                    <td width="140">{{ip.7}}</td>
+                                    <td width="140">{{ip.7}}</td> 
                                     <td width="20">
                                         <button
                                             id="Verbtn"
@@ -164,7 +164,7 @@
                         </tbody>
                     </table>    
                 {% endif %}
-            </div>
+            </div> 
 
         <div class="row" >   
             <div class="col-md-8">

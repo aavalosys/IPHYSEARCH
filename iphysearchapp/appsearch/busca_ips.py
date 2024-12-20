@@ -1,14 +1,18 @@
 import os
 import requests
 from django.http import JsonResponse
+from django.conf import settings
 from django.shortcuts import render
 from iphysearchapp.var_env import *
 from iphysearchapp.connect import *
 from appsearch.varias_func  import *
+from django.contrib.auth.decorators import login_required 
 
 
 
-def buscaips(request):   
+@login_required
+def buscaips(request):
+    username = request.user.username  
     res_ping = "Bienvenidos al APP WEB, verificación de elementos de red"
     tipoalerta = "0"
     limpiaINFO()
@@ -20,31 +24,35 @@ def buscaips(request):
                   {'listarbs': [],
                     'listarips':[],
                     'listar_mac': [],
-                    'dbs': esquemata(),
-                    'user': usuariolog(),
+                    'dbs': esquemata_general(), 
                     'tipoalerta':tipoalerta,
-                    'res_ping': res_ping, 
+                    'res_ping': res_ping,
+                    'user': username, 
                     'INFOR': INFOR})
 
-
+@login_required
 def buscarbs(request):     #BUSQUEDA POR ID ELEMENTO
+    username = request.user.username
     limpiaINFO()        
     res_ping = "Este es el resultado de la Busqueda de elementos por ID"
     tipoalerta ="0"
-    dbrbs = request.GET.get('dbrbs')
+    dbrbs = request.GET.get('idtxtdbrbs')
     textrbs = request.GET.get('idrbs').lstrip()
+    listarbs = buscarbsid(dbrbs, textrbs)
     return render(request, "paginas/buscaips.html", 
-                  {'listarbs': buscarbsid(dbrbs, textrbs),
+                  {'listarbs': listarbs,
                    'listaips': [],
                    'listar_mac': [],
-                   'dbs': esquemata(), 
-                   'user': usuariolog(),
+                   'dbs': esquemata_general(), 
                    'tipoalerta':tipoalerta,
                    'res_ping': res_ping,
+                   'user': username,  
                    'INFOR': INFOR}) 
 
 
+@login_required
 def buscar_ip(request):       #BUSQUEDA DE LA L3
+    username = request.user.username
     limpiaINFO()
     res_ping = "Este es el resultado de la IP del elemento y las VPNs donde se observa."
     tipoalerta ="0"        
@@ -54,14 +62,16 @@ def buscar_ip(request):       #BUSQUEDA DE LA L3
                       {'listarbs': buscarbsip(dbcpe, textip),
                        'listaips': buscaipcpe(dbcpe, textip),
                        'listar_mac': [], 
-                       'dbs': esquemata(),
-                       'user': usuariolog(),
+                       'dbs': esquemata_general(),
                        'tipoalerta':tipoalerta,
                        'res_ping': res_ping,
+                       'user': username,
                        'INFO':INFOR,})
 
 
+@login_required
 def buscaserviciomac (request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
+    username = request.user.username
     res_ping = "Este es el resultado del trayecto L2 por donde se observa la MAC del elemento"
     tipoalerta ="0"
     vlan_f = int(vlan)
@@ -78,10 +88,10 @@ def buscaserviciomac (request, ippe, ipcpe, mac, vlan, vrf, pais, dbcpe):
                   {'listarbs': buscarbsip(dbcpe,ipcpe),
                    'listaips':buscaipcpe(dbcpe, ipcpe), 
                    'listar_mac': listar_mac,
-                   'dbs': esquemata(),
-                   'user': usuariolog(),
+                   'dbs': esquemata_general(),
                    'tipoalerta':tipoalerta,
-                   'res_ping': res_ping, 
+                   'res_ping': res_ping,
+                   'user': username, 
                    'INFOR': INFOR})
 
 
@@ -164,7 +174,7 @@ def servicioespw(mac, subvlan, dbcpe):
 
 
 def elementoesup(ipsw):
-    second_element = 'X'
+    second_element = 'X' 
     mydb =  conexion_dbnet(DBESUP)
     mycursor = mydb.cursor()
     try:

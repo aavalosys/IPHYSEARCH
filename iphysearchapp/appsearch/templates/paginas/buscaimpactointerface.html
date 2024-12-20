@@ -16,7 +16,7 @@
                 <button type="submit" class="btn btn-danger" name="impactointerfaces" >Buscar</button>
                 <select id="selectdb" name="selectdbs" data-placeholder="Choose" class="input-group-text" aria-label=".form-select-sm example" onchange="copiaselectdbsrbs(); return;">
                     {% for  db in dbs %}
-                      <option value="{{ db }}">{{ db }}</option>
+                      <option value="{{ db.0 }}">{{ db.0 }}</option>
                     {% endfor %}
                 </select>
             </div>

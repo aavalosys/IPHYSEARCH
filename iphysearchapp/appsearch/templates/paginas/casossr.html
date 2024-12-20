@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% block titulo %}INICIO{% endblock %}
+{% block contenido %} 
+
+<div class="row" style="margin: 10px;">
+  <div class="col-md-12">
+    <div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <div id="toastMessage" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+              <div class="toast-body">
+                  <strong id="toastTitle"></strong>
+                  <p id="toastContent"></p>
+              </div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+      </div>
+  </div>
+  </div>
+      <script>
+        function mostrarToast(conexiondb) {
+            var toastEl = document.getElementById('toastMessage');
+            var toastTitle = document.getElementById('toastTitle');
+            var toastContent = document.getElementById('toastContent');
+
+            if (conexiondb == 0) {
+                toastEl.classList.remove('bg-danger');
+                toastEl.classList.add('bg-success');
+                toastTitle.textContent = 'Conexión Exitosa';
+                toastContent.textContent = 'Conectado a la base de datos.';
+            } else {
+                toastEl.classList.remove('bg-success');
+                toastEl.classList.add('bg-danger');
+                toastTitle.textContent = 'Error de Conexión';
+                toastContent.textContent = 'No se pudo conectar a la base de datos. Por favor, inténtalo de nuevo más tarde.';
+            }
+
+            var toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+
+        $(document).ready(function() {
+            var conexiondb = {{ conexiondb }};  
+            mostrarToast(conexiondb);
+        });
+    </script>
+  </div> 
+    <div class="col-md-1">
+    </div> 
+
+    <div class="col-md-10">
+          <form action="" method="GET">
+            {% csrf_token %}
+            <div class="input-group mb-3" style="margin-top: 5px;">
+                <span class="input-group-text">Buscar</span>
+                <input type="text" id="idtxtabuscarsr" name="idtxtabuscarsr" class="form-control" placeholder="Buscar texto ...." >
+                <input type="hidden" id="idestadosr" name="idestadosr">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="date" class="form-control" id="idfechabusquedasrini" name="idfechabusquedasrini"  >
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="date" class="form-control" id="idfechabusquedasrfin" name="idfechabusquedasrfin"  >
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <select id="estadosr" name="estadosr" data-placeholder="Choose" class="form-select" aria-label=".form-select-sm example" onchange="copiaselectestadosr(); return;">
+                    {% for estado in estados %}
+                      <option value="{{ estado }}">{{ estado }}</option>
+                    {% endfor %}
+                </select>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="submit" class="btn btn-danger">Buscar {{opcion}}</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#idformsr" onclick="agregafechahorasr(); return false;">Agregar</button>
+                </div>
+          </form> 
+        <script>  onloadpagecasosr();  </script>
+    </div>
+
+    <div class="col-md-1"> 
+    </div>
+
+    <!--VENTANA MODAL CASO PROVEEDOR-->
+  <div class="modal fade" id="idformsr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar Casos SR:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id = "idformagregarsr">
+                        {% csrf_token %}
+                        <fieldset> 
+
+                          <div class="form-group">
+                            <input class="form-control" id="ididentificadorsr" type="text" name="ididentificadorsr" placeholder="Número de SR" required maxlength="95">
+                          </div>
+
+                          <div class="form-group">
+                            &nbsp;&nbsp;&nbsp;
+                            <input type="text" class="form-control" id="idtitulosr" name="idtitulosr" placeholder="Título caso" required maxlength="95">
+                          </div>
+
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-md-6">
+                                &nbsp;&nbsp;&nbsp;
+                                <input type="date" class="form-control" id="idfechasr" name="idfechasr" placeholder="Fecha apertura" required>
+                                <small id="emailHelp2" class="form-text text-muted">Fecha de apertura</small>
+                              </div>
+                              <div class="col-md-6"> 
+                                &nbsp;&nbsp;&nbsp;  
+                                <input type="time" class="form-control" id="idhorasr" name="idhorasr" placeholder="Hora apertura" >
+                                <small id="emailHelp1" class="form-text text-muted">Hora de apertura</small>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            &nbsp&nbsp&nbsp&nbsp
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="idfalla" name="idfalla" placeholder="Número Falla ..." >
+                                </div>
+
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="idhostname" name="idhostname" placeholder="hostname ..." >
+                                </div>
+
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="idip" name="idip" placeholder="IP ..." >
+                                </div>
+                            </div>
+                          </div>   
+
+                          <div class="form-group">
+                              &nbsp;&nbsp;&nbsp;
+                              <textarea  class="form-control" id="iddescripcionsr" name="iddescripcionsr" placeholder="Descripción caso" rows="3" maxlength="145" oninput="this.value = this.value.substring(0, this.maxLength)" required></textarea>
+                          </div>
+
+                          <div class="form-group">
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="row"> 
+                                <div class="col-md-6">
+                                    <select id="idproveedores" name="idproveedores" class="form-control">
+                                        {% for items in proveedores %}
+                                            <option value="{{ items }}">{{ items }}</option>
+                                        {% endfor %}
+                                    </select>  
+                                </div>
+                                <div class="col-md-6">
+                                    <select id="idpaissr" name="idpaissr" class="form-control">
+                                        {% for pais in paises %}
+                                            <option value="{{ pais }}">{{ pais }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                          <div class="form-group">
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="row"> 
+                              <div class="col-md-6">
+                                <input class="form-control" id="idusuariosr" type="text" name="idusuariosr" readonly="" value = "{{user}}">
+                              </div>
+                              <div class="col-md-6">
+                                <input class="form-control" id="idfechahorasr" type="text" name="idfechahorasr" readonly="">
+                              </div> 
+                            </div>                       
+                          </div>
+                          &nbsp;&nbsp;&nbsp;
+                          <div class="modal-footer" style="margin-top: 5px;">
+                            <button type="button" class="btn btn-primary" onclick="confirmarYEnviarsr()">Aceptar</button>
+                          </div>
+                          
+                        </fieldset>
+        
+                      </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row"> 
+  <div class="col-md-5">
+  </div>
+  <div class="col-md-2">
+    <div>
+        <ul class="pagination" id="paginadorsr">
+          <li class="page-item {% if pagina_actual == 1 %}disabled{% endif %}">
+            <a class="page-link" href="{% url 'agregar_sr' 1 %}" aria-label="Primera página">
+              &laquo;
+            </a>
+          </li>
+    
+          {% for i in rango_paginas %}
+            <li class="page-item {% if i == pagina_actual %}active{% endif %}">
+              <a class="page-link" href="{% url 'agregar_sr' i %}">{{ i }}</a>
+            </li>
+          {% endfor %}
+    
+          <li class="page-item {% if pagina_actual == total_paginas %}disabled{% endif %}">
+            <a class="page-link" href="{% url 'agregar_sr' total_paginas %}" aria-label="Última página">
+              &raquo;
+            </a>
+          </li>
+        </ul>
+    </div>
+    
+  </div>
+  <div class="col-md-5">
+  </div> 
+
+  <div class="col-md-12" style="margin-left: 3mm; margin-right: 3mm;">
+      <style>
+        .disabled-button {
+          background-color: #d3d3d3; /* Color gris */
+          cursor: not-allowed; /* Cambiar el cursor */
+      }
+      </style>
+
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-active">
+                    {% for dato in headtable %}
+                        <th scope="col">{{ dato }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% if listasr %}
+                    {% for sr in listasr %}
+                    <tr>
+                      <td >{{sr.16}}</td><!--no-->
+                        <td>
+                            <a href="#" id="detallermasr" onclick="mostrarInformacionfechacrea('{{sr.12}}','{{sr.13}}')">{{sr.14}}</a> <!--RMA-->
+                        </td>
+                        <td >
+                          <a href="#" id="actualizacionessr"  onclick="mostrarActualizaciones('{{sr.0}}')">{{sr.1}}</a> <!--RMA-->
+                        </td><!--SR-->
+                        <td >{{sr.2}}</td><!--TÍTULO-->
+                        <td >{{sr.3}} {{sr.4}}</td><!--APERTURA--> 
+                        <td>
+                          <a href="#" id="{{sr.0}}" onclick="mostrarInformacionDescripcionsr('{{sr.0}}'); return false;">Descripción</a>
+                        </td><!--descripcion -->
+                        <td> <!--rmag-->
+                          {% for rma in sr.15 %}
+                              <a href="#" id="{{rma.idregistro}}" onclick="cierreRMAS('{{sr.0}}','{{sr.1}}','{{rma.vendormodifica}}','{{rma.estadomodifica}}','{{rma.paismodifica}}','{{rma.idregistro}}','{{rma.rma}}','{{rma.ttrma}}','{{rma.actualizacion}}','{{rma.fechahoragrabacion}}','{{user}}'); return flase;">{{rma.rma}}</a> <!-- RMA -->
+                          {% endfor %}
+                        </td>
+                        <td >{{sr.8}}</td> <!--vendor-->
+                        <td >{{sr.9}}</td> <!--estado--> 
+                        <td >{{sr.10}}</td> <!--pais-->
+                        <td> <!--opcion-->
+                          <button
+                            id="idopcionessr"  
+                            type="button" 
+                            class="btn btn-info {% if sr.9 == 'CLOSED' %}disabled-button{% endif %}" 
+                            onclick="actualizarsr('{{sr.0}}','{{sr.1}}','{{sr.8}}','{{sr.9}}','{{sr.10}}','{{user}}'); return false;"
+                            {% if sr.9 == 'CLOSED' %} disabled {% endif %}>
+                            Admin
+                          </button>
+                        </td>                                      
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <script>  paginadorsr({{nregistros}}, {{ndivisor}}); </script>
+</div>
+
+ {%endblock%} 

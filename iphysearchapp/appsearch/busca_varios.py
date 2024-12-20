@@ -7,9 +7,13 @@ from iphysearchapp.var_env import *
 from iphysearchapp.connect import *
 from appsearch.varias_func import *
 from appsearch.busca_ips import *
- 
+from django.contrib.auth.decorators import login_required 
 
+
+
+@login_required
 def buscavarios(request, selectedoption):
+    username = request.user.username 
     resultado =""
     opcion ="Ninguna..."
     headtable = ["!!!!", "!!!", "!!", "!", "!", "?"]
@@ -49,16 +53,16 @@ def buscavarios(request, selectedoption):
                 {   'opcion':opcion,  
                     'headtable':headtable, 
                     'resultado':resultado,    
-                    'dbs': esquemata(),
-                    'user': usuariolog(),
+                    'dbs': esquemata_general(),
+                    'user': username,
                 })
         
     return render(request,'paginas/buscavarios.html',
                 {   'opcion':opcion,  
                     'headtable':headtable, 
                     'resultado':resultado,    
-                    'dbs': esquemata(),
-                    'user': usuariolog(),
+                    'dbs': esquemata_general(),
+                    'user': username,
                 })
 
 

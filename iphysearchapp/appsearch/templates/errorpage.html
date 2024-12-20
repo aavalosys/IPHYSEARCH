@@ -1,6 +1,28 @@
 {% extends "base.html" %}
-
-{% block titulo %}INICIO{% endblock %}
-
+{% block titulo %}Error en la Página{% endblock %} 
 {% block contenido %} 
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">{{ respuesta }}</h4>
+            <p>{{ errordes }}</p>
+            <hr>
+            <ul>
+                {% for error in errores %}
+                    <li>{{ error.db_name }}</li>
+                    <li>{{ error.exception_code }}</li>
+                    <li>{{ error.exception_message }}</li>
+                    <li>{{ error.additional_info }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+{%endblock%}

@@ -6,8 +6,9 @@ from iphysearchapp.var_env import *
 from iphysearchapp.connect import *
 from appsearch.varias_func import *
 
-
+@login_required
 def impactoporpe(request): 
+    username = request.user.username 
     db = request.GET.get('dbstr')
     ippe = request.GET.get('strbuscado')
     conteovlans = []
@@ -43,8 +44,8 @@ def impactoporpe(request):
                     'conteovlans':conteovlans,
                     'resultadoarp':resultadoarp,
                     'backuppe':formatted_text,  
-                    'dbs': esquemata(),
-                    'user': usuariolog(),
+                    'dbs': esquemata_general(),
+                    'user': username,
                 })
 
 

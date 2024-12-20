@@ -1,38 +1,57 @@
-from tkinter import messagebox
-from django.shortcuts import render
-from django.db import connection
-from iphysearchapp.databases import DATABASES
-from iphysearchapp.var_env import *
-from iphysearchapp.connect import *
-from appsearch.varias_func import *
-from django.views.decorators.http import require_GET
-from appsearch.varias_func import *
-import requests
+from django.contrib.auth import authenticate, login
+from django.db import DatabaseError
 from django.shortcuts import render, redirect
-from django.contrib import messages
+from iphysearchapp.var_env import *  #IMPORTA VAR
+from django.contrib.auth import logout  
+from django.http import HttpResponse
 
+def login_view(request):
+    errores = []
+    errordes = ""
+    respuesta = ""
 
-def loginmain(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        url_api_token = 'http://10.10.26.5:80/api/token/'
-        data = {'username': username, 'password': password}
+        username = request.POST['username']
+        password = request.POST['password']
 
         try:
-            response = requests.post(url_api_token, json=data, timeout=5)
-            if 200 <= response.status_code < 300:
-                #request.session['username'] = username
-                return redirect('welcome') 
-            elif 400 <= response.status_code < 500:
-                messages.error(request, "Nombre de usuario o contraseña incorrectos.")
-            else:
-                messages.warning(request, "Respuesta inesperada del servidor.")
-        except requests.Timeout:
-            messages.error(request, "No se pudo conectar al servidor. Tiempo de espera agotado.")
-        except requests.RequestException as req_err:
-            messages.error(request, f"Error al conectarse al servidor: {req_err}")
+            user = authenticate(request, username=username, password=password)
 
-    return render(request, 'login.html', {
-        'dbs': esquemata(),
-    })
+            if user is not None:
+                login(request, user)
+                print("Usuario autenticado correctamente")
+                return redirect('welcome')
+            else:
+                respuesta = "Error en la autenticación"
+                errordes = "Credenciales no válidas, inténtelo nuevamente...."
+                return render(request, 'errorpage.html', {'respuesta': respuesta, 'errordes': errordes, 'errores': errores})
+
+        except DatabaseError as e:
+            respuesta = "Error en la conexión a la Base de Datos."
+            errordes = "Recargue la página"
+            errores.append({
+                'db_name': 'dblocal_default',  # Reemplaza con el nombre de tu base de datos
+                'exception_code': e.__class__.__name__,
+                'exception_message': str(e),
+                'additional_info': 'Verifique  su VPN ó que la DB '+HOSTOWN+' este alcanzable...'
+            })
+            return render(request, 'errorpage.html', {'respuesta': respuesta, 'errordes': errordes, 'errores': errores})
+
+    return render(request, 'login.html')
+
+
+def logout_view(request):
+    try:
+        logout(request)
+        return redirect('login')
+
+    except DatabaseError as e:
+        respuesta = "Error en la conexión a la Base de Datos."
+        errordes = "Recargue la página .. Si el problema persiste, contacte al soporte..."
+        errores = [{
+            'db_name': 'dblocal_default',  
+            'exception_code': e.__class__.__name__,
+            'exception_message': str(e),
+            'additional_info': 'Verifique  su VPN ó que la DB '+HOSTOWN+' este alcanzable...'
+        }]
+        return render(request, 'errorpage.html', {'respuesta': respuesta, 'errordes': errordes, 'errores': errores})

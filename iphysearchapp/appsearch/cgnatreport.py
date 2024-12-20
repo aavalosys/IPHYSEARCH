@@ -10,8 +10,13 @@ from iphysearchapp.var_env import *
 from iphysearchapp.connect import *
 from appsearch.varias_func import *
 from django.views.decorators.http import require_GET
+from django.contrib.auth.decorators import login_required 
 
+
+
+@login_required
 def cgnat(request):
+    username = request.user.username
     tipoalerta = '1'
     opcioncgnats = ['GUATEMALA','HONDURAS','EL SALVADOR','NICARAGUA','COSTA RICA']
     paisselect = request.GET.get('optionsRadios')
@@ -52,8 +57,8 @@ def cgnat(request):
                 ipcgnat =[]
                 datoscgnats =[]
             return render(request, 'paginas/cgnatreport.html',
-                    {'dbs': esquemata(),
-                    'user': usuariolog(),
+                    {'dbs': esquemata_general(),
+                    'user': username,
                     'ipcgnat':ipcgnat,
                     'tipoalerta':tipoalerta,
                     'opcioncgnats':opcioncgnats,   
@@ -65,8 +70,8 @@ def cgnat(request):
             print("")    
 
     return render(request, 'paginas/cgnatreport.html',
-            {'dbs': esquemata(),
-            'user': usuariolog(),
+            {'dbs': esquemata_general(),
+            'user': username,
             'ipcgnat':[],
             'opcioncgnats':opcioncgnats,
             'tipoalerta':tipoalerta,

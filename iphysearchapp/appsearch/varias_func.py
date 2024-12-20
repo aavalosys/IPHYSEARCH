@@ -73,9 +73,11 @@ def buscaserviciomacajax(request, ippe, ipcpe, mac, vlan, interface, vrf, pais, 
     tipoalerta ="0" 
     vlan_f = int(vlan)
     if vlan_f < 4096:
-        listar_mac = servicioesnormal(mac, vlan, pais, dbcpe)
+        listar_mac=[]
+        #listar_mac = servicioesnormal(mac, vlan, pais, dbcpe)
     else:
-        listar_mac = servicioespw(mac, vlan, dbcpe)
+        listar_mac=[]
+        #listar_mac = servicioespw(mac, vlan, dbcpe)
     alert = 0
     return JsonResponse({"listar_mac": listar_mac})
 
@@ -95,56 +97,13 @@ def detalleinterfaceAPI(dbcpe, ipsw, swinterface, swtch):   # SE DESACTIVA EL DE
     return detalleinter 
 
 
-
-def actualizarbitacorasr():    #ACTUALIZA EL FRONT END
-    dbrbs = "dblocalip06102024"
-    mydb =  conexion_dbown(dbrbs)
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT *, DATEDIFF(CURDATE(), STR_TO_DATE(fecha, '%d/%m/%Y')) AS contador FROM"+
-                     " bitacora WHERE estado = 'OPEN' and tipo = 'SR' ORDER BY contador DESC LIMIT 10".format(dbrbs))
-    listarsr=mycursor.fetchall()
-    return listarsr
-
-
-def actualizarbitacoact():     #ACTUALIZA EL FRONT END
-    dbrbs = "dblocalip06102024"     
-    mydb =  conexion_dbown(dbrbs)
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT *, DATEDIFF(CURDATE(), STR_TO_DATE(fecha, '%d/%m/%Y')) AS contador FROM"+
-                     " bitacora WHERE estado = 'OPEN' and tipo = 'ACTIVIDAD' ORDER BY contador DESC".format(dbrbs))
-    listaract=mycursor.fetchall()
-    return listaract
-
-
-def sumasr():
-    dbrbs = DBNEWLOCAL
-    mydb =  conexion_dbown(dbrbs)
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT count(codigosractividad) FROM "+
-                     "{}.bitacorasract WHERE estado = 3 and tipo = 10".format(dbrbs))
-    sumasr=mycursor.fetchall()
-    sumacasosr = sumasr[0][0]
-    return sumacasosr
-
-
-def sumaact():
-    dbrbs = DBNEWLOCAL
-    mydb =  conexion_dbown(dbrbs)
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT count(codigosractividad) FROM "+
-                     "{}.bitacorasract WHERE estado = 3 and tipo = 20".format(dbrbs))
-    sumaact=mycursor.fetchall()
-    sumaact = sumaact[0][0]
-    return sumaact
-
-
 def obtenerpais(db,ip):                     #BUSCA EL PAIS DEL EQUIPO
     mydb =  conexion_dbnet(db)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT pais FROM "+db+".equipos where ip like '%"+ip+"';")
     pais = mycursor.fetchall()
     pais = pais[0][0].lower()
-    mydb.close()
+    mydb.close() 
     return pais
 
 def conviertepais(pais):
@@ -166,7 +125,7 @@ def nombrevlanspe(ippe):
     return vlan_nombre
 
 def obtenpeL3(dbinter, ip, pais):
-    mydbpe =  conexion_dbnet(dbinter)  #BUSCA LA IP DEL L3
+    mydbpe =  conexion_dbnet(dbinter)   #BUSCA LA IP DEL L3
     mycursorpe = mydbpe.cursor()
     query = "SELECT ip FROM "+dbinter+".arp_"+pais+" WHERE ipcpe = '"+ip+"' AND vrf NOT LIKE '%LOBAL%' LIMIT 1 "
     mycursorpe.execute(query)
@@ -196,8 +155,8 @@ def buscaarppe(db, ip, pais):
 
 def contar_vlans_inter(ippe, dbinter, ip, pais, interface):
 
-    vlan_nombre =  nombrevlanspe(ippe)                 #TRAE TODAS LAS VLAN DEL PE
-    totalvlans = obtenermacinterface(dbinter, ip, pais, interface)  #TRAE LAS MAC APRENDIDAS
+    vlan_nombre =  nombrevlanspe(ippe)                        
+    totalvlans = obtenermacinterface(dbinter, ip, pais, interface)  
 
     vlan_nombre_dict = {vlan: nombrevlan for vlan, nombrevlan in vlan_nombre}
     tabla_mac_vlan = []
@@ -235,7 +194,7 @@ def contar_vlans_pe(resultadoarp, vlan_nombre):
     
     return results
 
-def obteneequipo(db,ip):                     #BUSCA EL PAIS DEL EQUIPO
+def obteneequipo(db,ip):                 
     mydb =  conexion_dbnet(db)
     mycursor = mydb.cursor()
     mycursor.execute("SELECT * FROM "+db+".equipos where ip like '"+ip+"';")
@@ -243,7 +202,7 @@ def obteneequipo(db,ip):                     #BUSCA EL PAIS DEL EQUIPO
     mydb.close()
     return equipo
 
-def buscabackups(db,ip):                     #BUSCA EL PAIS DEL EQUIPO
+def buscabackups(db,ip):        
     db = "temp_db"
     tablaname = "backups_ip"
     backupequipo  = []

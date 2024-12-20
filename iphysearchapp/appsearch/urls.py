@@ -1,27 +1,35 @@
 from django.urls import path
-from . import descargar, home, busca_ips, busca_impactointerface, busca_impactoporpe, monitoreo_tcn, busca_varios, about, cgnatreport, catalogos, descargar, varias_func, login
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
+from . import descargar, busca_ips, busca_impactointerface, busca_impactoporpe, busca_varios, about, cgnatreport, actividades, casossr, descargar, varias_func, login, welcome, error
 
-urlpatterns = [  #NAME ES EL NOMBRE DE LA URL.... 
-    path('login', login.loginmain, name='login'), 
-    path('welcome', home.home, name='welcome'),    
-    path('buscaips', busca_ips.buscaips, name='buscaips'), 
+urlpatterns = [
+    path('login/', login.login_view, name='login'),
+    path('password-change/', auth_views.PasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),
+    path('password-change-done/', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),  
+    path('welcome/', login_required(welcome.home), name='welcome'),    
+    path('buscaips', login_required(busca_ips.buscaips), name='buscaips'), 
+    path('detalleinterface/<str:dbcpe>/<str:ipsw>/<str:interface>/', varias_func.detalleinterface, name='detalleinterface'),
+    path('pingdesdepevpn/<str:ippe>/<str:ipcpe>/<str:vrf>/', varias_func.pingdesdepevpn, name='pingdesdepevpn'),
     path('impactointerfaces', busca_impactointerface.impactointerfaces, name='impactointerfaces'),
     path('buscasaturacion/<str:ip>/<str:no>/<str:dbinter>/<str:pais>/', busca_impactointerface.verimpactointerface, name='buscasaturacion'), 
     path('impactoporpe', busca_impactoporpe.impactoporpe, name='impactoporpe'),
-    path('monitoreotcns', monitoreo_tcn.monitoreotcns, name='monitoreotcns'),
-    path('buscavarios/<str:selectedoption>/', busca_varios.buscavarios, name='buscavarios'),
-    path('catalogos/<str:selectedoption>/', catalogos.catalogos, name='catalogo'), 
-    path('actualizarmodales/', catalogos.traelistasselectsmodal, name='actualizarmodales'),
-    path('actualizacionactividades/<str:registroactividad>/', catalogos.actualizacionactividades, name='actualizacionactividades'),  
-    path('catalogos/actividades/actualizacionact/<str:registroact>/<str:fechaactmodal>/<str:actualizacion>/<str:usuarioact>/<str:estadoact>/<str:vendoract>/', catalogos.actualizaractividad, name='actualizacionact'),
-    path('catalogos/casossr/actualizacionsr/<str:registrosr>/<str:fechahoragrabacion>/<str:rma>/<str:ttrma>/<str:fecharmasr>/<str:actualizacion>/<str:usuariosr>/<str:estadosr>/<str:vendorsr>/<str:paissr>/', catalogos.actualizarsrs, name='actualizacionsr'),
-    path('agregar_act/', catalogos.agregaractividad, name='agregar_act'), 
-    path('agregar_sr/', catalogos.agregarsr, name='agregar_sr'),    
-    path('cgnatreport', cgnatreport.cgnat, name='cgnatreport'),
-    path('descargarcsv/<str:pais>/', descargar.descargararchivo, name='descargarcsv'), 
-    path('about', about.about, name='about'),
-    path('pingdesdepevpn/<str:ippe>/<str:ipcpe>/<str:vrf>/', varias_func.pingdesdepevpn, name='pingdesdepevpn'),
-    path('detalleinterface/<str:dbcpe>/<str:ipsw>/<str:interface>/', varias_func.detalleinterface, name='detalleinterface'),
+    path('buscavarios/<str:selectedoption>/', busca_varios.buscavarios, name='buscavarios'), 
     path('buscar_mac/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:vrf>/<str:pais>/<str:dbcpe>/', busca_ips.buscaserviciomac, name='buscar_mac'), 
-    path('buscar_macajax/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:interface>/<str:vrf>/<str:pais>/<str:dbcpe>/', varias_func.buscaserviciomacajax, name='buscar_macajax'),  
+    path('buscar_macajax/<str:ippe>/<str:ipcpe>/<str:mac>/<str:vlan>/<str:interface>/<str:vrf>/<str:pais>/<str:dbcpe>/', varias_func.buscaserviciomacajax, name='buscar_macajax'), 
+    path('agregar_act/<int:pagina>/', login_required(actividades.actividades), name='agregar_act'),
+    path('actualizacionactividades/<str:registroactividad>/', actividades.actualizacionactividades, name='actualizacionactividades'), #VER ACTUALIZACION ACTIVIDAD
+    path('agregar_act/<int:pagina>/obtiene_vendors_estados/', actividades.obtiene_vendors_estados, name='obtiene_vendors_estados'),  
+    path('agregar_act/actividades/<int:pagina>/actualizacionact/<str:registroact>/<str:fechaactmodal>/<str:actualizacion>/<str:usuarioact>/<str:estadoact>/<str:vendoract>/', actividades.actualizaractividad, name='actualizacionact'),    
+    path('agregar_sr/<int:pagina>/', login_required(casossr.casossr), name='agregar_sr'),  
+    path('agregar_sr/<int:pagina>/obtiene_proveedores_estados_paises/', casossr.obtiene_proveedores_estados_paises, name='obtiene_proveedores_estados_paises'),
+    path('agregar_sr/casossr/<int:pagina>/actualizacionsr/<str:registrosr>/<str:fechahoragrabacion>/<str:rma>/<str:ttrma>/<str:fecharmain>/<str:actualizacion>/<str:usuariosr>/<str:estadosr>/<str:vendorsr>/<str:paissr>/', casossr.actualizarsrs, name='actualizacionsr'),
+    path('agregar_sr/casossr/<int:pagina>/cierrermas/<str:registrosr>/<str:fechahoragrabacion>/<str:rmarecibido>/<str:ttrmarecibido>/<str:fecharmasrcierre>/<str:actualizacioncierre>/<str:usuariosr>/<str:estadosr>/<str:vendorsr>/<str:paissr>/', casossr.cierrermas, name='cierrermas'),
+    path('muestradescripcionact/<str:registro>/', actividades.mostrarInformacionDescripcionact, name='muestradescripcionact'),
+    path('muestradescripcionsr/<str:registro>/', casossr.mostrarInformacionDescripcionsr, name='muestradescripcionsr'),  
+    path('cgnatreport', login_required(cgnatreport.cgnat), name='cgnatreport'),
+    path('descargarcsv/<str:pais>/', descargar.descargararchivo, name='descargarcsv'), 
+    path('about', login_required(about.about), name='about'),
+    path('logout/', login.logout_view, name='logout'),
+    path('errorpage/', error.errorpage, name='errorpage'),
 ] 

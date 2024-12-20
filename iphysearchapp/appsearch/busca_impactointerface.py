@@ -5,8 +5,11 @@ from iphysearchapp.databases import DATABASES
 from iphysearchapp.var_env import *
 from iphysearchapp.connect import *
 from appsearch.varias_func import *
+from django.contrib.auth.decorators import login_required 
 
+@login_required
 def impactointerfaces(request):
+    username = request.user.username 
     db = request.GET.get('dbstr')
     ip = request.GET.get('strbuscado') 
     pais = '-'
@@ -33,13 +36,13 @@ def impactointerfaces(request):
                     'tabla_mac_vlan':tabla_mac_vlan,
                     'conteo_vlan_mac':conteo_vlan_mac,
                     'listadointerfaces':listadointerfaces,   
-                    'dbs': esquemata(),
-                    'user': usuariolog(),
+                    'dbs': esquemata_general(),
+                    'user': username,
                 })
 
-
+@login_required
 def verimpactointerface(request, ip, no, dbinter, pais):
-
+    username = request.user.username 
     interface='-'
     tabla_mac_vlan='-'
     conteo_vlan_mac='-'
@@ -64,8 +67,8 @@ def verimpactointerface(request, ip, no, dbinter, pais):
                     'listadointerfaces':listadointerfaces,
                     'tabla_mac_vlan':tabla_mac_vlan,
                     'conteo_vlan_mac':conteo_vlan_mac,   
-                    'dbs': esquemata(),
-                    'user': usuariolog(),
+                    'dbs': esquemata_general(),
+                    'user': username,
                 })
 
     
