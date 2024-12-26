@@ -1,9 +1,13 @@
+import logging
 from django.contrib.auth import authenticate, login
 from django.db import DatabaseError
 from django.shortcuts import render, redirect
 from iphysearchapp.var_env import *  #IMPORTA VAR
 from django.contrib.auth import logout  
 from django.http import HttpResponse
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def login_view(request):
     errores = []
@@ -42,7 +46,7 @@ def login_view(request):
 
 def logout_view(request):
     try:
-        logout(request)
+        logout(request) 
         return redirect('login')
 
     except DatabaseError as e:

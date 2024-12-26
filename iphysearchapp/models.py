@@ -153,3 +153,13 @@ class Sesion(models.Model):
         managed = False
         db_table = 'sesion'
         app_label = 'iphysearchapp'
+
+class Nodob(models.Model):
+    nodoid = models.CharField(max_length=128, blank=True, null=True)
+    ip = models.CharField(max_length=128, blank=True, null=True)
+    tipo = models.CharField(max_length=128, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nodob'
+        app_label = 'iphysearchapp'

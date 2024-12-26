@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block titulo %}INICIO{% endblock %}
+{% block contenido %} 
+
+<div class="row" style="margin: 10px;">
+    
+    <div class="col-md-4">
+
+    </div>
+
+    <div class="col-md-4">
+        <form action=" " method="GET">
+            {% csrf_token %}
+            <div class="input-group mb-3" style="margin-top: 5px;">
+                <span class="input-group-text">Parámetros</span>
+                <input type="text"  id="idparamuno" name="idparamuno" class="form-control"  placeholder="extensión" required>
+                &nbsp;
+                <input type="text"  id="idparamdos" name="idparamdos" class="form-control"  placeholder="min MB" required>
+                &nbsp;
+                <input type="text"  id="idparamtres" name="idparamtres" class="form-control"  placeholder="max MB" required>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="submit" class="btn btn-danger" >Ejecutar Consulta {{opcion}}</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-4"> 
+
+    </div>
+
+
+    <script></script>
+</div>
+
+<div class="row"> 
+    <div class="col-md-2">
+    </div>
+
+    <div class="col-md-9">
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-active">
+                    <th scope="col">Path</th>
+                    <th scope="col">Archivo</th>
+                    <th scope="col">Extensión</th>
+                    <th scope="col">Tamaño</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if archivos_por_path %}
+                    {% for path, archivos in archivos_por_path.items %}
+                        <tr>
+                            <td rowspan="{{ archivos|length }}">{{ path }}</td>
+                            {% for archivo in archivos %}
+                                {% if not forloop.first %}<tr>{% endif %}
+                                <td>{{ archivo.0 }}</td>
+                                <td>{{ archivo.1 }}</td>
+                                <td>{{ archivo.2 }}</td>
+                                </tr>
+                            {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>             
+    </div>
+
+    <div class="col-md-1">
+    </div>
+</div>
+
+{%endblock%} 

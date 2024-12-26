@@ -26,7 +26,29 @@ dbrbs = "dblocal_default"
 username = "sin_usuario_logg"
 HEADTABLESR = ["NO.","DÍAS","CASO SR", "TÍTULO", "APERTURA", "DESCRIPCION", "DETALLE-RMA", "VENDOR","ESTADO","PAÍS","OPCIÓN"]
 
+def grupo_requerido(grupos_permitidos, respuesta, errordes, errores):
+    def decorator(view_func):
+        @login_required
+        def _wrapped_view(request, *args, **kwargs):
+            if request.user.groups.filter(name__in=grupos_permitidos).exists():
+                return view_func(request, *args, **kwargs)
+            else:
+                # Renderiza la página de error con los parámetros proporcionados
+                return render(request, 'errorpage.html', {
+                    'respuesta': respuesta,
+                    'errordes': errordes,
+                    'errores': errores
+                })
+        return _wrapped_view
+    return decorator
+
 @login_required
+@grupo_requerido(
+    grupos_permitidos=['superuser','adminusers', 'especialistas'],
+    respuesta="Acceso denegado",
+    errordes="No tiene permisos para acceder a esta página.",
+    errores=[]
+)
 def casossr(request, pagina):
     username = request.user.username
     idtxtabuscar = request.GET.get('idtxtabuscarsr')

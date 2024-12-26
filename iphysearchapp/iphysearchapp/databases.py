@@ -10,7 +10,7 @@ DATABASES={
                 'PORT': PORT,
             },
             'dblocal_mantto': {
-                'ENGINE': 'django.db.backends.mysql',
+                'ENGINE': ENGINE,
                 'NAME': 'dblocal_mantto',
                 'USER': USEROWN,
                 'PASSWORD': PASSWORDOWN, 
@@ -26,6 +26,3 @@ DATABASES={
                 'PORT': PORT,
             },
         }
-
-
-

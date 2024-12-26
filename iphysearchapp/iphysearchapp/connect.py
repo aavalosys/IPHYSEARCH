@@ -25,7 +25,8 @@ def esquemata_general():
     esquemas_g = cursor.fetchall()
     esquemas_generales = list(reversed(esquemas_g))
     cerrar_conexion_mysql(conn, cursor)
-    return esquemas_generales
+    esquemas_seleccionados = esquemas_generales[1:25]
+    return esquemas_seleccionados
 
 def establecer_conexion_mysql(servidor, usuario, contraseña, base_datos=None):
     try:

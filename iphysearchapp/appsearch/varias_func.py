@@ -1,5 +1,6 @@
 import os
 import time
+import logging
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -10,6 +11,8 @@ from iphysearchapp.connect import *
 from netmiko import ConnectHandler
 from django.db import connection
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def pingdesdepevpn(request, ippe, ipcpe, vrf):             #HACE PING DESDE EL PE
     pehuawei = {
@@ -67,20 +70,6 @@ def detalleinterface(request, dbcpe, ipsw, interface):  #BUSCA DETALLE DE LA INT
             alert = '3'
 
     return JsonResponse({"detalleInterface": detalleInterface})
-
-
-def buscaserviciomacajax(request, ippe, ipcpe, mac, vlan, interface, vrf, pais, dbcpe):  
-    tipoalerta ="0" 
-    vlan_f = int(vlan)
-    if vlan_f < 4096:
-        listar_mac=[]
-        #listar_mac = servicioesnormal(mac, vlan, pais, dbcpe)
-    else:
-        listar_mac=[]
-        #listar_mac = servicioespw(mac, vlan, dbcpe)
-    alert = 0
-    return JsonResponse({"listar_mac": listar_mac})
-
 
 def detalleinterfaceAPI(dbcpe, ipsw, swinterface, swtch):   # SE DESACTIVA EL DETALLE DE LAS INTERFACES.
     detalleinter = 'X'
@@ -213,30 +202,4 @@ def buscabackups(db,ip):
     mydb.close()
     return backupequipo
 
-
-def obtenerRMAS(registro):
-    dbrbs = "dblocalip06102024"
-    listaRMA = []
-    mydb =  conexion_dbown(dbrbs)
-    mycursor = mydb.cursor()
-
-    consulta_RMA = """
-            SELECT *
-            FROM {}.registrobitacora
-            WHERE bitacora_registrosractividad = %s 
-            ORDER BY idregistro DESC
-        """.format(dbrbs)
-
-    try:
-        mycursor.execute(consulta_RMA, (registro,))
-        listaRMA = mycursor.fetchall()
-        if all(tupla[4] == '' for tupla in listaRMA):
-            return []
-    except Exception as e:
-        print(f"Error al obtener los registros: {e}")
-    finally:
-        mycursor.close()
-        mydb.close()
-
-    return listaRMA
 

@@ -12,7 +12,6 @@ function copiaselectdbsbackup() { //en welcome
     return;
 }
 
-
 function onloadpagbuscaips() {  //en buscar ipss
     var selectBox = document.getElementById("selectdb");
     var elementoplace =selectBox.options[0].value;
@@ -98,7 +97,6 @@ function copiaselectestadoact(){
     document.getElementById('idestadoact').value = selectedValue;
     return;
 }
-
 
 function agregafechahora() { 
     const fechaActual = new Date();

@@ -2,13 +2,20 @@
 from pathlib import Path
 from .databases import *
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-hb+37ji&a6wx=a_*#_^u4*rl^gcxor4iz2j^k+r=pd&$b8$_=t'
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ['10.10.26.7','127.0.0.1', 'buscador.web.boip']
+
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -102,3 +109,7 @@ LOGIN_REDIRECT_URL = '/welcome'
 LOGOUT_REDIRECT_URL = '/login/'
 SESSION_COOKIE_AGE = 1800  # 30 minutos en segundos
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Cerrar la sesión al cerrar el navegador
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
